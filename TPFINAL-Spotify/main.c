@@ -3,6 +3,8 @@
 #include <conio.h>
 #include <string.h>
 #include <time.h>
+#include <windows.h> ///me deja utilizar la funcion sleep
+
 
 typedef struct
 {
@@ -14,7 +16,7 @@ typedef struct
     int anio;
     char genero[20];
     char comentario[100];
-    int eliminado; // indica 1 o 0 si la canciÛn fue eliminada
+    int eliminado; // indica 1 o 0 si la canci√≥n fue eliminada
 } stCancion;
 
 typedef struct
@@ -57,7 +59,7 @@ typedef struct
 //mostrarLista() // modularizar
 //borrarNodoPorIdCancion()
 
-///FUNCIONES PARA ¡RBOL DE CANCIONES
+///FUNCIONES PARA √ÅRBOL DE CANCIONES
 //inicArbol ()
 //crearNodoArbol ()
 //insertarNodoArbol (ordenado por idCancion)
@@ -65,42 +67,42 @@ typedef struct
 //borrarUnNodoArbol (buscarlo por idCancion)
 //buscarCancion (por idCancion)
 //
-//cargarArbolDesdeArchivo(): Al inicio del sistema, deber·n cargar todas las canciones del archivo,
-//sobre un ·rbol binario ordenado por idCancion, de forma tal que las b˙squedas se realicen de forma
-//m·s eficiente.
+//cargarArbolDesdeArchivo(): Al inicio del sistema, deber√°n cargar todas las canciones del archivo,
+//sobre un √°rbol binario ordenado por idCancion, de forma tal que las b√∫squedas se realicen de forma
+//m√°s eficiente.
 //
-//Tenga en cuenta que, seguramente, su archivo de canciones est· ordenado de forma creciente por
-//idCancion y que si realiza un recorrido secuencial del archivo, la inserciÛn en el ·rbol no se realizar·
-//de una forma Ûptima. Desarrolle una funciÛn (o varias) que logren realizar la inserciÛn en el ·rbol,
-//logrando que este quede lo m·s balanceado posible.
+//Tenga en cuenta que, seguramente, su archivo de canciones est√° ordenado de forma creciente por
+//idCancion y que si realiza un recorrido secuencial del archivo, la inserci√≥n en el √°rbol no se realizar√°
+//de una forma √≥ptima. Desarrolle una funci√≥n (o varias) que logren realizar la inserci√≥n en el √°rbol,
+//logrando que este quede lo m√°s balanceado posible.
 
 ///FUNCIONES ESTRUCTURA DE ARREGLO DE USUARIOS
-//Deber·n codificar todas las funciones necesarias para administrar el TDA Arreglo de Listas, a saber
-//(como mÌnimo):
+//Deber√°n codificar todas las funciones necesarias para administrar el TDA Arreglo de Listas, a saber
+//(como m√≠nimo):
 //agregarUsuario() // crea un nuevo usuario en el arreglo
-//buscarUsuario() // busca un usuario por idUsuario y retorna la posiciÛn que ocupa en el arreglo
+//buscarUsuario() // busca un usuario por idUsuario y retorna la posici√≥n que ocupa en el arreglo
 //mostrarUsuarios() // muestra todo el arreglo de listas, cada usuario con sus canciones escuchadas
 //agregarCancionToUsuario() // agrega una Cancion al Usuario correspondiente
-//limpiarArregloDeListas() // esta funciÛn ìvacÌaî todo el arreglo de listas, dejando la estructura preparada
+//limpiarArregloDeListas() // esta funci√≥n ‚Äúvac√≠a‚Äù todo el arreglo de listas, dejando la estructura preparada
 //para volver a trabajar
-//persistirCancionesEscuchadas() // esta funciÛn realizar· la persistencia de todas las canciones
+//persistirCancionesEscuchadas() // esta funci√≥n realizar√° la persistencia de todas las canciones
 //escuchadas en el archivo correspondiente
 
 ///FUNCIONES CANCIONES ESCUCHADAS POR CADA USUARIO
 //Esta estructura da forma al archivo de canciones escuchadas por cada usuario, en cada registro se
-//almacena el id del usuario, el id de la canciÛn y un id autoincremental para contabilizar los registros.
-//A partir de esta informaciÛn, se carga el arreglo de listas, buscando los datos del usuario en el archivo
-//y los datos de la canciÛn en el ·rbol de canciones. Para hacer esto, deber· desarrollar una serie de
-//funciones que sean invocadas por la funciÛn pasarDeArchivoPlaylistToADL().
-//Asimismo, deber· desarrollar las funciones necesarias para hacer el trabajo inverso. A partir del arreglo
+//almacena el id del usuario, el id de la canci√≥n y un id autoincremental para contabilizar los registros.
+//A partir de esta informaci√≥n, se carga el arreglo de listas, buscando los datos del usuario en el archivo
+//y los datos de la canci√≥n en el √°rbol de canciones. Para hacer esto, deber√° desarrollar una serie de
+//funciones que sean invocadas por la funci√≥n pasarDeArchivoPlaylistToADL().
+//Asimismo, deber√° desarrollar las funciones necesarias para hacer el trabajo inverso. A partir del arreglo
 //de listas que se va cargando y actualizando en memoria, realizar la persistencia de los datos en el
-//archivo de canciones escuchadas recorriendo el ADL y tomando los datos allÌ almacenados.
+//archivo de canciones escuchadas recorriendo el ADL y tomando los datos all√≠ almacenados.
 //actualizarCancionesEscuchadas().
 //Codificar las funciones necesarias para persistir esta estructura en un archivo binario y las que
-//necesite para la interacciÛn con el sistema.
+//necesite para la interacci√≥n con el sistema.
 
 ///MENU PRINCIPAL
-//Men˙ principal
+//Men√∫ principal
 //1. Ingreso con User y Pass para administradores
 //2. Ingreso con User y Pass
 //3. Registrarse
