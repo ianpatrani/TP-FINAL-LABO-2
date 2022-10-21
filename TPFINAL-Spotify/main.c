@@ -222,12 +222,12 @@ void modificarCancion(char archivo[])
             {
                 switch (eleccion)
                 {
-                case 0:
+                case 1:
                     printf("\nIngrese nuevo titulo:");
                     fflush(stdin);
                     scanf("%s", &cancion.titulo);
                     break;
-                case 1:
+                case 2:
                     printf("\nIngrese nuevo artista:");
                     fflush(stdin);
                     scanf("%s", &cancion.artista);
