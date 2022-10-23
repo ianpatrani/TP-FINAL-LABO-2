@@ -5,62 +5,77 @@
 #include <time.h>
 #include <windows.h> ///me deja utilizar la funcion sleep
 
-
 typedef struct
 {
-    int idCancion;
-    char titulo[30];
-    char artista[20];
-    int duracion;
+    int idSong;
+    char title[30];
+    char artist[20];
+    int duration;
     char album[20];
-    int anio;
-    char genero[20];
-    char comentario[100];
-    int eliminado; // indica 1 o 0 si la canción fue eliminada
-} stCancion;
+    int year;
+    char gender[20];
+    char comment[100];
+    int deleted; // indica 1 o 0 si la canciï¿½n fue eliminada
+} stSong;
+
+
 
 typedef struct
 {
-    int idUsuario;
-    char nombreUsuario[30];
-    char pass[20];
-    int anioNacimiento;
-    char genero;
-    char pais[20];
-    int eliminado; // indica 1 o 0 si el cliente fue eliminado
-} stUsuario;
+    int idUser;
+    char name[30];  // name and lastName
+    int pass[2][5]; // la pswd es una matriz que se encripta y desencripta con un key generado para c/ user.
+    int birthYear;
+    char gender; //
+    char country[20];
+    int songPlays[30]; // cantidad de canciones reproducidas
+    int off;           // indica 1 o 0 si el cliente fue deleted ->1  / 0 no
+} stUser;
 
 typedef struct
 {
-    stCancion c;
-    struct nodoListaCancion * sig;
-} nodoListaCancion;
+    stSong value;
+    struct nodeListSong *next;
+} nodeListSong;
 
 typedef struct
 {
-    stUsuario usr;
-    nodoListaCancion * listaCanciones;
-} stCelda;
+    int idSong;
+    char title[30];
+    char artist[20];
+    int duration;
+    char album[20];
+    int year;
+    char genres[20];
+    char comment[100];
+    int deleted; // indica 1 o 0 si la canciï¿½n fue eliminada
+} stSong;
+
+typedef struct
+{
+    stUser user;
+    node2User *next;
+    node2User *prev;
+} node2User; /// LISTA ENLAZADA DE USUARIOS
 
 typedef struct
 {
     int idPlaylist;
-    int idUsuario;
-    int idCancion;
+    int idUser;
+    int idSong;
 } stPlaylist;
 
-
-///FUNCIONES PARA LISTA SIMPLE DE CANCIONES
-nodoListaCancion *inicLista();
-nodoListaCancion *crearNodoLista(stCancion cancion);
-nodoListaCancion *agregarAlPrincipio(nodoListaCancion *lista, nodoListaCancion *nuevo);
-nodoListaCancion *buscarUltimoNodo(nodoListaCancion *lista);
-nodoListaCancion *agregarAlFinal(nodoListaCancion *lista, nodoListaCancion *nuevo);
-nodoListaCancion *agregarEnOrdenPorNombreDeCancion(nodoListaCancion *lista, nodoListaCancion *nuevoNodo);
-void mostrarNodo(nodoListaCancion *cancion);
-void mostrarLista(nodoListaCancion *iterador);
-void mostrarRecursivoHaciaAtras(nodoListaCancion *iterador);
-nodoListaCancion *borrarNodoPorIdCancion(nodoListaCancion *lista, int ID);
+/// FUNCIONES PARA LISTA SIMPLE DE CANCIONES
+nodeListSong *inicList();
+nodeListSong *createNodoList(stCancion song);
+nodeListSong *addToBegin(nodeListSong *list, nodeListSong *new);
+nodeListSong *searchLastNodo(nodeListSong *list);
+nodeListSong *addToEnd(nodeListSong *list, nodeListSong *new);
+nodeListSong *addInOrderBySongName(nodeListSong *list, nodeListSong *nuevoNodo);
+void showNode(nodeListSong *song);
+void showList(nodeListSong *iterator);
+void showBackwardsRevursive(nodeListSong *iterator);
+nodeListSong *deleteNodeByIdSong(nodeListSong *list, int ID);
 
 int main()
 {
@@ -68,130 +83,130 @@ int main()
     return 0;
 }
 
-nodoListaCancion *inicLista()
+nodeListSong *inicList()
 {
     return NULL;
 }
 
-nodoListaCancion *crearNodoLista(stCancion cancion)
+nodeListSong *createNodoList(stCancion song)
 {
-    nodoListaCancion *nodito = (nodoListaCancion*)malloc(sizeof(nodoListaCancion));
-    nodito->c = cancion;
-    nodito->sig = inicLista();
+    nodeListSong *nodito = (nodeListSong *)malloc(sizeof(nodeListSong));
+    nodito->value = song;
+    nodito->next = inicList();
     return nodito;
 }
 
-nodoListaCancion *agregarAlPrincipio(nodoListaCancion *lista, nodoListaCancion *nuevo)
+nodeListSong *addToBegin(nodeListSong *list, nodeListSong *new)
 {
-    if (lista == NULL)
+    if (list == NULL)
     {
-        lista = nuevo;
+        list = new;
     }
     else
     {
-        nuevo->sig = lista;
-        lista = nuevo;
+        new->next = list;
+        list = new;
     }
-    return lista;
+    return list;
 }
 
-nodoListaCancion *buscarUltimoNodo(nodoListaCancion *lista)
+nodeListSong *searchLastNodo(nodeListSong *list)
 {
-    nodoListaCancion *seg = lista;
-    while (seg->sig != NULL)
+    nodeListSong *aux = list;
+    while (aux->next != NULL)
     {
-        seg = seg->sig;
+        aux = aux->next;
     }
-    return seg;
+    return aux;
 }
 
-nodoListaCancion *agregarAlFinal(nodoListaCancion *lista, nodoListaCancion *nuevo)
+nodeListSong *addToEnd(nodeListSong *list, nodeListSong *new)
 {
-    nodoListaCancion *ultimo;
-    if (lista == NULL)
+    nodeListSong *ultimo;
+    if (list == NULL)
     {
-        lista = nuevo;
+        list = new;
     }
     else
     {
-        ultimo = buscarUltimoNodo(lista);
-        ultimo->sig = nuevo;
+        ultimo = searchLastNodo(list);
+        ultimo->next = new;
     }
-    return lista;
+    return list;
 }
 
-nodoListaCancion *agregarEnOrdenPorNombreDeCancion(nodoListaCancion *lista, nodoListaCancion *nuevoNodo)
+nodeListSong *addInOrderBySongName(nodeListSong *list, nodeListSong *nuevoNodo)
 {
-    if (lista == NULL)
+    if (list == NULL)
     {
-        lista = nuevoNodo;
+        list = nuevoNodo;
     }
     else
     {
-        if (strcmpi(nuevoNodo->c.titulo, lista->c.titulo) < 0)
+        if (strcmpi(nuevoNodo->value.title, list->value.title) < 0)
         {
-            lista = agregarAlPrincipio(lista, nuevoNodo);
+            list = addToBegin(list, nuevoNodo);
         }
         else
         {
-            nodoListaCancion *ante = lista;
-            nodoListaCancion *aux = lista;
-            while (aux != NULL && strcmpi(nuevoNodo->c.titulo, lista->c.titulo) > 0)
+            nodeListSong *ante = list;
+            nodeListSong *aux = list;
+            while (aux != NULL && strcmpi(nuevoNodo->value.title, list->value.title) > 0)
             {
                 ante = aux;
-                aux = aux->sig;
+                aux = aux->next;
             }
-            ante->sig = nuevoNodo;
-            nuevoNodo->sig = aux;
+            ante->next = nuevoNodo;
+            nuevoNodo->next = aux;
         }
     }
 }
 
-void mostrarNodo(nodoListaCancion *cancion)
+void showNode(nodeListSong *song)
 {
-    printf("idCancion:.. %d \n", cancion->c.idCancion);
-    printf("titulo:..... %s \n", cancion->c.titulo);
-    printf("artista:.... %s \n", cancion->c.artista);
-    printf("duracion:... %d \n", cancion->c.duracion);
-    printf("album:...... %s \n", cancion->c.album);
-    printf("anio:....... %d \n", cancion->c.anio);
-    printf("genero:..... %s \n", cancion->c.genero);
-    printf("comentario:. %s \n", cancion->c.comentario);
-    printf("eliminado:.. %c \n", cancion->c.eliminado);
+    printf("idSong:.. %d \n", song->value.idSong);
+    printf("title:..... %s \n", song->value.title);
+    printf("artist:.... %s \n", song->value.artist);
+    printf("duration:... %d \n", song->value.duration);
+    printf("album:...... %s \n", song->value.album);
+    printf("year:....... %d \n", song->value.year);
+    printf("genres:..... %s \n", song->value.genres);
+    printf("comment:. %s \n", song->value.comment);
+    printf("deleted:.. %c \n", song->value.deleted);
 }
 
-void mostrarLista(nodoListaCancion *iterador)
+void showList(nodeListSong *iterator)
 {
-    if (iterador != NULL)
+    if (iterator != NULL)
     {
-        mostrarNodo(iterador);
-        mostrarLista(iterador->sig);
+        showNode(iterator);
+        showList(iterator->next);
     }
 }
 
-void mostrarRecursivoHaciaAtras(nodoListaCancion *iterador)
+void showBackwardsRevursive(nodeListSong *iterator)
 {
-    if (iterador != NULL)
+    if (iterator != NULL)
     {
-        mostrarLista(iterador->sig);
-        mostrarNodo(iterador);
+        showList(iterator->next);
+        showNode(iterator);
     }
 }
 
-nodoListaCancion *borrarNodoPorIdCancion(nodoListaCancion *lista, int ID)
+nodeListSong *deleteNodeByIdSong(nodeListSong *list, int ID)
 {
-    nodoListaCancion *aux = inicLista();
-    if(lista != NULL)
+    nodeListSong *aux = inicList();
+    if (list != NULL)
     {
-        if(lista->c.idCancion == ID)
+        if (list->value.idSong == ID)
         {
-            nodoListaCancion* aBorrar = lista;
-            lista = lista-> sig;
-            free(aBorrar);
+            nodeListSong *deletedNode = list;
+            list = list->next;
+            free(deletedNode);
         }
         else
         {
-            lista->sig = borrarNodoPorIdCancion(lista->sig, ID);
+            list->next = deleteNodeByIdSong(list->next, ID);
         }
     }
 }
