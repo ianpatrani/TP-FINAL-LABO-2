@@ -5,110 +5,262 @@
 #include <time.h>
 #include <windows.h> ///me deja utilizar la funcion sleep
 
-
 typedef struct
 {
-    int idCancion;
-    char titulo[30];
-    char artista[20];
-    int duracion;
+    int idSong;
+    char title[30];
+    char artist[20];
+    int duration;
     char album[20];
-    int anio;
-    char genero[20];
-    char comentario[100];
-    int eliminado; // indica 1 o 0 si la canción fue eliminada
-} stCancion;
+    int year;
+    char gender[20];
+    char comment[100];
+    int deleted; // indica 1 o 0 si la canci�n fue eliminada
+} stSong;
 
 typedef struct
 {
-    int idUsuario;
-    char nombreUsuario[30];
-    char pass[20];
-    int anioNacimiento;
-    char genero;
-    char pais[20];
-    int eliminado; // indica 1 o 0 si el cliente fue eliminado
-} stUsuario;
+    int idUser;
+    char name[30];  // name and lastName
+    int pass[2][5]; // la pswd es una matriz que se encripta y desencripta con un key generado para c/ user.
+    int birthYear;
+    char gender; //
+    char country[20];
+    int songPlays[30]; // cantidad de canciones reproducidas
+    int off;           // indica 1 o 0 si el cliente fue deleted ->1  / 0 no
+} stUser;
 
 typedef struct
 {
-    stCancion c;
-    struct nodoListaCancion * sig;
-} nodoListaCancion;
+    stSong value;
+    struct nodeListSong *next;
+} nodeListSong;
 
 typedef struct
 {
- stUsuario usr;
- nodoListaCancion * listaCanciones;
-} stCelda;
+    int idSong;
+    char title[30];
+    char artist[20];
+    int duration;
+    char album[20];
+    int year;
+    char genres[20];
+    char comment[100];
+    int deleted; // indica 1 o 0 si la canci�n fue eliminada
+} stSong;
 
 typedef struct
 {
- int idPlaylist;
- int idUsuario;
- int idCancion;
+    stUser user;
+    node2User *next;
+    node2User *prev;
+} node2User; /// LISTA ENLAZADA DE USUARIOS
+
+typedef struct
+{
+    int idPlaylist;
+    int idUser;
+    int idSong;
 } stPlaylist;
 
+typedef struct
+{
+    stSong value;
+    struct nodeTreeSong *left;
+    struct nodeTreeSong *right;
+} nodeTreeSong;
 
-///FUNCIONES PARA LISTA SIMPLE DE CANCIONES
-//inicLista()
-//crearNodoLista()
-//agregarAlPrincipio()
-//agregarAlFinal()
-//agregarEnOrdenPorNombreDeCancion()
-//mostrarLista() // modularizar
-//borrarNodoPorIdCancion()
-
-///FUNCIONES PARA ÁRBOL DE CANCIONES
-//inicArbol ()
-//crearNodoArbol ()
-//insertarNodoArbol (ordenado por idCancion)
-//mostrarArbol (son tres funciones, recorriendo inOrder, postOrder, preOrder) // modularizar
-//borrarUnNodoArbol (buscarlo por idCancion)
-//buscarCancion (por idCancion)
-//
-//cargarArbolDesdeArchivo(): Al inicio del sistema, deberán cargar todas las canciones del archivo,
-//sobre un árbol binario ordenado por idCancion, de forma tal que las búsquedas se realicen de forma
-//más eficiente.
-//
-//Tenga en cuenta que, seguramente, su archivo de canciones está ordenado de forma creciente por
-//idCancion y que si realiza un recorrido secuencial del archivo, la inserción en el árbol no se realizará
-//de una forma óptima. Desarrolle una función (o varias) que logren realizar la inserción en el árbol,
-//logrando que este quede lo más balanceado posible.
-
-///FUNCIONES ESTRUCTURA DE ARREGLO DE USUARIOS
-//Deberán codificar todas las funciones necesarias para administrar el TDA Arreglo de Listas, a saber
-//(como mínimo):
-//agregarUsuario() // crea un nuevo usuario en el arreglo
-//buscarUsuario() // busca un usuario por idUsuario y retorna la posición que ocupa en el arreglo
-//mostrarUsuarios() // muestra todo el arreglo de listas, cada usuario con sus canciones escuchadas
-//agregarCancionToUsuario() // agrega una Cancion al Usuario correspondiente
-//limpiarArregloDeListas() // esta función “vacía” todo el arreglo de listas, dejando la estructura preparada
-//para volver a trabajar
-//persistirCancionesEscuchadas() // esta función realizará la persistencia de todas las canciones
-//escuchadas en el archivo correspondiente
-
-///FUNCIONES CANCIONES ESCUCHADAS POR CADA USUARIO
-//Esta estructura da forma al archivo de canciones escuchadas por cada usuario, en cada registro se
-//almacena el id del usuario, el id de la canción y un id autoincremental para contabilizar los registros.
-//A partir de esta información, se carga el arreglo de listas, buscando los datos del usuario en el archivo
-//y los datos de la canción en el árbol de canciones. Para hacer esto, deberá desarrollar una serie de
-//funciones que sean invocadas por la función pasarDeArchivoPlaylistToADL().
-//Asimismo, deberá desarrollar las funciones necesarias para hacer el trabajo inverso. A partir del arreglo
-//de listas que se va cargando y actualizando en memoria, realizar la persistencia de los datos en el
-//archivo de canciones escuchadas recorriendo el ADL y tomando los datos allí almacenados.
-//actualizarCancionesEscuchadas().
-//Codificar las funciones necesarias para persistir esta estructura en un archivo binario y las que
-//necesite para la interacción con el sistema.
-
-///MENU PRINCIPAL
-//Menú principal
-//1. Ingreso con User y Pass para administradores
-//2. Ingreso con User y Pass
-//3. Registrarse
+nodeTreeSong *startTree();
+nodeTreeSong *createNodeTree(stSong song);
+nodeTreeSong *insertNodeTree(nodeTreeSong *tree, stSong song);
+void showNode(nodeTreeSong *song);
+void inorder(nodeTreeSong *tree);
+void preorder(nodeTreeSong *tree);
+void postorder(nodeTreeSong *tree);
+nodeTreeSong *searchNodeByNodeID(nodeTreeSong *tree, int idSong);
+nodeTreeSong *deleteNode(nodeTreeSong *tree, int idSong);
+void toFile(char nombrearchivo[], stSong song[]);
+int countRegist(char nombrearchivo[]);
+nodeTreeSong *insertFromArray(stSong arre[], nodeTreeSong *tree, int valid, int mid);
+nodeTreeSong *fileToTree(char nombrearchivo[], nodeTreeSong *tree);
 
 int main()
 {
     printf("Hello world!\n");
     return 0;
+}
+
+nodeTreeSong *startTree()
+{
+    return NULL;
+}
+
+nodeTreeSong *createNodeTree(stSong song)
+{
+    nodeTreeSong *aux = (nodeTreeSong *)malloc(sizeof(nodeTreeSong));
+    aux->value = song;
+    aux->left = NULL;
+    aux->right = NULL;
+    return aux;
+}
+
+nodeTreeSong *insertNodeTree(nodeTreeSong *tree, stSong song)
+{
+    if (tree == NULL)
+    {
+        tree = crearNodoArbol(song);
+    }
+    else
+    {
+        if (song.idSong > tree->value.idSong)
+        {
+            tree->right = insertNodeTree(tree->right, song);
+        }
+        else
+        {
+            tree->left = insertNodeTree(tree->left, song);
+        }
+    }
+    return tree;
+}
+
+void showNode(nodeTreeSong *song)
+{
+    printf("idSong:..... %d \n", song->value.idSong);
+    printf("title:...... %s \n", song->value.title);
+    printf("artist:..... %s \n", song->value.artist);
+    printf("duration:... %d \n", song->value.duration);
+    printf("album:...... %s \n", song->value.album);
+    printf("year:....... %d \n", song->value.year);
+    printf("genres:..... %s \n", song->value.genres);
+    printf("comment:.... %s \n", song->value.comment);
+    printf("deleted:.... %c \n", song->value.deleted);
+}
+
+void inorder(nodeTreeSong *tree)
+{
+    if (tree != NULL)
+    {
+        inorder(tree->left);
+        showNode(tree);
+        inorder(tree->right);
+    }
+}
+
+void preorder(nodeTreeSong *tree)
+{
+    if (tree != NULL)
+    {
+        showNode(tree);
+        preorder(tree->left);
+        preorder(tree->right);
+    }
+}
+
+void postorder(nodeTreeSong *tree)
+{
+    if (tree != NULL)
+    {
+        postorder(tree->left);
+        postorder(tree->right);
+        showNode(tree);
+    }
+}
+
+nodeTreeSong *searchNodeByNodeID(nodeTreeSong *tree, int idSong)
+{
+    nodeTreeSong *res = NULL;
+    if (tree != NULL)
+    {
+        if (idSong == tree->value.idSong)
+            res = tree;
+        else if (idSong > tree->value.idSong)
+            res = searchNodeByNodeID(tree->right, idSong);
+        else
+            res = searchNodeByNodeID(tree->left, idSong);
+    }
+    return res;
+}
+
+nodeTreeSong *deleteNode(nodeTreeSong *tree, int idSong)
+{
+    if (tree != NULL)
+    {
+        nodeTreeSong *resId = searchNodeByNodeID(tree, idSong);
+
+        if (idSong == resId)
+        {
+            free(tree);
+            tree = NULL;
+        }
+    }
+    return tree;
+}
+
+void toFile(char nombrearchivo[], stSong song[])
+{
+    FILE *archi;
+    archi = fopen(nombrearchivo, "rb");
+    stSong s;
+    int i = 0;
+    if (archi != NULL)
+    {
+        while (!feof(archi))
+        {
+            fread(&s, sizeof(stSong), 1, archi);
+            if (!feof(archi))
+            {
+                song[i] = s;
+                i++;
+            }
+        }
+    }
+}
+
+int countRegist(char nombrearchivo[])
+{
+    FILE *archi;
+    archi = fopen(nombrearchivo, "rb");
+    stSong song;
+    int i = 0;
+    if (archi != NULL)
+    {
+        while (!feof(archi))
+        {
+            fread(&song, sizeof(stSong), 1, archi);
+            if (!feof(archi))
+            {
+                i++;
+            }
+        }
+    }
+    return i;
+}
+
+nodeTreeSong *insertFromArray(stSong arre[], nodeTreeSong *tree, int valid, int mid)
+{
+    int i = 0;
+    srand(time(NULL));
+    while (i < valid)
+    {
+        if (tree == NULL)
+        {
+            tree = insertNodeTree(tree, arre[mid]);
+        }
+        else
+        {
+            tree = insertNodeTree(tree, arre[rand() % valid]);
+        }
+        i++;
+    }
+    return tree;
+}
+
+nodeTreeSong *fileToTree(char nombrearchivo[], nodeTreeSong *tree)
+{
+    int var = countRegist(nombrearchivo);
+    stSong array[var];
+    toFile(nombrearchivo, array);
+    int mid = mitad(var);
+    tree = insertFromArray(array, tree, var, mid);
 }
