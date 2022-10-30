@@ -43,8 +43,6 @@ typedef struct
     struct node2User *prev;
 } node2User;
 
-
-
 typedef struct
 {
     int idPlaylist;
