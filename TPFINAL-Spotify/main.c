@@ -102,6 +102,9 @@ int main()
     printf("\t2. Ingreso con User y Pass para usuarios\n");
     printf("\t3. Registrarse\n");
 
+    altaDeCancion("canciones.bin");
+    listarTodasLasCanciones("canciones.bin");
+
     return 0;
 }
 
@@ -132,61 +135,35 @@ void altaDeCancion(char archivo[])
     {
         cancion.idSong = idClienteNuevo(archivo);
 
-        do
-        {
-            printf("Ingrese titulo: ");
-            fflush(stdin);
-            scanf("%s", &cancion.title);
-        }
-        while (strlen(cancion.title) > 30);
-        do
-        {
-            printf("Ingrese artista: ");
-            fflush(stdin);
-            scanf("%s", &cancion.artist);
-        }
-        while (strlen(cancion.artist) > 30);
-        do
-        {
-            printf("Ingrese duracion: ");
-            fflush(stdin);
-            scanf("%.2f", &cancion.duration);
-        }
-        while (cancion.duration <= 0);
+        printf("Ingrese titulo: ");
+        fflush(stdin);
+        gets(cancion.title);
 
-        do
-        {
-            printf("Ingrese album: ");
-            fflush(stdin);
-            scanf("%s", &cancion.album);
-        }
-        while (strlen(cancion.album) > 30);
+        printf("Ingrese artista: ");
+        fflush(stdin);
+        gets(cancion.artist);
 
-        do
-        {
-            printf("Ingrese anio: ");
-            fflush(stdin);
-            scanf("%i", &cancion.year);
-        }
-        while (cancion.year != 0);
+        printf("Ingrese duracion: ");
+        fflush(stdin);
+        scanf("%i", &cancion.duration);
 
-        do
-        {
-            printf("Ingrese genero: ");
-            fflush(stdin);
-            scanf("%s", &cancion.gender);
-        }
-        while (strlen(cancion.gender) > 30);
+        printf("Ingrese album: ");
+        fflush(stdin);
+        gets(cancion.album);
 
-        do
-        {
-            printf("Ingrese comentario: ");
-            fflush(stdin);
-            scanf("%s", &cancion.comment);
-        }
-        while (strlen(cancion.comment) <= 100);
+        printf("Ingrese anio: ");
+        fflush(stdin);
+        scanf("%i", &cancion.year);
 
-        cancion.deleted = 1;
+        printf("Ingrese genero: ");
+        fflush(stdin);
+        gets(cancion.gender);
+
+        printf("Ingrese comentario: ");
+        fflush(stdin);
+        gets(cancion.comment);
+
+        cancion.deleted = 0;
 
         fwrite(&cancion, sizeof(stSong), 1, archivito);
         fclose(archivito);
@@ -206,7 +183,7 @@ void bajaDeCancion(char archivo[])
     char ok = 's';
     char idBaja;
 
-    printf("Ingrese el id de la cancion que quiere dar de baja\n");
+    printf("Ingrese el ID de la cancion que quiere dar de baja\n");
     fflush(stdin);
     scanf("%d", idBaja);
 
@@ -239,7 +216,7 @@ void modificarCancion(char archivo[])
     int id;
     int eleccion;
 
-    printf("Ingrese id de la cancion:\n");
+    printf("Ingrese ID de la cancion:\n");
     scanf("%d", &id);
     system("cls");
 
@@ -255,6 +232,56 @@ void modificarCancion(char archivo[])
     printf("Ingrese eleccion:\n");
     scanf("%d", &eleccion);
     system("cls");
+}
+
+int consultarSiExisteCancion(char archivo[], char tituloCancion[])
+{
+    FILE *archivito;
+    stSong cancion;
+    archivito = fopen(archivo, "rb");
+    int resultado = 1;
+
+    if (archivito != NULL)
+    {
+        while (fread(&cancion, sizeof(stSong), 1, archivito) > 0)
+        {
+            resultado = strcmp(cancion.title, tituloCancion);
+
+            if (resultado == 0)
+            {
+                printf("Ya existe cancion\n");
+            }
+        }
+    }
+    return resultado;
+}
+
+void listarTodasLasCanciones(char archivo[])
+{
+    FILE *archivito;
+    stSong song;
+    archivito = fopen(archivo, "rb");
+    int i = 0;
+
+    if (archivito != NULL)
+    {
+        while (fread(&song, sizeof(stSong), 1, archivito) > 0)
+        {
+            printf("\n Registro numero %d", i++);
+            puts("\n-------------------------------------");
+            printf("\n IdCancion:.......... %d", song.idSong);
+            printf("\n Titulo:............. %s", song.title);
+            printf("\n Artista:............ %s", song.artist);
+            printf("\n Duracion:........... %i", song.duration);
+            printf("\n Album:.............. %s", song.album);
+            printf("\n Anio:............... %d", song.year);
+            printf("\n Genero:............. %s", song.gender);
+            printf("\n Comentario:......... %s", song.comment);
+            printf("\n Eliminado 1-Si/0-No: %d", song.deleted);
+            puts("\n-------------------------------------");
+        }
+    }
+    fclose(archivito);
 }
 
 nodeListSong *inicList()
