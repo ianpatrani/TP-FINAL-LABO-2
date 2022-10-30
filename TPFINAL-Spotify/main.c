@@ -15,7 +15,7 @@ typedef struct
     int year;
     char gender[20];
     char comment[100];
-    int deleted; // indica 1 o 0 si la canci�n fue eliminada
+    int deleted; // indica 1 o 0 si la cancion fue eliminada
 } stSong;
 
 typedef struct
@@ -39,9 +39,9 @@ typedef struct
 typedef struct
 {
     stUser user;
-    node2User *next;
-    node2User *prev;
-} node2User; /// LISTA ENLAZADA DE USUARIOS
+    struct node2User *next;
+    struct node2User *prev;
+} node2User;
 
 typedef struct
 {
@@ -50,6 +50,13 @@ typedef struct
     int idSong;
 } stPlaylist;
 
+typedef struct
+{
+    stSong value;
+    struct nodeTreeSong *left;
+    struct nodeTreeSong *right;
+} nodeTreeSong;
+
 /// FUNCIONES PARA LISTA SIMPLE DE CANCIONES
 nodeListSong *inicList();
 nodeListSong *createNodeList(stSong song);
@@ -57,7 +64,7 @@ nodeListSong *addToBegin(nodeListSong *list, nodeListSong *new);
 nodeListSong *searchLastNode(nodeListSong *list);
 nodeListSong *addToEnd(nodeListSong *list, nodeListSong *new);
 nodeListSong *addInOrderBySongName(nodeListSong *list, nodeListSong *newNode);
-void showNode(nodeListSong *song);
+void showNodenodeListSong(nodeListSong *song);
 void showList(nodeListSong *iterator);
 void showBackwardsRevursive(nodeListSong *iterator);
 nodeListSong *deleteNodeByIdSong(nodeListSong *list, int ID);
@@ -69,6 +76,21 @@ void bajaDeCancion(char archivo[]);
 void modificarCancion(char archivo[]);
 int consultarSiExisteCancion(char archivo[], char tituloCancion[]);
 void listarTodasLasCanciones(char archivo[]);
+
+/// FUNCIONES PARA NODOARBOLCANCION
+nodeTreeSong *startTree();
+nodeTreeSong *createNodeTree(stSong song);
+nodeTreeSong *insertNodeTree(nodeTreeSong *tree, stSong song);
+void showNodenodeTreeSong(nodeTreeSong *song);
+void inorder(nodeTreeSong *tree);
+void preorder(nodeTreeSong *tree);
+void postorder(nodeTreeSong *tree);
+nodeTreeSong *searchNodeByNodeID(nodeTreeSong *tree, int idSong);
+nodeTreeSong *deleteNode(nodeTreeSong *tree, int idSong);
+void toFile(char fileName[], stSong song[]);
+int countRegist(char fileName[]);
+nodeTreeSong *insertFromArray(stSong array[], nodeTreeSong *tree, int valid, int middleArray);
+nodeTreeSong *fileToTree(char fileName[], nodeTreeSong *tree);
 
 int main()
 {
@@ -314,7 +336,7 @@ nodeListSong *addInOrderBySongName(nodeListSong *list, nodeListSong *nuevoNodo)
     }
 }
 
-void showNode(nodeListSong *song)
+void showNodenodeListSong(nodeListSong *song)
 {
     printf("idSong:..... %d \n", song->value.idSong);
     printf("title:...... %s \n", song->value.title);
@@ -331,7 +353,7 @@ void showList(nodeListSong *iterator)
 {
     if (iterator != NULL)
     {
-        showNode(iterator);
+        showNodenodeListSong(iterator);
         showList(iterator->next);
     }
 }
@@ -341,7 +363,7 @@ void showBackwardsRevursive(nodeListSong *iterator)
     if (iterator != NULL)
     {
         showList(iterator->next);
-        showNode(iterator);
+        showNodenodeListSong(iterator);
     }
 }
 
@@ -361,4 +383,194 @@ nodeListSong *deleteNodeByIdSong(nodeListSong *list, int ID)
             list->next = deleteNodeByIdSong(list->next, ID);
         }
     }
+}
+
+nodeTreeSong *startTree()
+{
+    return NULL;
+}
+
+nodeTreeSong *createNodeTree(stSong song)
+{
+    nodeTreeSong *aux = (nodeTreeSong *)malloc(sizeof(nodeTreeSong));
+    aux->value = song;
+    aux->left = NULL;
+    aux->right = NULL;
+    return aux;
+}
+
+nodeTreeSong *insertNodeTree(nodeTreeSong *tree, stSong song)
+{
+    if (tree == NULL)
+    {
+        tree = createNodeTree(song);
+    }
+    else
+    {
+        if (song.idSong > tree->value.idSong)
+        {
+            tree->right = insertNodeTree(tree->right, song);
+        }
+        else
+        {
+            tree->left = insertNodeTree(tree->left, song);
+        }
+    }
+    return tree;
+}
+
+void showNodenodeTreeSong(nodeTreeSong *song)
+{
+    printf("idSong:..... %d \n", song->value.idSong);
+    printf("title:...... %s \n", song->value.title);
+    printf("artist:..... %s \n", song->value.artist);
+    printf("duration:... %d \n", song->value.duration);
+    printf("album:...... %s \n", song->value.album);
+    printf("year:....... %d \n", song->value.year);
+    printf("gender:..... %s \n", song->value.gender);
+    printf("comment:.... %s \n", song->value.comment);
+    printf("deleted:.... %c \n", song->value.deleted);
+}
+
+void inorder(nodeTreeSong *tree)
+{
+    if (tree != NULL)
+    {
+        inorder(tree->left);
+        showNodenodeTreeSong(tree);
+        inorder(tree->right);
+    }
+}
+
+void preorder(nodeTreeSong *tree)
+{
+    if (tree != NULL)
+    {
+        showNodenodeTreeSong(tree);
+        preorder(tree->left);
+        preorder(tree->right);
+    }
+}
+
+void postorder(nodeTreeSong *tree)
+{
+    if (tree != NULL)
+    {
+        postorder(tree->left);
+        postorder(tree->right);
+        showNodenodeTreeSong(tree);
+    }
+}
+
+nodeTreeSong *searchNodeByNodeID(nodeTreeSong *tree, int idSong)
+{
+    nodeTreeSong *res = NULL;
+    if (tree != NULL)
+    {
+        if (idSong == tree->value.idSong)
+            res = tree;
+        else if (idSong > tree->value.idSong)
+            res = searchNodeByNodeID(tree->right, idSong);
+        else
+            res = searchNodeByNodeID(tree->left, idSong);
+    }
+    return res;
+}
+
+nodeTreeSong *deleteNode(nodeTreeSong *tree, int idSong)
+{
+    if (tree != NULL)
+    {
+        nodeTreeSong *resId = searchNodeByNodeID(tree, idSong);
+
+        if (idSong == resId)
+        {
+            free(tree);
+            tree = NULL;
+        }
+    }
+    return tree;
+}
+
+void toFile(char fileName[], stSong song[])
+{
+    FILE *file;
+    file = fopen(fileName, "rb");
+    stSong s;
+    int i = 0;
+    if (file != NULL)
+    {
+        while (!feof(file))
+        {
+            fread(&s, sizeof(stSong), 1, file);
+            if (!feof(file))
+            {
+                song[i] = s;
+                i++;
+            }
+        }
+    }
+}
+
+int countRegist(char fileName[])
+{
+    FILE *file;
+    file = fopen(fileName, "rb");
+    stSong song;
+    int i = 0;
+    if (file != NULL)
+    {
+        while (!feof(file))
+        {
+            fread(&song, sizeof(stSong), 1, file);
+            if (!feof(file))
+            {
+                i++;
+            }
+        }
+    }
+    return i;
+}
+
+nodeTreeSong *insertFromArray(stSong array[], nodeTreeSong *tree, int valid, int middleArray)
+{
+    int i = 0;
+    srand(time(NULL));
+    while (i < valid)
+    {
+        if (tree == NULL)
+        {
+            tree = insertNodeTree(tree, array[middleArray]);
+        }
+        else
+        {
+            tree = insertNodeTree(tree, array[rand() % valid]);
+        }
+        i++;
+    }
+    return tree;
+}
+
+int middleArray(int valid)
+{
+    int var;
+    if (valid % 2 == 0)
+    {
+        var = valid / 2;
+    }
+    else
+    {
+        valid++;
+        var = valid / 2;
+    }
+    return var;
+}
+
+nodeTreeSong *fileToTree(char fileName[], nodeTreeSong *tree)
+{
+    int var = countRegist(fileName);
+    stSong array[var];
+    toFile(fileName, array);
+    int mide = middleArray(var);
+    tree = insertFromArray(array, tree, var, mide);
 }
