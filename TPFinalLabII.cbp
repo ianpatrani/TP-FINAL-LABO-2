@@ -42,22 +42,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="songLib.h" />
-		<Unit filename="songLinkedList.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="songLinkedList.h" />
 		<Unit filename="userLib.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="userLib.h" />
-		<Unit filename="userLinkedList.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="userLinkedList.h" />
-		<Unit filename="userPlayLists.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="userPlayLists.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

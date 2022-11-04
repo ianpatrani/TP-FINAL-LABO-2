@@ -1,10 +1,23 @@
-#include "userPlayLists.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <conio.h>
+#include <time.h>
+#include "songLib.h"
+#include "userLib.h"
+
+typedef struct
+{
+    stUser userValue;
+    nodeSongList * songList;
+    struct stCell * next;
+}stCell;
 
 
 stCell * loadListFromFile(stCell * userList);
-stCell * createCellUser();
+stCell * createCellNode();
 stCell * addUserToList(stCell * userList, nodeSongList * songList, stUser toAdd);
-stCell * searchUserById(stCell * userList, int idUser);
+stCell * searchUserCellById(stCell * userList, int idUser);
 stCell * addSongToUser(stCell * userList, int idUser, stSong toAdd);
 stCell * clearSongList (stCell * cellList, int idUser);
 void showUserPlaylists (stCell * userList);
@@ -12,3 +25,13 @@ void showUserPlaylists (stCell * userList);
 
 
 
+stCell * inicList();
+stCell * createNodePlayList(stUser toCreate);
+stCell * addFirstCell(stCell * cellList, stCell * toAdd);
+stCell * searchLastCell(stCell * cellList);
+stCell * addLastCell(stCell * cellList, stCell * toAdd);
+stCell * addCellInOrderByName(stCell * cellList, stCell * toAdd);
+
+stCell * deleteCellById(stCell * cellList, int idSong);
+void showCellNode(stCell * toShow);
+void showCellList(stCell * toShow);

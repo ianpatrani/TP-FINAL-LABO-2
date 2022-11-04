@@ -1,17 +1,17 @@
-#ifndef USUARIOS_H_INCLUDED
-#define USUARIOS_H_INCLUDED
 #define USERSFILEPATH "UsersFile.bin"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "userLinkedList.h"
+#include <conio.h>
+#include <time.h>
 
 
-<<<<<<< HEAD
-//*****************************************************
-//-----------------------------------------------------
-//ESTRUCTURAS DE USUARIOS
-//-----------------------------------------------------
+//-#################################################
+//-                     USER LIB
+//-#################################################
+
+
+
 typedef struct
 {
     int idUser;
@@ -20,41 +20,56 @@ typedef struct
     int matrixPass[2][5]; ///matriz que ingresa el usuario char convertido y almacenado en matriz de 2x2
     int birthYear;
     char gender;
-    char country[20];.1
+    char country[20];
     int songsPlayed[30]; ///IDs de canciones reproducidas por el user
     int totalSongsPlayed; ///valitwo de songsPlayed
     int off; ///flag 0 = activo. 1 = off
     int admin; ///flag 0 = user random. 1 = user admin
 }stUser;
 
-typedef struct
-{
-    stUser value;
-    struct node2User* next;
-    struct node2User * prev;
-}node2User;  ///al momento de pasar el archivo a la colección, vuelca los usuarios en notwo de lista doblemente enlazada
+
 
 typedef struct
 {
     char word[11]; ///struct que permite en una funcion retornar una palabra
 }stWord;
 
+typedef struct
+{
+    stUser value;
+    struct nodeUser * next;
+}nodeUser;
 
-=======
->>>>>>> 844ac3901b9c0b05aae615d91c018ea561c70790
-//-#################################################
-//-                PARTE USUARIOS
-//-#################################################
+
+stUser createOneUser();
 void addUserToFile();
 int nameValidation(char toCheck[]);
 int totalUsers();
 int searchUserByName(char fullName[]);
 int searchUserById(int idUser);
-node2User * loadUsersFromFile(node2User * userList);
-int updateFile(node2Player * userList);
+int saveUserList(nodeUser * userList);
 int deleteUser(int idUser);
-int updateUser(int idUser);
+void updateUser(int idUser);
 stWord showPassword (stUser toShow);
+nodeUser * loadUsersFromFile(nodeUser* userList);
+
+
+
+
+
+
+nodeUser * startUserList();
+nodeUser * createUserNode (stUser toCreate);
+nodeUser * addFirst (nodeUser * userList, nodeUser* toAdd);
+nodeUser * searchLastUser(nodeUser * userList);
+nodeUser * addLast(nodeUser * userList, nodeUser * toAdd);
+nodeUser * insertUser(nodeUser * userList, nodeUser * toInsert);
+nodeUser * deleteNode(nodeUser * userList, int idUser);
+void showUserNode(nodeUser * toShow);
+void showUserList(nodeUser * toShow);
+
+
+
 
 
 ///MATRICES
@@ -68,7 +83,7 @@ void encryptMatrix (int two, int five,int keyPass[two][two], int decryptedMatrix
 ///multiplica la matriz contrasenia por la matriz testigo de cada usuario
 void createKeyPass (int two, int keyPass[two][two]);
 ///con una semilla, crea una matriz testigo random inversible
-void invertMatrix (int two, int five,int keyPass[two][two]);
+void invertMatrix (int two,int keyPass[two][two]);
 ///realiza operacion para invertir matriz
 void decryptMatrix (int two, int five,int keyPass[two][two], int matrixPass [two][five], int decryptedMatrix[two][five]);
 ///con la matriz testigo y la matriz encriptada, calcula la inversa y desencripta la matriz contrasenia de cada usuario
@@ -79,6 +94,3 @@ int checkCompatibility (int two, int five, int matrixPass[two][five], int keyPas
 void copyMatrix (int row, int column , int copyMatrix[row][column], int originalMatrix[row][column]);
 ///copia una matriz en otra, para poder trabajar y guardarlas en auxiliares
 
-
-
-#endif // USUARIOS_H_INCLUDED

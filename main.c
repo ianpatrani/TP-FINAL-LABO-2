@@ -1,17 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <conio.h>
-#include <string.h>
-#include <time.h>
+#include "cellLib.h"
 
-
-
-typedef struct
-{
- int idPlaylist;
- int idUsuario;
- int idCancion;
-} stPlaylist;
 
 
 
@@ -74,9 +62,16 @@ typedef struct
 
 int main()
 {
-    printf("Hello world!\n");
+
+
+    nodeUser * userList = startUserList();
+    nodeTreeSong * songTree;
+    songTree = startTree();
+    loadSongToFile();
+
+    songTree = fileToTree(songTree);
+    inOrder(songTree);
+    showUsers(userList);
+
     return 0;
 }
-
-
-
