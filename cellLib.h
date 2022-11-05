@@ -8,6 +8,17 @@
 
 typedef struct
 {
+    int idPlayList;
+    int idUser;
+    int idSong;
+}stPlaylist;
+
+int totalPlayLists();
+
+
+
+typedef struct
+{
     stUser userValue;
     nodeSongList * songList;
     struct stCell * next;

@@ -1,9 +1,11 @@
-#define USERSPLAYLISTS "UserPlayLists.bin"
+#define PLAYLISTFILEPATH "playList.bin"
 
 #include "cellLib.h"
 
 
-/*
+///CELL LIB///
+///CELL LIB///
+///CELL LIB///
 stCell * loadListFromFile(stCell * userList) ///levanta el archivo de stPlaylist y trae CADA canción al usuario de CADA registro stPlaylist.
 {                                       ///recordar que el struct stPlaylist tiene 1 idSong y 1 idUser para relacionarlas.
     FILE * fileUser;                    ///eso es lo que pide el enunciado.
@@ -38,8 +40,6 @@ stCell * loadListFromFile(stCell * userList) ///levanta el archivo de stPlaylist
     }
     return userList;
 }
-*/
-
 
 stCell * createCellUser()
 {
@@ -264,3 +264,30 @@ void showCellList(stCell * toShow) ///recursiva
         showCellList(toShow->next);
     }
 }
+
+
+///PLAYLIST LIB ///
+///PLAYLIST LIB ///
+///PLAYLIST LIB ///
+///PLAYLIST LIB ///
+
+
+int totalPlayLists()
+{
+    int total = 0;
+    FILE * playListAux;
+    stPlaylist playListAux;
+    fileUser = fopen(PLAYLISTFILEPATH, "r+b");
+
+    if (fileUser) // EN CASO DE DAR OK EN LA LECTURA DEVUELVE LA CANTIDAD EXACTA DE PLAYLISTS EN EL ARCHIVO
+    {
+        while (fread(&playListAux, sizeof(stPlaylist), 1, playListAux) > 0)
+        {
+            total++;
+        }
+        fclose(playListAux);
+    }
+    return total;
+}
+
+

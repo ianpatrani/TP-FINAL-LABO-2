@@ -62,16 +62,6 @@
 
 int main()
 {
-
-
-    nodeUser * userList = startUserList();
-    nodeTreeSong * songTree;
-    songTree = startTree();
-    loadSongToFile();
-
-    songTree = fileToTree(songTree);
-    inOrder(songTree);
-    showUsers(userList);
-
+    printf("aloha\n");
     return 0;
 }
