@@ -57,7 +57,8 @@ stUser createOneUser()
         printf("Una vez mas por favor :) \n");
         fflush(stdin);
         gets(passAux1);
-    } while (strcmpi(passAux, passAux1) != 0);
+    }
+    while (strcmpi(passAux, passAux1) != 0);
 
     while (strlen(passAux) != (10 * sizeof(char)))
     {
@@ -111,7 +112,7 @@ int nameValidation(char toCheck[])
 }
 
 //-----------------------------------------------------
-// FUNCION BAJA DE userAuxS (INACTIVIDAD) REGISTRADOS EN EL fileUser /
+// FUNCION BAJA DE USERS (INACTIVIDAD) REGISTRADOS EN EL fileUser /
 //-----------------------------------------------------
 
 int deleteUser(int idUser) /// Si el userAux fue elimiinado con exito devuelve 1, en caso de error devuelve 0;
@@ -131,51 +132,35 @@ int deleteUser(int idUser) /// Si el userAux fue elimiinado con exito devuelve 1
     return flag;
 }
 
-//-----------------------------------------------------
-// C)FUNCION BAJA DE userAuxS (INACTIVIDAD) REGISTRADOS EN EL fileUser
-//-----------------------------------------------------
 
-/// TODO
-/* void deleteUser(nodeUser * userList, int idUser)
+int searchUserById(int idUser)
 {
-    char respuesta = 'y';
-    system("pause");
-    system("cls");
-    printf("Nombre del userAux %s:\n", userAux[pos].nombreuserAux);
-    printf("Esta seguro que quiere eliminar el userAux ID: %d ? Y/N \n", userAux[pos].IduserAux);
-    fflush(stdin);
-    gets(&respuesta);
-    while ((respuesta != 'y') && (respuesta != 'n'))
+    FILE * userFile = fopen(USERSFILEPATH, "rb");
+    int pos = 0, iterator = 0, flag = 0;
+    stUser userAux;
+    if(userFile)
     {
-        system("cls");
-        printf("Opcion incorrecta!!\n");
-        printf("Por favor reingrese la opcion!\n");
-        printf("Nombre del userAux %s:\n", userAux[pos].nombreuserAux);
-        printf("Esta seguro que quiere eliminar el userAux ID: %d ? Y/N \n", userAux[pos].IduserAux);
-        fflush(stdin);
-        gets(&respuesta);
+        while(!feof(userFile) && flag == 0)
+        {
+            fread(&userAux,sizeof(stUser),1,userFile);
+            if(!feof(userFile))
+            {
+                if(idUser == userAux.idUser)
+                {
+                    pos = iterator;
+                    flag = 1;
+                }
+                else
+                {
+                    iterator++;
+                }
+            }
+        }
     }
-    if (respuesta == 'y')
-    {
-        userAux[pos].eliminado = 1;
-        mostrarunuserAux(userAux, pos);
-        ActualizarfileUser(USERSFILEPATH, userAux, validos);
-        printf("userAux Inactivo!\n");
-    }
-    if (respuesta == 'n')
-    {
-        userAux[pos].eliminado = 0;
-        mostrarunuserAux(userAux, pos);
-        ActualizarfileUser(USERSFILEPATH, userAux, validos);
-        printf("No se dio de baja el userAux!\n");
-    }
-} */
+    fclose(userFile);
+    return pos;
+}
 
-//--------------------------------------------------
-// D)FUNCION QUE BUSCA UN userAux POR ID O POR NOMBRE
-//--------------------------------------------------
-// D.1)FUNCION ADICIONAL PASAR LOS userAuxS GUARDADOS DEL fileUser A UNA ESTRUCTURA
-//----------------------------------------------------------------------------
 
 nodeUser * loadUsersFromFile(nodeUser * userList)
 {
@@ -214,32 +199,24 @@ void showUsers(nodeUser *userList)
 // D.2)FUNCION QUE BUSCA USER POR ID
 //-----------------------------------
 
-int searchUserById(int idUser)
+stUser searchUserFileById(int idUser)
 {
     FILE *fileUser = fopen(USERSFILEPATH, "rb");
-    int pos = 0, iterator = 0, flag = 0;
     stUser userAux;
     if (fileUser)
     {
-        while (!feof(fileUser) && flag == 0)
+        while (!feof(fileUser))
         {
             fread(&userAux, sizeof(stUser), 1, fileUser);
-            if (!feof(fileUser))
+
+            if (idUser == userAux.idUser)
             {
-                if (idUser == userAux.idUser)
-                {
-                    pos = iterator;
-                    flag = 1;
-                }
-                else
-                {
-                    iterator++;
-                }
+                return userAux;
             }
         }
     }
     fclose(fileUser);
-    return pos;
+
 }
 
 int searchUserByName(char fullName[])
@@ -262,7 +239,7 @@ int searchUserByName(char fullName[])
                 iterator++;
             }
         }
-        }
+    }
 
     fclose(fileUser);
     return pos;
@@ -386,7 +363,8 @@ void updateUser(int idUser)
                     break;
                 }
 
-            } while (fieldOption != 6);
+            }
+            while (fieldOption != 6);
 
             fseek(fileUser, posInFile * sizeof(stUser), 0);
             fwrite(&userAux, sizeof(stUser), 1, fileUser);
@@ -435,16 +413,16 @@ nodeUser * createUserNode (stUser user)
 nodeUser * addFirst(nodeUser * userList, nodeUser * toAdd)
 {
 
-   if (!userList)
-   {
-       userList = toAdd;
-   }
-   else
-   {
-       toAdd->next = userList;
-       userList = toAdd;
-   }
-   return userList;
+    if (!userList)
+    {
+        userList = toAdd;
+    }
+    else
+    {
+        toAdd->next = userList;
+        userList = toAdd;
+    }
+    return userList;
 }
 
 
@@ -681,7 +659,8 @@ void createKeyPass(int two, int keyPass[two][two])
         keyPass[0][1] = aux - 1;
         keyPass[1][0] = aux + 1;
         keyPass[1][1] = aux;
-    } while (computeDeterminant(2, 2, keyPass) == 0);
+    }
+    while (computeDeterminant(2, 2, keyPass) == 0);
 }
 
 void invertMatrix(int two, int keyPass[two][two])

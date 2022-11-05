@@ -62,6 +62,7 @@
 
 int main()
 {
-    printf("aloha\n");
+
+
     return 0;
 }

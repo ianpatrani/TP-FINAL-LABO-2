@@ -1,6 +1,23 @@
 #include "songLib.h"
 
+stSong searchSongFileById(int idSong)
+{
+    FILE * fileSong = fopen(SONGSFILEPATH, "rb");
+    stSong songAux;
+    if (fileSong)
+    {
+        while (!feof(fileSong))
+        {
+            fread(&songAux, sizeof(stSong), 1, fileSong);
 
+            if (idSong == songAux.idSong)
+            {
+                return songAux;
+            }
+        }
+    }
+    fclose(fileSong);
+}
 
 int songIdCreator()
 {
@@ -422,8 +439,6 @@ nodeSongList * searchSongById(nodeSongList * songList, int idSong)
     nodeSongList * next;
     nodeSongList * prev;
 
-
-
     if((songList) && (songList->value.idSong == idSong))
     {
         nodeSongList * auxSong = songList;
@@ -447,7 +462,6 @@ nodeSongList * searchSongById(nodeSongList * songList, int idSong)
         }
     }
     return songList;
-
 }
 
 ///////////////FUNCIONES ARBOL DE CANCIONES//////////////////
@@ -522,7 +536,7 @@ void postOrder(nodeTreeSong *tree)
     }
 }
 
-nodeTreeSong *searchNodeByNodeID(nodeTreeSong *tree, int idSong)
+nodeTreeSong * searchNodeByNodeID(nodeTreeSong *tree, int idSong)
 {
     nodeTreeSong *res = NULL;
     if (tree != NULL)
@@ -611,9 +625,11 @@ nodeTreeSong * fileToTree(nodeTreeSong * songTree)
 {
     int var = totalSongs();
     stSong songArray[var];
+
     saveSongsInFile(songArray);
     int mid = midArray(var);
     songTree = insertFromArray(songArray, songTree, var, mid);
+    return songTree;
 }
 
 

@@ -23,7 +23,7 @@ typedef struct
     char country[20];
     int songsPlayed[30]; ///IDs de canciones reproducidas por el user
     int totalSongsPlayed; ///valitwo de songsPlayed
-    int off; ///flag 0 = activo. 1 = off
+    int off; ///flag 1 = activo. 0 = off
     int admin; ///flag 0 = user random. 1 = user admin
 }stUser;
 
@@ -47,14 +47,12 @@ int nameValidation(char toCheck[]);
 int totalUsers();
 int searchUserByName(char fullName[]);
 int searchUserById(int idUser);
+stUser searchUserFileById(int idUser);
 int saveUserList(nodeUser * userList);
 int deleteUser(int idUser);
 void updateUser(int idUser);
 stWord showPassword (stUser toShow);
 nodeUser * loadUsersFromFile(nodeUser* userList);
-
-
-
 
 
 

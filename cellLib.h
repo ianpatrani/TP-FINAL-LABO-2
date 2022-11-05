@@ -6,6 +6,7 @@
 #include "songLib.h"
 #include "userLib.h"
 
+
 typedef struct
 {
     int idPlayList;
@@ -14,7 +15,8 @@ typedef struct
 }stPlaylist;
 
 int totalPlayLists();
-
+stPlaylist createPlaylist (int idUser, int idSong);
+void savePlaylist (stPlaylist toSave);
 
 
 typedef struct

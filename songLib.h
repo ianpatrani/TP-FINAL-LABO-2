@@ -31,6 +31,7 @@ typedef struct
     struct nodeTreeSong *right;
 } nodeTreeSong;
 
+stSong searchSongFileById(int idSong);
 int totalSongs();
 void loadSongToFile();
 void deleteSongFromFile(int idSong);
@@ -55,7 +56,6 @@ nodeSongList * deleteSongList (nodeSongList * toDelete);
 
 
 ///ARBOL DE CANCIONES
-
 
 nodeTreeSong * startTree();
 nodeTreeSong * createNodeTree(stSong toCreate);
