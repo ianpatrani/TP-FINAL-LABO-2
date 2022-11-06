@@ -70,7 +70,7 @@ void showBackwardsRevursive(nodeListSong *iterator);
 nodeListSong *deleteNodeByIdSong(nodeListSong *list, int ID);
 
 /// FUNCIONES stSong
-int idClienteNuevo(char archivo[]);
+int idNewSong(char archivo[]);
 void altaDeCancion(char archivo[]);
 void bajaDeCancion(char archivo[]);
 void modificarCancion(char archivo[]);
@@ -102,13 +102,11 @@ int main()
     printf("\t2. Ingreso con User y Pass para usuarios\n");
     printf("\t3. Registrarse\n");
 
-    altaDeCancion("canciones.bin");
-    listarTodasLasCanciones("canciones.bin");
 
     return 0;
 }
 
-int idClienteNuevo(char archivo[])
+int idNewSong(char archivo[])
 {
     FILE *archivito;
     archivito = fopen(archivo, "rb");
@@ -133,7 +131,7 @@ void altaDeCancion(char archivo[])
 
     if (archivito != NULL)
     {
-        cancion.idSong = idClienteNuevo(archivo);
+        cancion.idSong = idNewSong(archivo);
 
         printf("Ingrese titulo: ");
         fflush(stdin);
@@ -145,7 +143,7 @@ void altaDeCancion(char archivo[])
 
         printf("Ingrese duracion: ");
         fflush(stdin);
-        scanf("%i", &cancion.duration);
+        scanf("%d", &cancion.duration);
 
         printf("Ingrese album: ");
         fflush(stdin);
@@ -163,7 +161,7 @@ void altaDeCancion(char archivo[])
         fflush(stdin);
         gets(cancion.comment);
 
-        cancion.deleted = 0;
+        cancion.deleted= 1;
 
         fwrite(&cancion, sizeof(stSong), 1, archivito);
         fclose(archivito);
@@ -176,34 +174,29 @@ void altaDeCancion(char archivo[])
 
 void bajaDeCancion(char archivo[])
 {
+    FILE *archivito = fopen(archivo, "a+b");
     stSong cancion;
-    FILE *archivito;
-    archivito = fopen(archivo, "r+b");
     int aux = 0;
-    char ok = 's';
-    char idBaja;
+    int idBaja;
 
-    printf("Ingrese el ID de la cancion que quiere dar de baja\n");
-    fflush(stdin);
-    scanf("%d", idBaja);
+    listarTodasLasCanciones("canciones.bin");
 
-    if (archivito != NULL && ok == 's')
+    printf("Ingrese el id de la cancion que quiere dar de baja\n");
+    scanf("%d", &idBaja);
+
+    if (archivito != NULL)
     {
         while (aux == 0 && (fread(&cancion, sizeof(stSong), 1, archivito) > 0))
         {
-
             if (cancion.idSong == idBaja)
             {
+                printf("HOLA");
                 cancion.deleted = 0;
                 fseek(archivito, (-1) * sizeof(stSong), SEEK_CUR);
                 fwrite(&cancion, sizeof(stSong), 1, archivito);
                 aux = 1;
             }
         }
-    }
-    else
-    {
-        printf("ERROR de datos - El archivo no pudo ser abierto");
     }
     fclose(archivito);
 }
@@ -216,22 +209,80 @@ void modificarCancion(char archivo[])
     int id;
     int eleccion;
 
-    printf("Ingrese ID de la cancion:\n");
+    listarTodasLasCanciones("canciones.bin");
+
+    printf("Ingrese id de la cancion:\n");
     scanf("%d", &id);
-    system("cls");
 
-    puts("Opcion 1 - titulo");
-    puts("Opcion 2 - artista");
-    puts("Opcion 3 - duracion");
-    puts("Opcion 4 - album");
-    puts("Opcion 5 - anio");
-    puts("Opcion 6 - genero");
-    puts("Opcion 7 - comentario");
-    puts("Opcion 8 - eliminado");
+    if (archivito != NULL)
+    {
+        while (fread(&cancion, sizeof(stSong), 1, archivito) > 0)
+        {
 
-    printf("Ingrese eleccion:\n");
-    scanf("%d", &eleccion);
-    system("cls");
+            if (cancion.idSong == id)
+            {
+                puts("Opcion 1 - titulo");
+                puts("Opcion 2 - artista");
+                puts("Opcion 3 - duracion");
+                puts("Opcion 4 - album");
+                puts("Opcion 5 - anio");
+                puts("Opcion 6 - genero");
+                puts("Opcion 7 - comentario");
+                puts("Opcion 8 - eliminado");
+
+                printf("Ingrese eleccion:\n");
+                scanf("%d", &eleccion);
+                switch (eleccion)
+                {
+                case 1:
+                    printf("\nIngrese nuevo titulo:");
+                    fflush(stdin);
+                    gets(cancion.title);
+                    break;
+                case 2:
+                    printf("\nIngrese nuevo artista:");
+                    fflush(stdin);
+                    gets(cancion.artist);
+                    break;
+                case 3:
+                    printf("\nIngrese nueva duracion: ");
+                    fflush(stdin);
+                    gets(cancion.duration);
+                    break;
+                case 4:
+                    printf("\nIngrese nuevo album: ");
+                    fflush(stdin);
+                    gets(cancion.album);
+                    break;
+                case 5:
+                    printf("\nIngrese nuevo anio: ");
+                    fflush(stdin);
+                    scanf("%d", &cancion.year);
+                    break;
+                case 6:
+                    printf("\nIngrese nuevo genero: ");
+                    fflush(stdin);
+                    gets(cancion.gender);
+                    break;
+                case 7:
+                    printf("\nIngrese nuevo comentario: ");
+                    fflush(stdin);
+                    gets(cancion.comment);
+                    break;
+                case 8:
+                    printf("\nIngrese eliminado: ");
+                    fflush(stdin);
+                    scanf("%d", &cancion.deleted);
+                    break;
+                }
+
+                fseek(archivito, (-1) * sizeof(stSong), SEEK_CUR);
+                fwrite(&cancion, sizeof(stSong), 1, archivito);
+                fseek(archivito, sizeof(stSong), SEEK_END);
+            }
+        }
+    }
+    fclose(archivito);
 }
 
 int consultarSiExisteCancion(char archivo[], char tituloCancion[])
@@ -245,7 +296,7 @@ int consultarSiExisteCancion(char archivo[], char tituloCancion[])
     {
         while (fread(&cancion, sizeof(stSong), 1, archivito) > 0)
         {
-            resultado = strcmp(cancion.title, tituloCancion);
+            resultado = strcmpi(cancion.title, tituloCancion);
 
             if (resultado == 0)
             {
@@ -259,25 +310,25 @@ int consultarSiExisteCancion(char archivo[], char tituloCancion[])
 void listarTodasLasCanciones(char archivo[])
 {
     FILE *archivito;
-    stSong song;
+    stSong cancion;
     archivito = fopen(archivo, "rb");
     int i = 0;
 
     if (archivito != NULL)
     {
-        while (fread(&song, sizeof(stSong), 1, archivito) > 0)
+        while (fread(&cancion, sizeof(stSong), 1, archivito) > 0)
         {
             printf("\n Registro numero %d", i++);
             puts("\n-------------------------------------");
-            printf("\n IdCancion:.......... %d", song.idSong);
-            printf("\n Titulo:............. %s", song.title);
-            printf("\n Artista:............ %s", song.artist);
-            printf("\n Duracion:........... %i", song.duration);
-            printf("\n Album:.............. %s", song.album);
-            printf("\n Anio:............... %d", song.year);
-            printf("\n Genero:............. %s", song.gender);
-            printf("\n Comentario:......... %s", song.comment);
-            printf("\n Eliminado 1-Si/0-No: %d", song.deleted);
+            printf("\n IdCancion:..........%d", cancion.idSong);
+            printf("\n Titulo:............ %s", cancion.title);
+            printf("\n Artista:........... %s", cancion.artist);
+            printf("\n Duracion:.......... %d", cancion.duration);
+            printf("\n Album:..............%s", cancion.album);
+            printf("\n Anio:.............. %d", cancion.year);
+            printf("\n Genero:............ %s", cancion.gender);
+            printf("\n Comentario:........ %s", cancion.comment);
+            printf("\n Eliminado 1-Si/0-No:%d", cancion.deleted);
             puts("\n-------------------------------------");
         }
     }
@@ -365,15 +416,15 @@ nodeListSong *addInOrderBySongName(nodeListSong *list, nodeListSong *nuevoNodo)
 
 void showNodenodeListSong(nodeListSong *song)
 {
-    printf("idSong:..... %d \n", song->value.idSong);
-    printf("title:...... %s \n", song->value.title);
-    printf("artist:..... %s \n", song->value.artist);
-    printf("duration:... %d \n", song->value.duration);
-    printf("album:...... %s \n", song->value.album);
-    printf("year:....... %d \n", song->value.year);
-    printf("gender:..... %s \n", song->value.gender);
-    printf("comment:.... %s \n", song->value.comment);
-    printf("deleted:.... %c \n", song->value.deleted);
+    printf("\n IdCancion:..........%d", song->value.idSong);
+    printf("\n Titulo:............ %s", song->value.title);
+    printf("\n Artista:........... %s", song->value.artist);
+    printf("\n Duracion:.......... %d", song->value.duration);
+    printf("\n Album:..............%s", song->value.album);
+    printf("\n Anio:.............. %d", song->value.year);
+    printf("\n Genero:............ %s", song->value.gender);
+    printf("\n Comentario:........ %s", song->value.comment);
+    printf("\n Eliminado 1-Si/0-No:%d", song->value.deleted);
 }
 
 void showList(nodeListSong *iterator)
@@ -448,15 +499,15 @@ nodeTreeSong *insertNodeTree(nodeTreeSong *tree, stSong song)
 
 void showNodenodeTreeSong(nodeTreeSong *song)
 {
-    printf("idSong:..... %d \n", song->value.idSong);
-    printf("title:...... %s \n", song->value.title);
-    printf("artist:..... %s \n", song->value.artist);
-    printf("duration:... %d \n", song->value.duration);
-    printf("album:...... %s \n", song->value.album);
-    printf("year:....... %d \n", song->value.year);
-    printf("gender:..... %s \n", song->value.gender);
-    printf("comment:.... %s \n", song->value.comment);
-    printf("deleted:.... %c \n", song->value.deleted);
+    printf("\n IdCancion:..........%d", song->value.idSong);
+    printf("\n Titulo:............ %s", song->value.title);
+    printf("\n Artista:........... %s", song->value.artist);
+    printf("\n Duracion:.......... %d", song->value.duration);
+    printf("\n Album:..............%s", song->value.album);
+    printf("\n Anio:.............. %d", song->value.year);
+    printf("\n Genero:............ %s", song->value.gender);
+    printf("\n Comentario:........ %s", song->value.comment);
+    printf("\n Eliminado 1-Si/0-No:%d", song->value.deleted);
 }
 
 void inorder(nodeTreeSong *tree)
