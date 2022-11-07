@@ -27,8 +27,8 @@ typedef struct
 typedef struct
 {
     stSong value;
-    struct nodeTreeSong *left;
-    struct nodeTreeSong *right;
+    struct nodeTreeSong * left;
+    struct nodeTreeSong * right;
 } nodeTreeSong;
 
 stSong searchSongFileById(int idSong);
@@ -66,7 +66,7 @@ void preOrder(nodeTreeSong * toShow);
 void postOrder(nodeTreeSong * toShow);
 nodeTreeSong * searchNodeByNodeID(nodeTreeSong *tree, int idToSearch);
 nodeTreeSong * deleteTreeNode(nodeTreeSong *tree, int idToDelete);
-void saveSongsInFile(stSong toSave[]);
+void loadArrayFromSongFile(stSong toSave[]);
 nodeTreeSong * insertFromArray(stSong arraySong[], nodeTreeSong * treeSong, int valids, int midArray);
 nodeTreeSong * fileToTree(nodeTreeSong * treeSong);
 

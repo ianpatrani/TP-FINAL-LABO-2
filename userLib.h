@@ -40,13 +40,14 @@ typedef struct
     struct nodeUser * next;
 }nodeUser;
 
-
+void showAnUser (stUser toShow);
 stUser createOneUser();
 void addUserToFile();
 int nameValidation(char toCheck[]);
 int totalUsers();
 int searchUserByName(char fullName[]);
 int searchUserById(int idUser);
+stUser searchUserFileByName (char userName[]);
 stUser searchUserFileById(int idUser);
 int saveUserList(nodeUser * userList);
 int deleteUser(int idUser);

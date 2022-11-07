@@ -23,9 +23,11 @@ stCell * loadListFromFile(stCell * userList) ///levanta el archivo de stPlaylist
     stUser userAux;
     stSong songAux;
     stPlaylist PLAux;
+
     nodeTreeSong * auxSongTree;
     auxSongTree = startTree();
     auxSongTree = fileToTree(auxSongTree);
+
 
     if(filePL)
     {
@@ -35,15 +37,10 @@ stCell * loadListFromFile(stCell * userList) ///levanta el archivo de stPlaylist
             userAux = searchUserFileById(PLAux.idUser);
             if (userAux.off == 1)
             {
-
-
                 userList->userValue = userAux;
-
-
-                songAux = searchSongFileById(PLAux.idSong);
+                songAux = searchNodeByNodeID(auxSongTree, PLAux.idSong);
                 auxSongList = createSongNode(songAux);
                 userList->songList = addSongLast(userList->songList, auxSongList);
-
             }
 
         }
@@ -66,20 +63,6 @@ stCell * createCellUser()
 
     return userCellAux;
 }
-
-
-//stCell * addUserToList(stCell * userList, nodeSongList * songNode, stUser toAdd)
-//{
-//    stCell * userAux;
-//    userAux = createCellNode(toAdd, songNode);
-//    if(userList)
-//    {
-//        userList = addLastCell(userList,userAux);
-//    }
-//    userAux->songList = songNod;
-//    return userAux;
-////}
-
 
 stCell * searchUserCellById(stCell * userList, int idUser)
 {
@@ -329,11 +312,41 @@ void savePlaylist (stPlaylist toSave)
     fclose(playListFile);
 }
 
-
 void playSong (int idUser, int idSong)
+/// Reproduce la cancion, genera el stPlayList correspondiente y se guarda en historial de usuario
 {
+    stUser userAux;
+    stSong songAux;
+    FILE * userFile;
+    FILE * songFile;
+
+    char peli[30];
+
+    if((songFile = fopen(SONGSFILEPATH, "r+b")) != NULL) ///valida que haya archivo
+    {
+        fseek(songFile,(idSong-1) * sizeof(stSong), SEEK_SET); ///se posiciona dondce esta el ID en el archivo
+        fread(&songAux, sizeof(stPelicula), 1, pFile);///lo guarda en el aux de cancion
+        system("cls");
+        gotoxy(30, 20);
+        printf("Usted esta escuchando %s - %s\n", songAux.title, songAux.artist);
+        gotoxy(30, 21);
+        loading();
+
+//        printf("Presione enter cuando finalice la reproduccion\n");
+        getch();
+    }
+
+    if((userFile = fopen(USERSFILEPATH, "r+b")) != NULL)
+    {
+        fseek(userFile,(idUser-1) * sizeof(stUser), SEEK_SET);
+        fread(&userAux, sizeof(stUser), 1, userFile);
+        userAux.songsPlayed[userAux.songsPlayed] = idSong;
+        userAux.totalSongsPlayed ++;
+        fseek(userFile,(idUser-1) * sizeof(stUser), SEEK_SET);
+        fwrite(&userAux, sizeof(stUser), 1, userFile);
+    }
+
     stPlaylist PLAux;
     PLAux = createPlaylist(idUser, idSong);
     savePlaylist(PLAux);
 }
-

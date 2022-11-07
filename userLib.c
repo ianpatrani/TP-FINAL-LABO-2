@@ -18,6 +18,33 @@ void addUserToFile()
     }
 }
 
+
+void showAnUser (stUser toShow)
+{
+    stWord auxPass;
+    printf("__________________________________\n");
+    printf("%s", toShow.fullName);
+    printf("\t\tID:%d\n", toShow.idUser);
+    if (toShow.off == 1)
+    {
+        printf("\t*DADO DE BAJA*\n");
+    }
+    printf("__________________________________\n");
+    auxPass = showPassword(toShow);
+    printf("Password: \t\t"), puts(auxPass.word);
+    printf("Anio de nacimiento:\t%d\n", toShow.birthYear);
+    printf("Pais: \t\t\t%s\n", toShow.country);
+    if(toShow.gender == 'm' || 'M')
+    {
+        printf("Genero: \t\tMASCULINO\n");
+    }
+    else
+    {
+        printf("Genero: \t\tFEMENINO\n");
+    }
+    printf("Total de cacnciones escuchadas: \t%d \n\n", toShow.totalSongsPlayed);
+}
+
 stUser createOneUser()
 {
     stUser userAux;
@@ -211,12 +238,37 @@ stUser searchUserFileById(int idUser)
 
             if (idUser == userAux.idUser)
             {
+                fclose(fileUser);
                 return userAux;
             }
         }
     }
     fclose(fileUser);
+}
 
+stUser searchUserFileByName (char userName[])
+{
+    FILE * fileUser = fopen(USERSFILEPATH, "rb");
+
+    int iterator = 0;
+    stUser userAux;
+    if (fileUser)
+    {
+        while (!feof(fileUser))
+        {
+            fread(&userAux, sizeof(stUser), 1, fileUser);
+            if (strcmpi(userAux.fullName, userName) == 0)
+            {
+                fclose(fileUser);
+                return userAux;
+            }
+            else
+            {
+                iterator++;
+            }
+        }
+    }
+    fclose(fileUser);
 }
 
 int searchUserByName(char fullName[])

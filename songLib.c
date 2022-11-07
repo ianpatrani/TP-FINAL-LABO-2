@@ -21,82 +21,63 @@ stSong searchSongFileById(int idSong)
 
 int songIdCreator()
 {
-    FILE * songFile;
-    songFile = fopen(SONGSFILEPATH, "rb");
+    FILE * fileSong;
+    fileSong = fopen(SONGSFILEPATH, "rb");
     int i = 0;
-    if (songFile != NULL)
+    if (fileSong)
     {
-        fseek(songFile, sizeof(stSong), SEEK_END);
-        i = ftell(songFile) / sizeof(stSong);
+        fseek(fileSong, sizeof(stSong), SEEK_END);
+        i = ftell(fileSong) / sizeof(stSong);
     }
     else
     {
-        printf("ERROR de datos - El SONGSFILEPATH no pudo ser abierto");
+        printf("ERROR de datos - El archivo no pudo ser abierto");
     }
     return i++;
 }
 
 void loadSongToFile()
 {
-    stSong songAux;
-    FILE * songFile;
-    songFile = fopen(SONGSFILEPATH, "ab");
+    stSong auxSong;
+    FILE * fileSong;
+    fileSong = fopen(SONGSFILEPATH, "ab");
 
-    if (songFile)
+    if (fileSong != NULL)
     {
-        songAux.idSong = songIdCreator();
+        auxSong.idSong = songIdCreator();
 
-        do
-        {
-            printf("Ingrese titulo: ");
-            fflush(stdin);
-            scanf("%s", &songAux.title);
-        } while (strlen(songAux.title) > 30);
-        do
-        {
-            printf("Ingrese artista: ");
-            fflush(stdin);
-            scanf("%s", &songAux.artist);
-        } while (strlen(songAux.artist) > 30);
-        do
-        {
-            printf("Ingrese duracion: ");
-            fflush(stdin);
-            scanf("%f", &songAux.duration);
-        } while (songAux.duration <= 0);
+        printf("Ingrese titulo: ");
+        fflush(stdin);
+        gets(auxSong.title);
 
-        do
-        {
-            printf("Ingrese album: ");
-            fflush(stdin);
-            scanf("%s", &songAux.album);
-        } while (strlen(songAux.album) > 30);
+        printf("Ingrese artista: ");
+        fflush(stdin);
+        gets(auxSong.artist);
 
-        do
-        {
-            printf("Ingrese anio: ");
-            fflush(stdin);
-            scanf("%d", &songAux.year);
-        } while (songAux.year == 0);
+        printf("Ingrese duracion: ");
+        fflush(stdin);
+        scanf("%d", &auxSong.duration);
 
-        do
-        {
-            printf("Ingrese genero: ");
-            fflush(stdin);
-            scanf("%s", &songAux.gender);
-        } while (strlen(songAux.gender) > 30);
+        printf("Ingrese album: ");
+        fflush(stdin);
+        gets(auxSong.album);
 
-        do
-        {
-            printf("Ingrese comentario: ");
-            fflush(stdin);
-            scanf("%s", &songAux.comment);
-        } while (strlen(songAux.comment) > -1);
+        printf("Ingrese anio: ");
+        fflush(stdin);
+        scanf("%i", &auxSong.year);
 
-        songAux.off = 1;
+        printf("Ingrese genero: ");
+        fflush(stdin);
+        gets(auxSong.gender);
 
-        fwrite(&songAux, sizeof(stSong), 1, songFile);
-        fclose(songFile);
+        printf("Ingrese comentario: ");
+        fflush(stdin);
+        gets(auxSong.comment);
+
+        auxSong.deleted= 1;
+
+        fwrite(&auxSong, sizeof(stSong), 1, fileSong);
+        fclose(fileSong);
     }
     else
     {
@@ -106,127 +87,112 @@ void loadSongToFile()
 
 void deleteSongFromFile(int idToDelte)
 {
-    stSong songAux;
-    FILE * songFile;
-    songFile = fopen(SONGSFILEPATH, "r+b");
+    FILE * fileSong = fopen(SONGSFILEPATH, "a+b");
+    stSong auxSong;
     int aux = 0;
-    char ok = 's';
+    int idBaja;
 
-    if (songFile != NULL && ok == 's')
+    showSongFile();
+
+    printf("Ingrese el id de la auxSong que quiere dar de baja\n");
+    scanf("%d", &idBaja);
+
+    if (fileSong != NULL)
     {
-        while (aux == 0 && (fread(&songAux, sizeof(stSong), 1, songFile) > 0))
+        while (aux == 0 && (fread(&song, sizeof(stSong), 1, fileSong) > 0))
         {
-
-            if (songAux.idSong == idToDelte)
+            if (song.idSong == idBaja)
             {
-                songAux.off = 0;
-                fseek(songFile, (-1) * sizeof(stSong), SEEK_CUR);
-                fwrite(&songAux, sizeof(stSong), 1, songFile);
+                song.deleted = 0;
+                fseek(fileSong, (-1) * sizeof(stSong), SEEK_CUR);
+                fwrite(&song, sizeof(stSong), 1, fileSong);
                 aux = 1;
             }
         }
     }
-    else
-    {
-        printf("ERROR de datos - El SONGSFILEPATH no pudo ser abierto");
-    }
-    fclose(songFile);
+    fclose(fileSong);
 }
-int totalSongs()
-{
-    int total = 0;
-    FILE * fileSong;
-    stSong songAux;
-    fileSong = fopen(SONGSFILEPATH, "r+b");
 
-    if (fileSong) // EN CASO DE DAR OK EN LA LECTURA DEVUELVE LA CANTIDAD EXACTA DE CANCIONES EN EL songFile
-    {
-        while (fread(&songAux, sizeof(stSong), 1, fileSong) > 0)
-        {
-            total++;
-        }
-        fclose(fileSong);
-    }
-    return total;
-}
+
 void updateSong(int idToUpdate)
 {
-    stSong songAux;
-    FILE * songFile;
-    songFile = fopen(SONGSFILEPATH, "r+b");
+    stSong auxSong;
+    FILE * fileSong;
+    fileSong = fopen(SONGSFILEPATH, "r+b");
+    int id;
     int option;
 
-    puts("Opcion 1 - titulo");
-    puts("Opcion 2 - artista");
-    puts("Opcion 3 - duracion");
-    puts("Opcion 4 - album");
-    puts("Opcion 5 - anio");
-    puts("Opcion 6 - genero");
-    puts("Opcion 7 - comentario");
-    puts("Opcion 8 - eliminado");
+    showSongFile();
 
-    printf("Ingrese eleccion:\n");
-    scanf("%d", &option);
-    system("cls");
-
-    if (songFile != NULL)
+    if (fileSong != NULL)
     {
-        while (fread(&songAux, sizeof(stSong), 1, songFile) > 0)
+        while (fread(&auxSong, sizeof(stSong), 1, fileSong) > 0)
         {
 
-            if (songAux.idSong == idToUpdate)
+            if (auxSong.idSong == idToUpdate)
             {
+                puts("Opcion 1 - titulo");
+                puts("Opcion 2 - artista");
+                puts("Opcion 3 - duracion");
+                puts("Opcion 4 - album");
+                puts("Opcion 5 - anio");
+                puts("Opcion 6 - genero");
+                puts("Opcion 7 - comentario");
+                puts("Opcion 8 - eliminado");
+
+                printf("Ingrese eleccion:\n");
+                scanf("%d", &option);
                 switch (option)
                 {
                 case 1:
                     printf("\nIngrese nuevo titulo:");
                     fflush(stdin);
-                    scanf("%s", &songAux.title);
+                    gets(auxSong.title);
                     break;
                 case 2:
                     printf("\nIngrese nuevo artista:");
                     fflush(stdin);
-                    scanf("%s", &songAux.artist);
+                    gets(auxSong.artist);
                     break;
                 case 3:
                     printf("\nIngrese nueva duracion: ");
                     fflush(stdin);
-                    scanf("%s", &songAux.duration);
+                    gets(auxSong.duration);
                     break;
                 case 4:
                     printf("\nIngrese nuevo album: ");
                     fflush(stdin);
-                    scanf("%s", &songAux.album);
+                    gets(auxSong.album);
                     break;
                 case 5:
                     printf("\nIngrese nuevo anio: ");
                     fflush(stdin);
-                    scanf("%d", &songAux.year);
+                    scanf("%d", &auxSong.year);
                     break;
                 case 6:
                     printf("\nIngrese nuevo genero: ");
                     fflush(stdin);
-                    scanf("%s", &songAux.gender);
+                    gets(auxSong.gender);
                     break;
                 case 7:
                     printf("\nIngrese nuevo comentario: ");
                     fflush(stdin);
-                    scanf("%s", &songAux.comment);
+                    gets(auxSong.comment);
                     break;
                 case 8:
                     printf("\nIngrese eliminado: ");
                     fflush(stdin);
-                    scanf("%d", &songAux.off);
+                    scanf("%d", &auxSong.deleted);
                     break;
                 }
 
-                fseek(songFile, (-1) * sizeof(stSong), SEEK_CUR);
-                fwrite(&songAux, sizeof(stSong), 1, songFile);
-                fseek(songFile, sizeof(stSong), SEEK_END);
+                fseek(fileSong, (-1) * sizeof(stSong), SEEK_CUR);
+                fwrite(&auxSong, sizeof(stSong), 1, fileSong);
+                fseek(fileSong, sizeof(stSong), SEEK_END);
             }
         }
     }
-    fclose(songFile);
+    fclose(fileSong);
 }
 
 int songNameValidation(char nameToSearch[])
@@ -240,10 +206,39 @@ int songNameValidation(char nameToSearch[])
     {
         while (fread(&songAux, sizeof(stSong), 1, songFile) > 0)
         {
-            flag = strcmp(songAux.title, nameToSearch);
+            flag = strcmpi(songAux.title, nameToSearch);
         }
     }
     return flag;
+}
+
+int getId()
+{
+    int idSong = 0;
+    FILE * songFile;
+    stSong songAux;
+    songFile = fopen(SONGSFILEPATH, "rb");
+    int auxId = -1;
+
+    system("cls");
+    printf("Ingrese el ID de la pelicula: \n");
+    scanf("%d", &idSong);
+
+    if (songFile)
+    {
+        while (fread(&songAux, sizeof(stSong), 1, songFile) > 0)
+        {
+            if (songAux.idSong == idSong)
+            {
+                auxId = songAux.idSong;
+            }
+        }
+        if (auxId == -1)
+        {
+            printf("El id de la cancion ingresada no es correcto\n");
+        }
+    }
+    return auxId;
 }
 
 void showSongFile()
@@ -263,27 +258,29 @@ void showSongFile()
 
 void showSong (stSong toShow)
 {
-            puts("\n-------------------------------------");
-            printf("\n IdsongAux: %d", toShow.idSong);
-            printf("\n Titulo: %s", toShow.title);
-            printf("\n Artista: %s", toShow.artist);
-            printf("\n Duracion: %.2f", toShow.duration);
-            printf("\n Album: %s", toShow.album);
-            printf("\n Anio: %d", toShow.year);
-            printf("\n Genero: %s", toShow.gender);
-            printf("\n Comentario: %s", toShow.comment);
-            printf("\n Eliminado 1-Si/0-No: %d", toShow.off);
-            puts("\n-------------------------------------");
+    puts("\n-------------------------------------");
+    printf("\n IdCancion:..........%d", toShow.idSong);
+    printf("\n Titulo:............ %s", toShow.title);
+    printf("\n Artista:........... %s", toShow.artist);
+    printf("\n Duracion:.......... %d", toShow.duration);
+    printf("\n Album:..............%s", toShow.album);
+    printf("\n Anio:.............. %d", toShow.year);
+    printf("\n Genero:............ %s", toShow.gender);
+    printf("\n Comentario:........ %s", toShow.comment);
+    printf("\n Eliminado 1-Si/0-No:%d", toShow.deleted);
+    puts("\n-------------------------------------");
 }
- ///FUNCIONES LISTA DE CANCIONES
- ///FUNCIONES LISTA DE CANCIONES
-  ///FUNCIONES LISTA DE CANCIONES
-   ///FUNCIONES LISTA DE CANCIONES
-    ///FUNCIONES LISTA DE CANCIONES
+
+
+///FUNCIONES LISTA DE CANCIONES
+///FUNCIONES LISTA DE CANCIONES
+///FUNCIONES LISTA DE CANCIONES
+///FUNCIONES LISTA DE CANCIONES
+///FUNCIONES LISTA DE CANCIONES
 
 
 
- nodeSongList * startSongList()
+nodeSongList * startSongList()
 {
     return NULL;
 }
@@ -464,10 +461,10 @@ nodeSongList * searchSongById(nodeSongList * songList, int idSong)
     return songList;
 }
 
-///////////////FUNCIONES ARBOL DE CANCIONES//////////////////
-///////////////FUNCIONES ARBOL DE CANCIONES//////////////////
+///////////////FUNCIONES ARBOL DE auxSongES//////////////////
+///////////////FUNCIONES ARBOL DE auxSongES//////////////////
 
-///////////////FUNCIONES ARBOL DE CANCIONES//////////////////
+///////////////FUNCIONES ARBOL DE auxSongES//////////////////
 
 
 
@@ -566,7 +563,7 @@ nodeTreeSong * deleteTreeNode(nodeTreeSong *tree, int idSong)
     return tree;
 }
 
-void saveSongsInFile(stSong toSave[])
+void loadArrayFromSongFile(stSong toSave[])
 {
     FILE * songFile;
     songFile = fopen(SONGSFILEPATH, "rb");
@@ -626,7 +623,7 @@ nodeTreeSong * fileToTree(nodeTreeSong * songTree)
     int var = totalSongs();
     stSong songArray[var];
 
-    saveSongsInFile(songArray);
+    loadArrayFromSongFile(songArray);
     int mid = midArray(var);
     songTree = insertFromArray(songArray, songTree, var, mid);
     return songTree;
