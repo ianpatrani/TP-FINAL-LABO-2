@@ -1,34 +1,52 @@
 #include "cellLib.h"
 
-void userProfile (int idUser);
-///perdil de usuario [ruta-ID]
-int validUser (char nameUser[]);
-///busca usuario en archivo y retorna su id si exite o "0"[Ruta-Name]
-int login ();
-///menu login[ruta]
+int login();
+///menu login
+
 int start ();
-///menu inicio [ruta]
-void playMovie(int idUser, int idSong);
-///Suma 1 en vistos de la pelicula y reprod y se guarda en historial de usuario
+///menu inicio
+
+void userProfile (int idUser);
+///muestra perfil del usuario en la sesion actual
+
+int validUser (char nameUser[]);
+///busca usuario en archivo y retorna su id si exite o "0"
+
+int validAdmin (int idUser);
+///return true si es admin
+
+void playSong(int idUser, int idSong);
+/// Reproduce la cancion; se guarda en el historial de usuario; crea un struct stPlaylist y lo persiste
+
 void userMenu(int idUser);
 ///interfaz de menu de usuario no administrador
+
 void optionMenuUser (int option);
 ///opciones de printf de usuario no administrador
+
 void optionMenuAdmin (int option);
 ///opciones de mostrado de la interfaz de menu de usuario administrador
+
 void adminMenu(int idUser);
-///interfaz de menu de usuario administrador administrador
+///interfaz menu admin
+
 void userCrud();
-///alta baja y modificacion de usuarios(para administrador)
+///C(create)R(read)U(update)D(delete) de users
+
 void songCrud ();
-///alta baja y modificacion de peliculas(para administrador)
+///C(create)R(read)U(update)D(delete) de canciones
+
 void userCrudMenu (int iOption);
-///interfaz de menu de ABM de usuarios de administrador
+///interfaz del crud de usuarios
+
 void songCrudMenu(int iOption);
-///interfaz de menu de ABM de peliculas de administrador
-int validAdmin (int idUser);
-///validacion de tipo de usuario (admin o no)
-void passW(char []);
-///Le ingresa al string traido por local una password en **
-///Exacamente 10 caracteres
+///interfaz del crud de canciones
+
+
+
+void hidePswd(char toShow[]);
+///funcion extra que oculta los caracteres que ingresa el user en tiempo real.
+
 void playing();
+///funcion extra que simula una reproducción por pantalla
+

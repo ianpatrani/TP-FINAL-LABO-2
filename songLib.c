@@ -212,7 +212,7 @@ int songNameValidation(char nameToSearch[])
     return flag;
 }
 
-int getIdSong (char nameToSearch[])
+int searchSongFileByName (char nameToSearch[])
 {
     FILE * songFile;
     stSong songAux;
@@ -289,7 +289,37 @@ void showSong (stSong toShow)
     printf("\n Eliminado 1-Si/0-No:%d", toShow.off);
     puts("\n-------------------------------------");
 }
-
+int getSongId (char cMovies[])
+{
+    getIdSong()
+    char cControl = 's';
+    int totalIdM = 0;
+    int iIdM;
+    do
+    {
+        system("cls");
+        gotoxy(30, 20);
+        printf("Ingrese el ID de la pelicula: \n");
+        gotoxy(30, 21);
+        scanf("%d", &iIdM);
+        system("cls");
+        totalIdM = calculateAmount(cMovies);
+        gotoxy(30, 20);
+        printf("El ID ingresado es: %d, es correcto?", iIdM);
+        fflush(stdin);
+        gotoxy(30, 21);
+        scanf("%c", &cControl);
+        if (iIdM<0 || iIdM>totalIdM)
+        {
+            system("cls");
+            gotoxy(30, 20);
+            printf("El ID ingresado no existe\n");
+            cControl = 'n';
+        }
+    }
+    while (cControl != 's');
+    return iIdM;
+}
 
 ///FUNCIONES LISTA DE CANCIONES
 ///FUNCIONES LISTA DE CANCIONES

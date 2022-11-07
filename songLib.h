@@ -39,6 +39,7 @@ void updateSong(int idToUpdate);
 int songNameValidation();
 void showSongFile();
 int songIdValidation();
+int searchSongFileByName (char nameToSearch[]);
 
 ///LISTA DE CANCIONES
 

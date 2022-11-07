@@ -55,7 +55,7 @@ void upUser(int idUser);
 void updateUser(int idUser);
 stWord showPassword (stUser toShow);
 nodeUser * loadUsersFromFile(nodeUser* userList);
-int getUserIdToUpdate ();
+int getUserIdToUpdate();
 
 
 

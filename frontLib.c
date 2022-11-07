@@ -84,7 +84,7 @@ int login ()
 
     printf("Ingrese su contrasenia:\n");
 
-    passW(auxPass);
+    hidePswd(auxPass);
     getch();
     while(i < 3 && idUser == 0)
     {
@@ -400,43 +400,39 @@ void userCrud ()
         }
     }
 }
-/*
+
 void songCrud()
 {
     int iOption = 0;
-    int idUserM = 0;
+    int idSong = 0;
     char cControl = 's';
-    int totalIdM=0;
+    int songTotal = totalSongs();
 
 
     while(cControl == 's')
     {
         system("cls");
-        menuAbmMovie(&iOption);
+        songCrudMenu(&iOption);
         switch(iOption)
         {
         case 1:
             system("cls");
-            showMovies(cMovies);
+            showSongFile();
             puts("press enter..\n");
             getch();
             break;
         case 2:
             system("cls");
-            idUserM = validIdM(cMovies);
+            idSong = getSongId();
             system("cls");
             updateFile(cMovies, idUserM);
-            gotoxy(30, 25);
             puts("press enter..\n");
-            gotoxy(30, 26);
             getch();
             break;
         case 3:
             system("cls");
             loadFileMovie(cMovies);
-            gotoxy(30, 25);
             puts("press enter..\n");
-            gotoxy(30, 26);
             getch();
             break;
         case 4:
@@ -444,9 +440,7 @@ void songCrud()
             idUserM = validIdM(cMovies);
             kickMovie(cMovies, idUserM);
             ///baja de pelicula
-            gotoxy(30, 25);
             puts("press enter..\n");
-            gotoxy(30, 26);
             getch();
             break;
         case 5:
@@ -454,9 +448,7 @@ void songCrud()
             idUserM = validIdM(cMovies);
             upMovie(cMovies, idUserM);
             /// reestablece pelicula
-            gotoxy(30, 25);
             puts("press enter..\n");
-            gotoxy(30, 26);
             getch();
             break;
         case 6:
@@ -466,7 +458,7 @@ void songCrud()
         }
     }
 }
-*/
+
 void userCrudMenu (int iOption)
 {
     gotoxy(30, 20);
@@ -519,7 +511,7 @@ int validAdmin (int idUser)
     return userAux.admin;
 }
 
-void passW(char toShow[])
+void hidePswd (char toShow[])
 {
 ///Le ingresa al string traido por local una password en **
 ///Exacamente 10 caracteres
