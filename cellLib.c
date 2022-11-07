@@ -24,9 +24,10 @@ stCell * loadListFromFile(stCell * userList) ///levanta el archivo de stPlaylist
     stSong songAux;
     stPlaylist PLAux;
 
+    nodeTreeSong * treeSong;
+    treeSong = startTree();
+    treeSong = fileToTree(treeSong);
     nodeTreeSong * auxSongTree;
-    auxSongTree = startTree();
-    auxSongTree = fileToTree(auxSongTree);
 
 
     if(filePL)
@@ -38,7 +39,8 @@ stCell * loadListFromFile(stCell * userList) ///levanta el archivo de stPlaylist
             if (userAux.off == 1)
             {
                 userList->userValue = userAux;
-                songAux = searchNodeByNodeID(auxSongTree, PLAux.idSong);
+                auxSongTree = searchNodeByNodeID(treeSong, PLAux.idSong);
+                songAux = auxSongTree->value;
                 auxSongList = createSongNode(songAux);
                 userList->songList = addSongLast(userList->songList, auxSongList);
             }
@@ -325,7 +327,7 @@ void playSong (int idUser, int idSong)
     if((songFile = fopen(SONGSFILEPATH, "r+b")) != NULL) ///valida que haya archivo
     {
         fseek(songFile,(idSong-1) * sizeof(stSong), SEEK_SET); ///se posiciona dondce esta el ID en el archivo
-        fread(&songAux, sizeof(stPelicula), 1, pFile);///lo guarda en el aux de cancion
+        fread(&songAux, sizeof(stSong), 1, songFile);///lo guarda en el aux de cancion
         system("cls");
         gotoxy(30, 20);
         printf("Usted esta escuchando %s - %s\n", songAux.title, songAux.artist);
@@ -340,7 +342,7 @@ void playSong (int idUser, int idSong)
     {
         fseek(userFile,(idUser-1) * sizeof(stUser), SEEK_SET);
         fread(&userAux, sizeof(stUser), 1, userFile);
-        userAux.songsPlayed[userAux.songsPlayed] = idSong;
+        userAux.songsPlayed[userAux.totalSongsPlayed] = idSong;
         userAux.totalSongsPlayed ++;
         fseek(userFile,(idUser-1) * sizeof(stUser), SEEK_SET);
         fwrite(&userAux, sizeof(stUser), 1, userFile);

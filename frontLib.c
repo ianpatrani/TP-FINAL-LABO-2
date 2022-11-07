@@ -157,12 +157,12 @@ void userProfile (int idUser)
 {
     stUser userAux;
     FILE * userFile = fopen(USERSFILEPATH, "rb");
-    if(pFile)
+    if(userFile)
     {
-        fseek(pFile, (idUser -1)  * (sizeof(stUser)), SEEK_SET);
+        fseek(userFile, (idUser -1)  * (sizeof(stUser)), SEEK_SET);
         fread(&userAux, sizeof(stUser), 1, userFile);
         showAnUser(userAux);///////////////////////////////////////////////agregar mostrar 1
-        if(fclose(pFile))
+        if(fclose(userFile))
         {
             printf("*ERROR*\n");
             printf("El archivo no se pudo cerrar correctamente\n");
@@ -242,12 +242,13 @@ void userMenu (int idUser)
             puts("press enter..\n");
             getch();
             break;
-        case 6:
+        /*case 6:
             system("cls");
             recomend(cUser, cMovies, idUser);
             puts("press enter..\n");
             getch();
             break;
+            */
         case 7:
             system("cls");
             gotoxy(30, 20);
@@ -258,7 +259,7 @@ void userMenu (int idUser)
     }
 }
 
-void optionMenuUser (int option)
+void optionsUserMenu (int option)
 {
     system("cls");
     gotoxy(30, 20);
@@ -278,7 +279,7 @@ void optionMenuUser (int option)
     gotoxy(30, 27);
     scanf("%d", option);
 }
-void optionMenuAdmin (int option)
+void optionsAdminMenu (int option)
 {
     system("cls");
     gotoxy(30, 20);
@@ -286,17 +287,17 @@ void optionMenuAdmin (int option)
     gotoxy(30, 21);
     printf("2* Usuarios\n");
     gotoxy(30, 22);
-    printf("3* Peliculas\n");
+    printf("3* Canciones\n");
     gotoxy(30, 23);
     printf("4* Cerrar sesion\n");
     gotoxy(30, 24);
     scanf("%d", option);
 }
-void menuAdmin (char cMovies[], char cUser[], int idUser)
+void adminMenu (int idUser)
 {
     int option;
-    int idUserM=0;
-    int totalIdM=0;
+    int idSong = 0;
+    int totalMovies = 0;
     char cControl = 's';
     while(cControl == 's')
     {
@@ -306,7 +307,7 @@ void menuAdmin (char cMovies[], char cUser[], int idUser)
         {
         case 1:
             system("cls");
-            userProfile(cUser, idUser);
+            userProfile(idUser);
             gotoxy(30, 25);
             puts("press enter..\n");
             gotoxy(30, 26);
@@ -314,7 +315,7 @@ void menuAdmin (char cMovies[], char cUser[], int idUser)
             break;
         case 2:
             system("cls");
-            abmUser(cUser);
+            userCrud();
             puts("press enter..\n");
             getch();
             break;
@@ -335,32 +336,35 @@ void menuAdmin (char cMovies[], char cUser[], int idUser)
         }
     }
 }
-void abmUser (char cUser[])
+void userCrud ()
 {
     int iOption = 0;
     int idUser = 0;
-    int totalId=0;
+    int iAux = 0;
+
     char cControl = 's';
+    nodeUser * userList = startUserList();
+    nodeUser * auxUser;
+    userList = loadUsersFromFile(userList);
 
     while(cControl == 's')
     {
         system("cls");
-        menuAbmUser(&iOption);
+        userCrudMenu(&iOption);
         switch(iOption)
         {
         case 1:
             system("cls");
-            showUsers(cUser);
+            showUsers(userList);
             puts("press enter..\n");
             getch();
             break;
         case 2:
             system("cls");
-            idUser = validIdU(cUser);
+            idUser = getUserIdToUpdate(cUser);
             system("cls");
-            userProfile(cUser, idUser);
-            updateFileUser(cUser, idUser);
-            ///modifica un usuario
+            userProfile(idUser);
+            updateUser(idUser);
             system("cls");
             userProfile(cUser, idUser);
             gotoxy(30, 25);
@@ -370,7 +374,7 @@ void abmUser (char cUser[])
             break;
         case 3:
             system("cls");
-            loadUser(cUser);
+            addUserToFile();
             gotoxy(30, 25);
             puts("press enter..\n");
             gotoxy(30, 26);
@@ -378,8 +382,13 @@ void abmUser (char cUser[])
             break;
         case 4:
             system("cls");
-            validIdU(cUser);
-            kickUser(cUser, idUser);
+            idUser = getUserIdToUpdate();
+            iAux = deleteUser(idUser);
+            if(iAux == 0)
+            {
+                gotoxy(30, 25);
+                puts("User no pudo darse de baja\n");
+            }
             gotoxy(30, 25);
             puts("press enter..\n");
             gotoxy(30, 26);
@@ -387,8 +396,8 @@ void abmUser (char cUser[])
             break;
         case 5:
             system("cls");
-            validIdU(cUser);
-            upUser(cUser, idUser);
+            idUser = getUserIdToUpdate();
+            upUser(idUser);
             gotoxy(30, 25);
             puts("press enter..\n");
             gotoxy(30, 26);
@@ -401,7 +410,7 @@ void abmUser (char cUser[])
         }
     }
 }
-void abmMovie (char cMovies[])
+void songCrud()
 {
     int iOption = 0;
     int idUserM = 0;
@@ -465,7 +474,7 @@ void abmMovie (char cMovies[])
         }
     }
 }
-void menuAbmUser (int iOption)
+void userCrudMenu (int iOption)
 {
     gotoxy(30, 20);
     printf("1* Listado de Usuarios\n");
@@ -482,7 +491,7 @@ void menuAbmUser (int iOption)
     gotoxy(30, 26);
     scanf("%d", iOption);
 }
-void menuAbmMovie (int iOption)
+void songCrudMenu (int iOption)
 {
     gotoxy(30, 20);
     printf("1* Listado de Peliculas\n");

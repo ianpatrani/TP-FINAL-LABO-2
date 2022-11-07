@@ -158,7 +158,30 @@ int deleteUser(int idUser) /// Si el userAux fue elimiinado con exito devuelve 1
     fclose(userFIle);
     return flag;
 }
-
+}
+void upUser(int idUser)
+///Busca por 'ID' el usuario y le marca un '0'(habilitado)
+{
+    FILE * fileUser;
+    stUser userAux;
+    if((fileUser = fopen(USERSFILEPATH, "r+b")))
+    {
+        fseek(fileUser, (idUser - 1) * (sizeof(stUser)), SEEK_SET);
+        fread(&userAux, sizeof(stUser), 1, fileUser);
+        if(userAux.off == 1)
+        {
+            userAux.off = 0;
+            fseek(fileUser, (idUser - 1) * (sizeof(stUser)), SEEK_SET);
+            fwrite(&stUser, sizeof(stUser), 1, fileUser);
+        }
+        else
+        {
+            system("cls");
+            gotoxy(30, 20);
+            printf("El usuario ya se encuentra dado de alta\n");
+        }
+    }
+}
 
 int searchUserById(int idUser)
 {
@@ -221,7 +244,38 @@ void showUsers(nodeUser *userList)
     userList = loadUsersFromFile(userList);
     showUserList(userList);
 }
-
+int getUserIdToUpdate ()
+{
+    int idUser;
+    char cControl = 's';
+    int totalUsers = totalUsers();
+    do
+    {
+        system("cls");
+        gotoxy(30, 20);
+        printf("Ingrese el ID del usuario que desea modificar \n");
+        gotoxy(30, 21);
+        scanf("%d", &idUser);
+        system("cls");
+        gotoxy(30, 20);
+        printf("El ID ingresado es: %d? S/N \n", idUser);
+        fflush(stdin);
+        gotoxy(30, 21);
+        scanf("%c", &cControl);
+        if (idUser < 0 || idUser > totalUsers)
+        {
+            system("cls");
+            gotoxy(30, 20);
+            printf("El ID ingresado no existe\n");
+            cControl = 'n';
+            gotoxy(30, 21);
+            printf("press enter...");
+            getch();
+        }
+    }
+    while (cControl != 's');
+    return idUser;
+}
 //-----------------------------------
 // D.2)FUNCION QUE BUSCA USER POR ID
 //-----------------------------------

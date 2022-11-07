@@ -51,9 +51,11 @@ stUser searchUserFileByName (char userName[]);
 stUser searchUserFileById(int idUser);
 int saveUserList(nodeUser * userList);
 int deleteUser(int idUser);
+void upUser(int idUser);
 void updateUser(int idUser);
 stWord showPassword (stUser toShow);
 nodeUser * loadUsersFromFile(nodeUser* userList);
+int getUserIdToUpdate ();
 
 
 
