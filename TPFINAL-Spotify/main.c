@@ -3,7 +3,7 @@
 #include <conio.h>
 #include <string.h>
 #include <time.h>
-#include <windows.h> ///me deja utilizar la funcion sleep
+#include <windows.h> ///SLEEP()
 
 typedef struct
 {
@@ -68,6 +68,7 @@ void showNodenodeListSong(nodeListSong *song);
 void showList(nodeListSong *iterator);
 void showBackwardsRevursive(nodeListSong *iterator);
 nodeListSong *deleteNodeByIdSong(nodeListSong *list, int ID);
+nodeListSong *leerArchivoYPasarALista(char archivo[], nodeListSong *lista);
 
 /// FUNCIONES stSong
 int idNewSong(char archivo[]);
@@ -97,10 +98,14 @@ int main()
     char usuario[20];
     char password[20];
 
-    printf("\t MENU PRINCIPAL \n");
-    printf("\t1. Ingreso con User y Pass para administradores\n");
-    printf("\t2. Ingreso con User y Pass para usuarios\n");
-    printf("\t3. Registrarse\n");
+    altaDeCancion("canciones.bin");
+    listarTodasLasCanciones("canciones.bin");
+
+    nodeListSong *listaCanciones = inicList();
+
+    listaCanciones = leerArchivoYPasarALista("canciones.bin", listaCanciones);
+
+    showList(listaCanciones);
 
 
     return 0;
@@ -125,45 +130,45 @@ int idNewSong(char archivo[])
 
 void altaDeCancion(char archivo[])
 {
-    stSong cancion;
+    stSong song;
     FILE *archivito;
     archivito = fopen(archivo, "ab");
 
     if (archivito != NULL)
     {
-        cancion.idSong = idNewSong(archivo);
+        song.idSong = idNewSong(archivo);
 
         printf("Ingrese titulo: ");
         fflush(stdin);
-        gets(cancion.title);
+        gets(song.title);
 
         printf("Ingrese artista: ");
         fflush(stdin);
-        gets(cancion.artist);
+        gets(song.artist);
 
         printf("Ingrese duracion: ");
         fflush(stdin);
-        scanf("%d", &cancion.duration);
+        scanf("%d", &song.duration);
 
         printf("Ingrese album: ");
         fflush(stdin);
-        gets(cancion.album);
+        gets(song.album);
 
         printf("Ingrese anio: ");
         fflush(stdin);
-        scanf("%i", &cancion.year);
+        scanf("%i", &song.year);
 
         printf("Ingrese genero: ");
         fflush(stdin);
-        gets(cancion.gender);
+        gets(song.gender);
 
         printf("Ingrese comentario: ");
         fflush(stdin);
-        gets(cancion.comment);
+        gets(song.comment);
 
-        cancion.deleted= 1;
+        song.deleted= 1;
 
-        fwrite(&cancion, sizeof(stSong), 1, archivito);
+        fwrite(&song, sizeof(stSong), 1, archivito);
         fclose(archivito);
     }
     else
@@ -461,6 +466,24 @@ nodeListSong *deleteNodeByIdSong(nodeListSong *list, int ID)
             list->next = deleteNodeByIdSong(list->next, ID);
         }
     }
+}
+
+nodeListSong *leerArchivoYPasarALista(char archivo[], nodeListSong *lista)
+{
+    FILE *archi = fopen(archivo, "rb");
+    stSong song;
+    nodeListSong *nuevo;
+
+    if (archi != NULL)
+    {
+        while (fread(&song, sizeof(stSong), 1, archi) > 0)
+        {
+            nuevo = createNodeList(song);
+            lista = addToBegin(lista, nuevo);
+        }
+    }
+    fclose(archi);
+    return lista;
 }
 
 nodeTreeSong *startTree()
