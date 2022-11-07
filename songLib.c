@@ -195,6 +195,30 @@ void updateSong(int idToUpdate)
     fclose(fileSong);
 }
 
+
+void upSong(int idSong)
+///Busca por 'ID' la cancion y le marca un '0'(habilitado)
+{
+    FILE * songFile;
+    stSong songAux;
+    if((songFile = fopen(SONGSFILEPATH, "r+b")))
+    {
+        fseek(songFile, (idSong - 1) * (sizeof(stSong)), SEEK_SET);
+        fread(&songAux, sizeof(stSong), 1, songFile);
+        if(songAux.off == 1)
+        {
+            songAux.off = 0;
+            fseek(songFile, (idSong - 1) * (sizeof(stSong)), SEEK_SET);
+            fwrite(&songAux, sizeof(stSong), 1, songFile);
+        }
+        else
+        {
+            system("cls");
+            printf("La cancion ya se encuentra dada de alta\n");
+        }
+    }
+}
+
 int songNameValidation(char nameToSearch[])
 {
     FILE * songFile;
@@ -229,7 +253,23 @@ int searchSongFileByName (char nameToSearch[])
     }
     return auxId;
 }
+int totalSongs()
+{
+    int total = 0;
+    FILE * songFile;
+    stSong songAux;
+    songFile = fopen(SONGSFILEPATH, "r+b");
 
+    if (songFile) // EN CASO DE DAR OK EN LA LECTURA DEVUELVE LA CANTIDAD EXACTA DE USUARIOS EN EL fileUser
+    {
+        while (fread(&songAux, sizeof(stSong), 1, songFile) > 0)
+        {
+            total++;
+        }
+        fclose(songFile);
+    }
+    return total;
+}
 
 int songIdValidation()
 {
@@ -289,27 +329,25 @@ void showSong (stSong toShow)
     printf("\n Eliminado 1-Si/0-No:%d", toShow.off);
     puts("\n-------------------------------------");
 }
-int getSongId (char cMovies[])
+int getSongId()
 {
-    getIdSong()
     char cControl = 's';
-    int totalIdM = 0;
-    int iIdM;
+    int songTotal = totalSongs();
+    int idSong;
     do
     {
         system("cls");
         gotoxy(30, 20);
         printf("Ingrese el ID de la pelicula: \n");
         gotoxy(30, 21);
-        scanf("%d", &iIdM);
+        scanf("%d", &idSong);
         system("cls");
-        totalIdM = calculateAmount(cMovies);
         gotoxy(30, 20);
-        printf("El ID ingresado es: %d, es correcto?", iIdM);
+        printf("El ID ingresado es: %d, es correcto?", idSong);
         fflush(stdin);
         gotoxy(30, 21);
         scanf("%c", &cControl);
-        if (iIdM<0 || iIdM>totalIdM)
+        if (idSong < 0 || idSong > songTotal)
         {
             system("cls");
             gotoxy(30, 20);
@@ -318,7 +356,7 @@ int getSongId (char cMovies[])
         }
     }
     while (cControl != 's');
-    return iIdM;
+    return idSong;
 }
 
 ///FUNCIONES LISTA DE CANCIONES

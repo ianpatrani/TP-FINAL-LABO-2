@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1667791033 source:c:\users\juanc\onedrive - utn frmdp\escritorio\tpfinallabii\main.c
+1667847148 source:c:\users\juanc\onedrive - utn frmdp\escritorio\tpfinallabii\main.c
 	"cellLib.h"
 
 1667508776 source:c:\users\juanc\onedrive - utn frmdp\escritorio\tpfinallabii\userlinkedlist.c
@@ -17,14 +17,14 @@
 	"userLib.h"
 	"gotoxy.h"
 
-1667784816 c:\users\juanc\onedrive - utn frmdp\escritorio\tpfinallabii\songlib.h
+1667843803 c:\users\juanc\onedrive - utn frmdp\escritorio\tpfinallabii\songlib.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<conio.h>
 	<time.h>
 
-1667789741 c:\users\juanc\onedrive - utn frmdp\escritorio\tpfinallabii\userlib.h
+1667840235 c:\users\juanc\onedrive - utn frmdp\escritorio\tpfinallabii\userlib.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -34,16 +34,16 @@
 1667791250 source:c:\users\juanc\onedrive - utn frmdp\escritorio\tpfinallabii\celllib.c
 	"cellLib.h"
 
-1667791908 source:c:\users\juanc\onedrive - utn frmdp\escritorio\tpfinallabii\songlib.c
+1667843949 source:c:\users\juanc\onedrive - utn frmdp\escritorio\tpfinallabii\songlib.c
 	"songLib.h"
 
-1667791199 source:c:\users\juanc\onedrive - utn frmdp\escritorio\tpfinallabii\userlib.c
+1667852522 source:c:\users\juanc\onedrive - utn frmdp\escritorio\tpfinallabii\userlib.c
 	"userLib.h"
 
-1667791694 source:c:\users\juanc\onedrive - utn frmdp\escritorio\tpfinallabii\frontlib.c
+1667849459 source:c:\users\juanc\onedrive - utn frmdp\escritorio\tpfinallabii\frontlib.c
 	"frontLib.h"
 
-1667791033 c:\users\juanc\onedrive - utn frmdp\escritorio\tpfinallabii\frontlib.h
+1667840089 c:\users\juanc\onedrive - utn frmdp\escritorio\tpfinallabii\frontlib.h
 	"cellLib.h"
 
 1665960467 c:\users\juanc\onedrive - utn frmdp\escritorio\tpfinallabii\gotoxy.h

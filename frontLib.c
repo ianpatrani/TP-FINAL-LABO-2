@@ -69,39 +69,37 @@ int login ()
 
     gets(userName);
     userAux = searchUserFileByName(userName);
+    showAnUser(userAux);
     while((strcmpi(userAux.fullName, userName)) != 0)
     {
-        system("cls");
+        //system("cls");
 
         printf("Usuario inexistente, ingrese nuevamente:\n");
         fflush(stdin);
 
         gets(userName);
         userAux = searchUserFileByName(userName);
-        system("cls");
+
     }
-    system("cls");
-
+   // system("cls");
     printf("Ingrese su contrasenia:\n");
+    gets(auxPass);
 
-    hidePswd(auxPass);
-    getch();
     while(i < 3 && idUser == 0)
     {
-
         u = checkCompatibility(2, 5, userAux.matrixPass, userAux.keyPass, auxPass);
         if(u == 0)
         {
-            system("cls");
+            //system("cls");
             printf("Contrasenia incorrecta \(%d intentos restantes\)\n", (2 - i));
             printf("Ingrese contrasenia nuevamente\n");
-            passW(auxPass);
-            getch();
+            fflush(stdin);
+            gets(auxPass);
             i++;
         }
         else
         {
-            system("cls");
+            //system("cls");
             printf("Login Exitoso\n");
             idUser = validUser(userName);
         }
@@ -109,10 +107,10 @@ int login ()
 
     if(i == 3 & idUser == 0)
     {
-        system("cls");
         printf("Intentos de login agotados...\n");
         printf("Intente nuevamente mas tarde\n\n\n\n");
     }
+
     return idUser;
 }
 
@@ -220,7 +218,7 @@ void userMenu (int idUser)
             break;
         case 4:
             system("cls");
-            idSong = getIdSong();
+            idSong = getSongId();
             gotoxy(30, 25);
             puts("press enter..\n");
             getch();
@@ -311,7 +309,7 @@ void adminMenu (int idUser)
             break;
         case 3:
             system("cls");
-            //songCrud();
+            songCrud();
             gotoxy(30, 25);
             puts("press enter..\n");
             gotoxy(30, 26);
@@ -425,29 +423,27 @@ void songCrud()
             system("cls");
             idSong = getSongId();
             system("cls");
-            updateFile(cMovies, idUserM);
+            updateSong(idSong);
             puts("press enter..\n");
             getch();
             break;
         case 3:
             system("cls");
-            loadFileMovie(cMovies);
+            loadSongToFile();
             puts("press enter..\n");
             getch();
             break;
         case 4:
             system("cls");
-            idUserM = validIdM(cMovies);
-            kickMovie(cMovies, idUserM);
-            ///baja de pelicula
+            idSong = getSongId();
+            deleteSongFromFile(idSong);
             puts("press enter..\n");
             getch();
             break;
         case 5:
             system("cls");
-            idUserM = validIdM(cMovies);
-            upMovie(cMovies, idUserM);
-            /// reestablece pelicula
+            idSong = getSongId();
+            upSong(idSong);
             puts("press enter..\n");
             getch();
             break;
@@ -479,15 +475,15 @@ void userCrudMenu (int iOption)
 void songCrudMenu (int iOption)
 {
     gotoxy(30, 20);
-    printf("1* Listado de Peliculas\n");
+    printf("1* Listado de canciones\n");
     gotoxy(30, 21);
-    printf("2* Modificar pelicula (ID)\n");
+    printf("2* Modificar cancion (ID)\n");
     gotoxy(30, 22);
-    printf("3* Alta de peliculas (ID)\n");
+    printf("3* Alta de cancion (ID)\n");
     gotoxy(30, 23);
-    printf("4* Baja pelicula (ID)\n");
+    printf("4* Baja de cancion (ID)\n");
     gotoxy(30, 24);
-    printf("5* Reestablecer pelicula (ID)\n");
+    printf("5* Reestablecer cancion (ID)\n");
     gotoxy(30, 25);
     printf("6* Menu principal\n");
     gotoxy(30, 26);

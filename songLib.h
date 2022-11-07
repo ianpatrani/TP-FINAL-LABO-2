@@ -35,10 +35,12 @@ stSong searchSongFileById(int idSong);
 int totalSongs();
 void loadSongToFile();
 void deleteSongFromFile(int idSong);
+void upSong(int idSong);
 void updateSong(int idToUpdate);
 int songNameValidation();
 void showSongFile();
 int songIdValidation();
+int getSongId();
 int searchSongFileByName (char nameToSearch[]);
 
 ///LISTA DE CANCIONES

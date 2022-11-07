@@ -13,7 +13,7 @@ void addUserToFile()
     {
         userAux = createOneUser();
         fwrite(&userAux, sizeof(stUser), 1, userFile);
-        printf("Se ha registrado correctamente el userAux\n");
+        printf("Se ha registrado correctamente el usuario\n");
         fclose(userFile);
     }
 }
@@ -49,9 +49,9 @@ stUser createOneUser()
 {
     stUser userAux;
     int idUser = 0;
-    idUser = totalUsers(); /// funcion que trae cantidad de userAuxs cargados en el fileUser y autoinrementa 1
+    idUser = totalUsers(); /// funcion que trae cantidad de usuarios cargados en el fileUser y autoinrementa 1
     int iterator = 0;
-    int resNameValidation = 0;
+    int checkName = 0;
 
     char passAux[11];        /// auxiliar de contrasenia
     char passAux1[11];       /// auxiliar de verificacion de contraseña
@@ -60,32 +60,32 @@ stUser createOneUser()
     int encryptedPass[2][5]; /// matriz Encriptada
 
 
-    // CARGA DE 1 userAux POR TECLADO
+    // CARGA DE 1 USUARIO POR TECLADO
     userAux.idUser = idUser;
-    printf("Ingrese el nombre comnpleto del USER (maximo 30 caracteres)\n");
+    printf("Ingrese un nombre de usuario \n");
     fflush(stdin);
     gets(userAux.fullName);
-    // VALIDO SI EL NOMBRE DE userAux YA EXISTE
-    resNameValidation = nameValidation(userAux.fullName);
-    while (resNameValidation == 1)
+    // VALIDO SI EL NOMBRE DE USER YA EXISTE
+    checkName = nameValidation(userAux.fullName);
+    while (checkName == 1)
     {
         printf("El nombre ya existe\n");
         printf("Ingrese otro\n");
         fflush(stdin);
         gets(userAux.fullName);
-        resNameValidation = nameValidation(userAux.fullName); // VALIDO NUEVAMENTE EL NOMBRE
+        checkName = nameValidation(userAux.fullName); // VALIDO NUEVAMENTE EL NOMBRE
     }
     do
     {
         system("cls");
-        printf("Ingrese una contrasenia (10 caracteres obligatoriamente):\n");
+        printf("Ingrese su password (10 caracteres obligatoriamente):\n");
         fflush(stdin);
         gets(passAux);
         printf("Una vez mas por favor :) \n");
         fflush(stdin);
         gets(passAux1);
-    }
-    while (strcmpi(passAux, passAux1) != 0);
+    }while (strcmpi(passAux, passAux1) != 0);
+
 
     while (strlen(passAux) != (10 * sizeof(char)))
     {
@@ -95,10 +95,13 @@ stUser createOneUser()
         getch();
     }
 
-    createMatrixPass(2, 5, passAux, decryptedPass);             /// pasa pswd a matriz de enteros
-    createKeyPass(2, keyPass);                                  /// crea matriz testigo
-    copyMatrix(2, 2, userAux.keyPass, keyPass);                  /// copia la matriz encriptadora del userAux en su campo del userAux
+    createMatrixPass(2, 5, passAux, decryptedPass);                  /// pasa pswd a matriz de enteros
+    createKeyPass(2, keyPass);
+    showMatrix(2, 2, keyPass);                                /// crea matriz testigo
+    copyMatrix(2, 2, userAux.keyPass, keyPass);             /// copia la matriz encriptadora del userAux en su campo del userAux
+
     encryptMatrix(2, 5, keyPass, decryptedPass, encryptedPass); /// encripta la contraseña
+    showMatrix(2, 5, encryptedPass);
     copyMatrix(2, 5, userAux.matrixPass, encryptedPass);         /// fileUserva la contrasenia encriptada en el campo pass de userAux
 
 
@@ -110,7 +113,7 @@ stUser createOneUser()
     printf("F: Femenino\n");
     printf("X: Otro\n");
 
-
+    fflush(stdin);
     scanf("%c", &userAux.gender);
 
     printf("Ingrese pais de nacimiento\n");
@@ -123,7 +126,6 @@ stUser createOneUser()
         userAux.songsPlayed[iterator] = -1;
         iterator++;
     }
-
     return userAux;
 }
 
@@ -308,47 +310,33 @@ stUser searchUserFileByName (char userName[])
     stUser userAux;
     if (fileUser)
     {
-        while (!feof(fileUser))
+        while (!feof(fileUser) && (strcmpi(userAux.fullName, userName) != 0))
         {
             fread(&userAux, sizeof(stUser), 1, fileUser);
-            if (strcmpi(userAux.fullName, userName) == 0)
-            {
-                fclose(fileUser);
-                return userAux;
-            }
-            else
-            {
-                iterator++;
-            }
         }
     }
     fclose(fileUser);
+    return userAux;
 }
 
 int searchUserByName(char fullName[])
 {
     FILE * fileUser = fopen(USERSFILEPATH, "rb");
-    int pos = -1;
-    int iterator = 0;
+    int flag = -1;
     stUser userAux;
     if (fileUser)
     {
-        while (!feof(fileUser) && (pos == 0))
+        while (!feof(fileUser) && (flag == -1))
         {
-            fread(&fileUser, sizeof(stUser), 1, fileUser);
-            if (strcmpi(userAux.fullName, fullName) == -1)
+            fread(&userAux, sizeof(stUser), 1, fileUser);
+            if (strcmpi(userAux.fullName, fullName) == 0)
             {
-                pos = iterator;
-            }
-            else
-            {
-                iterator++;
+                flag = 1;
             }
         }
     }
-
     fclose(fileUser);
-    return pos;
+    return flag;
 }
 
 //-----------------------------------------------
@@ -733,7 +721,26 @@ void createMatrixPass(int two, int five, char pass[], int matrixPass[two][five])
         }
     }
 }
+void pasar_pswd_matriz (int dos, int cinco, char contrasenia[],  int matriz_contrasenia[dos][cinco])
+{
+    int j=0;
+    int i;
+    int u;
 
+
+    for (i=0; i<2; i++)
+    {
+        for (u=0; u<5; u++)
+        {
+            matriz_contrasenia[i][u]=(int)contrasenia[j];
+
+
+            j++;
+
+        }
+    }
+
+}
 int computeDeterminant(int row, int column, int matrix[row][column])
 {
     int determinant = 0;
@@ -791,27 +798,35 @@ int checkCompatibility(int two, int five, int matrixPass[two][five], int keyPass
     int decryptedMatrix[2][5];
 
     createMatrixPass(2, 5, toCheckPass, toCheckMatrix);
+    showMatrix(2, 5, toCheckMatrix);
     /// crea la matriz de la contrasenia ingresada
     decryptMatrix(2, 5, keyPass, matrixPass, decryptedMatrix);
+    showMatrix(2, 5, decryptedMatrix);
     /// desencripta la matriz de la contrasenia del userAux
     for (j = 0; j < two; j++)
     {
         for (k = 0; k < five; k++)
         {
+            printf("VALUE OF K: %d\n", k);
             if (decryptedMatrix[j][k] == toCheckMatrix[j][k])
+            {
+
                 iterator++;
+            }
+
         }
     }
     if (iterator == 10) // es decir que coincidieron todos los chars
     {
-        flag = 1; /// flag 1 ==
+        flag = 1; /// flag 1 == ta ok
     }
     return flag;
 }
 
 void copyMatrix(int rows, int columns, int copy[rows][columns], int original[rows][columns])
 {
-    int j, k;
+    int j = 0;
+    int k = 0;
     for (j = 0; j < rows; j++)
     {
         for (k = 0; k < columns; k++)
