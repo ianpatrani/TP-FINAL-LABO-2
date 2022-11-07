@@ -180,7 +180,7 @@ void altaDeCancion(char archivo[])
 void bajaDeCancion(char archivo[])
 {
     FILE *archivito = fopen(archivo, "a+b");
-    stSong cancion;
+    stSong song;
     int aux = 0;
     int idBaja;
 
@@ -191,14 +191,13 @@ void bajaDeCancion(char archivo[])
 
     if (archivito != NULL)
     {
-        while (aux == 0 && (fread(&cancion, sizeof(stSong), 1, archivito) > 0))
+        while (aux == 0 && (fread(&song, sizeof(stSong), 1, archivito) > 0))
         {
-            if (cancion.idSong == idBaja)
+            if (song.idSong == idBaja)
             {
-                printf("HOLA");
-                cancion.deleted = 0;
+                song.deleted = 0;
                 fseek(archivito, (-1) * sizeof(stSong), SEEK_CUR);
-                fwrite(&cancion, sizeof(stSong), 1, archivito);
+                fwrite(&song, sizeof(stSong), 1, archivito);
                 aux = 1;
             }
         }
