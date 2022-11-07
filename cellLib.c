@@ -329,10 +329,10 @@ void playSong (int idUser, int idSong)
         fseek(songFile,(idSong-1) * sizeof(stSong), SEEK_SET); ///se posiciona dondce esta el ID en el archivo
         fread(&songAux, sizeof(stSong), 1, songFile);///lo guarda en el aux de cancion
         system("cls");
-        gotoxy(30, 20);
+
         printf("Usted esta escuchando %s - %s\n", songAux.title, songAux.artist);
-        gotoxy(30, 21);
-        loading();
+
+        playing();
 
 //        printf("Presione enter cuando finalice la reproduccion\n");
         getch();

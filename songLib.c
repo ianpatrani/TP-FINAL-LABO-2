@@ -74,7 +74,7 @@ void loadSongToFile()
         fflush(stdin);
         gets(auxSong.comment);
 
-        auxSong.deleted= 1;
+        auxSong.off = 1;
 
         fwrite(&auxSong, sizeof(stSong), 1, fileSong);
         fclose(fileSong);
@@ -99,13 +99,13 @@ void deleteSongFromFile(int idToDelte)
 
     if (fileSong != NULL)
     {
-        while (aux == 0 && (fread(&song, sizeof(stSong), 1, fileSong) > 0))
+        while (aux == 0 && (fread(&auxSong, sizeof(stSong), 1, fileSong) > 0))
         {
-            if (song.idSong == idBaja)
+            if (auxSong.idSong == idBaja)
             {
-                song.deleted = 0;
+                auxSong.off = 0;
                 fseek(fileSong, (-1) * sizeof(stSong), SEEK_CUR);
-                fwrite(&song, sizeof(stSong), 1, fileSong);
+                fwrite(&auxSong, sizeof(stSong), 1, fileSong);
                 aux = 1;
             }
         }
@@ -182,7 +182,7 @@ void updateSong(int idToUpdate)
                 case 8:
                     printf("\nIngrese eliminado: ");
                     fflush(stdin);
-                    scanf("%d", &auxSong.deleted);
+                    scanf("%d", &auxSong.off);
                     break;
                 }
 
@@ -286,7 +286,7 @@ void showSong (stSong toShow)
     printf("\n Anio:.............. %d", toShow.year);
     printf("\n Genero:............ %s", toShow.gender);
     printf("\n Comentario:........ %s", toShow.comment);
-    printf("\n Eliminado 1-Si/0-No:%d", toShow.deleted);
+    printf("\n Eliminado 1-Si/0-No:%d", toShow.off);
     puts("\n-------------------------------------");
 }
 
@@ -639,9 +639,8 @@ int midArray(int valids)
 
 nodeTreeSong * fileToTree(nodeTreeSong * songTree)
 {
-    int var = totalSongs();
+    int var = songIdCreator();
     stSong songArray[var];
-
     loadArrayFromSongFile(songArray);
     int mid = midArray(var);
     songTree = insertFromArray(songArray, songTree, var, mid);

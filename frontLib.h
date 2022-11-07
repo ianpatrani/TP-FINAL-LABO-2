@@ -26,7 +26,7 @@ void userCrudMenu (int iOption);
 ///interfaz de menu de ABM de usuarios de administrador
 void songCrudMenu(int iOption);
 ///interfaz de menu de ABM de peliculas de administrador
-int validAdmin (char cUser[], int iId);
+int validAdmin (int idUser);
 ///validacion de tipo de usuario (admin o no)
 void passW(char []);
 ///Le ingresa al string traido por local una password en **

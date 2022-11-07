@@ -158,7 +158,7 @@ int deleteUser(int idUser) /// Si el userAux fue elimiinado con exito devuelve 1
     fclose(userFIle);
     return flag;
 }
-}
+
 void upUser(int idUser)
 ///Busca por 'ID' el usuario y le marca un '0'(habilitado)
 {
@@ -172,7 +172,7 @@ void upUser(int idUser)
         {
             userAux.off = 0;
             fseek(fileUser, (idUser - 1) * (sizeof(stUser)), SEEK_SET);
-            fwrite(&stUser, sizeof(stUser), 1, fileUser);
+            fwrite(&userAux, sizeof(stUser), 1, fileUser);
         }
         else
         {
@@ -248,7 +248,7 @@ int getUserIdToUpdate ()
 {
     int idUser;
     char cControl = 's';
-    int totalUsers = totalUsers();
+    int total = totalUsers();
     do
     {
         system("cls");
