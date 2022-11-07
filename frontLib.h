@@ -10,7 +10,7 @@ int start ();
 ///menu inicio [ruta]
 void playMovie(char[], char[], int, int);
 ///Suma 1 en vistos de la pelicula y reprod y se guarda en historial de usuario
-void menuUser (char cMovies[], char cUser[], int iId);
+void userMenu(int idUser);
 ///interfaz de menu de usuario no administrador
 void optionMenuUser (int option);
 ///opciones de printf de usuario no administrador

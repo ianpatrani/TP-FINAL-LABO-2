@@ -218,7 +218,7 @@ void userMenu (int idUser)
             break;
         case 2:
             system("cls");
-            idSong = getId();
+            idSong = songIdValidation();
             playSong(idUser, idSong);
             ///reproducir peli
             break;
@@ -230,14 +230,14 @@ void userMenu (int idUser)
             break;
         case 4:
             system("cls");
-            searc(cMovies);
+            idSong = getIdSong();
             gotoxy(30, 25);
             puts("press enter..\n");
             getch();
             break;
         case 5:
             system("cls");
-            updateFileUser(cUser, idUser);
+            updateUser(idUser);
             gotoxy(30, 25);
             puts("press enter..\n");
             getch();
@@ -266,7 +266,7 @@ void optionMenuUser (int option)
     gotoxy(30, 21);
     printf("2* Reproducir Cancion (ID)\n");
     gotoxy(30, 22);
-    printf("3* Listado de canciones disponibles\n");
+    printf("3* Listado de canciones disponibles por genero o por nombre\n");
     gotoxy(30, 23);
     printf("4* Buscar cancion por nombre\n");
     gotoxy(30, 24);

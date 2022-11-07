@@ -38,6 +38,7 @@ void deleteSongFromFile(int idSong);
 void updateSong(int idToUpdate);
 int songNameValidation();
 void showSongFile();
+int songIdValidation();
 
 ///LISTA DE CANCIONES
 

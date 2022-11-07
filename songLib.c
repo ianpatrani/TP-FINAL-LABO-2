@@ -212,7 +212,26 @@ int songNameValidation(char nameToSearch[])
     return flag;
 }
 
-int getId()
+int getIdSong (char nameToSearch[])
+{
+    FILE * songFile;
+    stSong songAux;
+    songFile = fopen(SONGSFILEPATH, "rb");
+    int auxId = -1;
+
+    if (songFile)
+    {
+        while (fread(&songAux, sizeof(stSong), 1, songFile) > 0)
+        {
+            if (strcmpi(songAux.title, nameToSearch == 0))
+                auxId = songAux.idSong;
+        }
+    }
+    return auxId;
+}
+
+
+int songIdValidation()
 {
     int idSong = 0;
     FILE * songFile;
