@@ -53,7 +53,7 @@ int saveUserList(nodeUser * userList);
 int deleteUser(int idUser);
 void upUser(int idUser);
 void updateUser(int idUser);
-stWord showPassword (stUser toShow);
+void showPassword(stUser toShow);
 nodeUser * loadUsersFromFile(nodeUser* userList);
 int getUserIdToUpdate();
 
@@ -84,14 +84,14 @@ void encryptMatrix (int two, int five,int keyPass[two][two], int decryptedMatrix
 ///multiplica la matriz contrasenia por la matriz testigo de cada usuario
 void createKeyPass (int two, int keyPass[two][two]);
 ///con una semilla, crea una matriz testigo random inversible
-void invertMatrix (int two,int keyPass[two][two]);
+void invertMatrix(int two, int keyPass[two][two]);
 ///realiza operacion para invertir matriz
 void decryptMatrix (int two, int five,int keyPass[two][two], int matrixPass [two][five], int decryptedMatrix[two][five]);
 ///con la matriz testigo y la matriz encriptada, calcula la inversa y desencripta la matriz contrasenia de cada usuario
 void multiplyMatrix (int two, int five,int firstMultiple[two][two], int secondMultiple [two][five], int result[two][five]);
 ///realiza la operacion de multiplicar matrices entre una de 2x2 y una de 2x5 (el resultado es una de 2x5)
-int checkCompatibility (int two, int five, int matrixPass[two][five], int keyPass[two][two], char toCheckPass[]);
+int chkPswdCompatiblty(stUser toCompare, char toCheckPass[]);
 ///desencripta la matriz contrasenia, y la compara con una contrasenia ingresada convertida en matriz, retorna flag 1 si es valido
-void copyMatrix (int row, int column , int copyMatrix[row][column], int originalMatrix[row][column]);
+void copyMatrix(int rows, int columns, int copy[rows][columns], int original[rows][columns]);
 ///copia una matriz en otra, para poder trabajar y guardarlas en auxiliares
 

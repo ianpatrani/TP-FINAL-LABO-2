@@ -1,5 +1,25 @@
 #include "userLib.h"
 
+void showPassword(stUser toShow)
+{
+    int iterator = 0;
+    int j;
+    int k;
+    int decryptedPass[2][5];
+    decryptMatrix(2, 5, toShow.keyPass, toShow.matrixPass, decryptedPass);
+    stWord pass;
+
+    for (j = 0; j < 2; j++)
+    {
+        for (k = 0; k < 5; k++)
+        {
+            pass.word[iterator] = (char)decryptedPass[j][k];
+            iterator++;
+        }
+    }
+    puts(pass.word);
+}
+
 void addUserToFile()
 {
     FILE *userFile;
@@ -30,8 +50,6 @@ void showAnUser (stUser toShow)
         printf("\t*DADO DE BAJA*\n");
     }
     printf("__________________________________\n");
-    auxPass = showPassword(toShow);
-    printf("Password: \t\t"), puts(auxPass.word);
     printf("Anio de nacimiento:\t%d\n", toShow.birthYear);
     printf("Pais: \t\t\t%s\n", toShow.country);
     if(toShow.gender == 'm' || 'M')
@@ -42,14 +60,17 @@ void showAnUser (stUser toShow)
     {
         printf("Genero: \t\tFEMENINO\n");
     }
+    printf("Password: \t\t");
+    showPassword(toShow);
+
+
     printf("Total de cacnciones escuchadas: \t%d \n\n", toShow.totalSongsPlayed);
 }
 
 stUser createOneUser()
 {
     stUser userAux;
-    int idUser = 0;
-    idUser = totalUsers(); /// funcion que trae cantidad de usuarios cargados en el fileUser y autoinrementa 1
+    int idUser = totalUsers();/// funcion que trae cantidad de usuarios cargados en el fileUser y autoinrementa 1
     int iterator = 0;
     int checkName = 0;
 
@@ -58,6 +79,7 @@ stUser createOneUser()
     int decryptedPass[2][5]; /// cambia la contraseña q ingresa el userAux a una matriz de enteros
     int keyPass[2][2];       /// matriz encriptadora
     int encryptedPass[2][5]; /// matriz Encriptada
+    showAnUser(userAux);
 
 
     // CARGA DE 1 USUARIO POR TECLADO
@@ -95,14 +117,13 @@ stUser createOneUser()
         getch();
     }
 
-    createMatrixPass(2, 5, passAux, decryptedPass);                  /// pasa pswd a matriz de enteros
-    createKeyPass(2, keyPass);
-    showMatrix(2, 2, keyPass);                                /// crea matriz testigo
+    createMatrixPass(2, 5, passAux, decryptedPass);          /// pasa pswd a matriz de enteros
+    createKeyPass(2, keyPass);/// crea matriz testigo
     copyMatrix(2, 2, userAux.keyPass, keyPass);             /// copia la matriz encriptadora del userAux en su campo del userAux
-
     encryptMatrix(2, 5, keyPass, decryptedPass, encryptedPass); /// encripta la contraseña
-    showMatrix(2, 5, encryptedPass);
     copyMatrix(2, 5, userAux.matrixPass, encryptedPass);         /// fileUserva la contrasenia encriptada en el campo pass de userAux
+
+
 
 
     printf("Ingrese anio de nacimiento\n");
@@ -126,8 +147,11 @@ stUser createOneUser()
         userAux.songsPlayed[iterator] = -1;
         iterator++;
     }
+
     return userAux;
 }
+
+
 
 //-----------------------------------------------------
 // A.1)FUNCION ADICIONAL QUE VALIDA SI EL USER EXISTE
@@ -405,8 +429,8 @@ void updateUser(int idUser)
             do
             {
                 printf("\n1.Nombre de usuario: %s", userAux.fullName);
-                passAuxWord = showPassword(userAux);
-                puts(passAuxWord.word);
+                printf("Password: ");
+                showPassword(userAux);
                 printf("\n3.Nacimiento: %d", userAux.birthYear);
                 printf("\n4.Genero: %c", userAux.gender);
                 printf("\n5.Pais: %s", userAux.country);
@@ -471,25 +495,6 @@ void updateUser(int idUser)
     }
 }
 
-stWord showPassword(stUser toShow)
-{
-    int j;
-    int k;
-    int iterator = 0;
-    stWord pass;
-    int decryptedMatrix[2][5];
-
-    decryptMatrix(2, 5, toShow.keyPass, toShow.matrixPass, decryptedMatrix);
-    for (j = 0; j < 2; j++)
-    {
-        for (k = 0; k < 5; k++)
-        {
-            pass.word[iterator] = (char)decryptedMatrix[j][k];
-            iterator++;
-        }
-    }
-    return pass;
-}
 
 nodeUser * startUserList()
 {
@@ -629,14 +634,14 @@ nodeUser * deleteFirst (nodeUser * userList)
 
 void showUserNode(nodeUser * toShow)
 {
-    stWord pass;
-    pass = showPassword(toShow->value);
+
 
     puts("-------------------------------------------------------------------\n");
     printf("ID USUARIO: %d\n",toShow->value.idUser);
     printf("NOMBRE DE USUARIO: %s\n", toShow->value.fullName);
 
-    printf("PASSWORD: \n"),puts(pass.word);
+    printf("PASSWORD: \t");
+    showPassword(toShow->value);
 
     printf("Anio Nacimiento: %i\n",toShow->value.birthYear);
     printf("Genero: ");
@@ -706,6 +711,7 @@ void multiplyMatrix(int two, int five, int firstMultiple[two][two], int secondMu
     }
 }
 
+
 void createMatrixPass(int two, int five, char pass[], int matrixPass[two][five])
 {
     int iterator = 0;
@@ -745,9 +751,9 @@ int computeDeterminant(int row, int column, int matrix[row][column])
 {
     int determinant = 0;
     determinant = ((matrix[0][0] * matrix[1][1]) - (matrix[1][0] * matrix[0][1]));
-
     return determinant;
 }
+
 
 void encryptMatrix(int two, int five, int keyPass[two][two], int decryptedMatrix[two][five], int encryptedMatrix[two][five])
 {
@@ -758,7 +764,7 @@ void decryptMatrix(int two, int five, int keyPass[two][two], int matrixPass[two]
 {
     invertMatrix(2, keyPass);
 
-    multiplyMatrix(2, 5, keyPass, decryptedMatrix, matrixPass);
+    multiplyMatrix(2, 5, keyPass,matrixPass, decryptedMatrix);
 }
 
 void createKeyPass(int two, int keyPass[two][two])
@@ -779,16 +785,20 @@ void createKeyPass(int two, int keyPass[two][two])
 void invertMatrix(int two, int keyPass[two][two])
 {
     int determinant = computeDeterminant(two, two, keyPass);
+
     int p00 = keyPass[0][0];
     int p01 = keyPass[0][1];
 
-    keyPass[0][0] = (keyPass[1][1]) / determinant;
-    keyPass[0][1] = -1 * (p01) / determinant;
-    keyPass[1][0] = -1 * (keyPass[1][0]) / determinant;
-    keyPass[1][1] = (p00) / determinant;
+    keyPass[0][0] = (keyPass[1][1])/determinant;
+    keyPass[0][1] = -1*(p01)/determinant;
+    keyPass[1][0] = -1*(keyPass[1][0])/determinant;
+    keyPass[1][1] = (p00)/determinant;
 }
 
-int checkCompatibility(int two, int five, int matrixPass[two][five], int keyPass[two][two], char toCheckPass[])
+
+
+
+int chkPswdCompatiblty(stUser toCompare, char toCheckPass[])
 {
     int j;
     int k;
@@ -798,22 +808,16 @@ int checkCompatibility(int two, int five, int matrixPass[two][five], int keyPass
     int decryptedMatrix[2][5];
 
     createMatrixPass(2, 5, toCheckPass, toCheckMatrix);
-    showMatrix(2, 5, toCheckMatrix);
     /// crea la matriz de la contrasenia ingresada
-    decryptMatrix(2, 5, keyPass, matrixPass, decryptedMatrix);
-    showMatrix(2, 5, decryptedMatrix);
-    /// desencripta la matriz de la contrasenia del userAux
-    for (j = 0; j < two; j++)
+    decryptMatrix(2, 5, toCompare.keyPass, toCompare.matrixPass, decryptedMatrix);
+    for (j = 0; j < 2; j++)
     {
-        for (k = 0; k < five; k++)
+        for (k = 0; k < 5; k++)
         {
-            printf("VALUE OF K: %d\n", k);
             if (decryptedMatrix[j][k] == toCheckMatrix[j][k])
             {
-
                 iterator++;
             }
-
         }
     }
     if (iterator == 10) // es decir que coincidieron todos los chars

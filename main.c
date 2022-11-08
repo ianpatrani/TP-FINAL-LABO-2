@@ -64,7 +64,7 @@ int main()
 {
     int admin = 0;
     int idUser = start();
-    if(idUser > 0)
+    if(idUser >= 0)
     {
         admin = validAdmin(idUser);
         if (admin == 1)

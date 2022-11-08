@@ -548,10 +548,10 @@ nodeSongList * searchSongById(nodeSongList * songList, int idSong)
     return songList;
 }
 
-///////////////FUNCIONES ARBOL DE auxSongES//////////////////
-///////////////FUNCIONES ARBOL DE auxSongES//////////////////
+///////////////FUNCIONES ARBOL DE CANCIONES//////////////////
+///////////////FUNCIONES ARBOL DE CANCIONES//////////////////
 
-///////////////FUNCIONES ARBOL DE auxSongES//////////////////
+///////////////FUNCIONES ARBOL DE CANCIONES//////////////////
 
 
 

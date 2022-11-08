@@ -214,8 +214,8 @@ void showCellNode(stCell * toShow)
     puts("-------------------------------------------------------------------\n");
     printf("ID USUARIO: %d\n",toShow->userValue.idUser);
     printf("NOMBRE COMPLETO: %s\n", toShow->userValue.fullName);
-    stWord pass = showPassword(toShow->userValue);
-    printf("PASS: %s\n", pass);
+
+    showPassword(toShow->userValue);
     printf("Anio Nacimiento: %i\n",toShow->userValue.birthYear);
     printf("Genero: ");
     if (toShow->userValue.gender == 'f')

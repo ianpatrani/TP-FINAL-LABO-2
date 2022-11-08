@@ -60,7 +60,7 @@ int login ()
     int i = 0;
 
     //contador
-    int idUser = 0;
+    int idUser = -1;
     ///idUser sera retornado con el iD del usuario que ingreso
     //indica usuario correcto
 
@@ -72,7 +72,7 @@ int login ()
     showAnUser(userAux);
     while((strcmpi(userAux.fullName, userName)) != 0)
     {
-        //system("cls");
+        system("cls");
 
         printf("Usuario inexistente, ingrese nuevamente:\n");
         fflush(stdin);
@@ -81,16 +81,15 @@ int login ()
         userAux = searchUserFileByName(userName);
 
     }
-   // system("cls");
+    system("cls");
     printf("Ingrese su contrasenia:\n");
     gets(auxPass);
-
-    while(i < 3 && idUser == 0)
+    while(i < 3 && idUser == -1)
     {
-        u = checkCompatibility(2, 5, userAux.matrixPass, userAux.keyPass, auxPass);
+        u = chkPswdCompatiblty(userAux, auxPass);
         if(u == 0)
         {
-            //system("cls");
+            system("cls");
             printf("Contrasenia incorrecta \(%d intentos restantes\)\n", (2 - i));
             printf("Ingrese contrasenia nuevamente\n");
             fflush(stdin);
@@ -99,7 +98,7 @@ int login ()
         }
         else
         {
-            //system("cls");
+            system("cls");
             printf("Login Exitoso\n");
             idUser = validUser(userName);
         }
