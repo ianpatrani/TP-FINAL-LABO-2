@@ -280,7 +280,7 @@ int songIdValidation()
     int auxId = -1;
 
     system("cls");
-    printf("Ingrese el ID de la pelicula: \n");
+    printf("Ingrese el ID de la cancion: \n");
     scanf("%d", &idSong);
 
     if (songFile)
@@ -338,7 +338,7 @@ int getSongId()
     {
         system("cls");
         gotoxy(30, 20);
-        printf("Ingrese el ID de la pelicula: \n");
+        printf("Ingrese el ID de la cancion: \n");
         gotoxy(30, 21);
         scanf("%d", &idSong);
         system("cls");

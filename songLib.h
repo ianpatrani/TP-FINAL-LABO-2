@@ -21,14 +21,14 @@ typedef struct
 typedef struct
 {
     stSong value;
-    struct nodeSongList * next;
-}nodeSongList;
+    struct nodeSongList *next;
+} nodeSongList;
 
 typedef struct
 {
     stSong value;
-    struct nodeTreeSong * left;
-    struct nodeTreeSong * right;
+    struct nodeTreeSong *left;
+    struct nodeTreeSong *right;
 } nodeTreeSong;
 
 stSong searchSongFileById(int idSong);
@@ -41,36 +41,34 @@ int songNameValidation();
 void showSongFile();
 int songIdValidation();
 int getSongId();
-int searchSongFileByName (char nameToSearch[]);
+int searchSongFileByName(char nameToSearch[]);
 
-///LISTA DE CANCIONES
+/// LISTA DE CANCIONES
 
-nodeSongList * startSongList();
-nodeSongList * createSongNode(stSong toCreate);
-nodeSongList * addSongFirst(nodeSongList * songList, nodeSongList * toAdd);
-nodeSongList * searchLastNode(nodeSongList * songList);
-nodeSongList * searchSongById(nodeSongList * songList, int idSong);
-nodeSongList * addSongLast(nodeSongList * songList, nodeSongList * toAdd);
-nodeSongList * addInOrderByName(nodeSongList * songList, nodeSongList * toAdd);
-void showNode(nodeSongList * toShow);
-void showSongList(nodeSongList * toShow);
-void showBackwardsRevursive(nodeSongList * iterator);
-nodeSongList * deleteSongById(nodeSongList * songList, int idSong);
-nodeSongList * deleteSongList (nodeSongList * toDelete);
+nodeSongList *startSongList();
+nodeSongList *createSongNode(stSong toCreate);
+nodeSongList *addSongFirst(nodeSongList *songList, nodeSongList *toAdd);
+nodeSongList *searchLastNode(nodeSongList *songList);
+nodeSongList *searchSongById(nodeSongList *songList, int idSong);
+nodeSongList *addSongLast(nodeSongList *songList, nodeSongList *toAdd);
+nodeSongList *addInOrderByName(nodeSongList *songList, nodeSongList *toAdd);
+void showNode(nodeSongList *toShow);
+void showSongList(nodeSongList *toShow);
+void showBackwardsRevursive(nodeSongList *iterator);
+nodeSongList *deleteSongById(nodeSongList *songList, int idSong);
+nodeSongList *deleteSongList(nodeSongList *toDelete);
 
+/// ARBOL DE CANCIONES
 
-///ARBOL DE CANCIONES
-
-nodeTreeSong * startTree();
-nodeTreeSong * createNodeTree(stSong toCreate);
-nodeTreeSong * insertNodeTree(nodeTreeSong * treeSong, stSong toInsert);
-void showNodeTreeSong(nodeTreeSong * toShow);
-void inOrder(nodeTreeSong * toShow);
-void preOrder(nodeTreeSong * toShow);
-void postOrder(nodeTreeSong * toShow);
-nodeTreeSong * searchNodeByNodeID(nodeTreeSong *tree, int idToSearch);
-nodeTreeSong * deleteTreeNode(nodeTreeSong *tree, int idToDelete);
+nodeTreeSong *startTree();
+nodeTreeSong *createNodeTree(stSong toCreate);
+nodeTreeSong *insertNodeTree(nodeTreeSong *treeSong, stSong toInsert);
+void showNodeTreeSong(nodeTreeSong *toShow);
+void inOrder(nodeTreeSong *toShow);
+void preOrder(nodeTreeSong *toShow);
+void postOrder(nodeTreeSong *toShow);
+nodeTreeSong *searchNodeByNodeID(nodeTreeSong *tree, int idToSearch);
+nodeTreeSong *deleteTreeNode(nodeTreeSong *tree, int idToDelete);
 void loadArrayFromSongFile(stSong toSave[]);
-nodeTreeSong * insertFromArray(stSong arraySong[], nodeTreeSong * treeSong, int valids, int midArray);
-nodeTreeSong * fileToTree(nodeTreeSong * treeSong);
-
+nodeTreeSong *insertFromArray(stSong arraySong[], nodeTreeSong *treeSong, int valids, int midArray);
+nodeTreeSong *fileToTree(nodeTreeSong *treeSong);

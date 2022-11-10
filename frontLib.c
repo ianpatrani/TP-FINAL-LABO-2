@@ -5,26 +5,26 @@ int start()
     int iIterator = -1;
     int iOption;
     char cControl = 's';
-    while(cControl == 's')
+    while (cControl == 's')
     {
-        if(iIterator == 0)
+        if (iIterator == 0)
             iOption = 3;
         startMenu(&iOption);
-        switch(iOption)
+        switch (iOption)
         {
         case 1:
-            //Iniciar sesion
+            // Iniciar sesion
             system("cls");
             iIterator = login();
             cControl = 'n';
             break;
         case 2:
-            //Crear una cuenta
+            // Crear una cuenta
             system("cls");
             addUserToFile();
             break;
         case 3:
-            //Salir
+            // Salir
             system("cls");
             printf("Hasta prontos!!!");
             cControl = 'n';
@@ -33,13 +33,12 @@ int start()
     }
     return iIterator;
 }
-void startMenu (int iOption)
+void startMenu(int iOption)
 {
 
     printf("*--------------*\n");
 
     printf("1*Iniciar sesion\n");
-
     printf("2*Registrarse\n");
     printf("3*Salir\n");
 
@@ -48,21 +47,21 @@ void startMenu (int iOption)
     scanf("%d", iOption);
 }
 
-int login ()
+int login()
 {
     int u = 0;
     stUser userAux;
 
     char userName[30];
     char auxPass[11];
-    int encryptedMatrix [2][5];
+    int encryptedMatrix[2][5];
     int decryptedMatrix[2][5];
     int i = 0;
 
-    //contador
+    // contador
     int idUser = -1;
-    ///idUser sera retornado con el iD del usuario que ingreso
-    //indica usuario correcto
+    /// idUser sera retornado con el iD del usuario que ingreso
+    // indica usuario correcto
 
     printf("Ingrese Usuario:\n");
     fflush(stdin);
@@ -70,7 +69,7 @@ int login ()
     gets(userName);
     userAux = searchUserFileByName(userName);
     showAnUser(userAux);
-    while((strcmpi(userAux.fullName, userName)) != 0)
+    while ((strcmpi(userAux.fullName, userName)) != 0)
     {
         system("cls");
 
@@ -79,15 +78,14 @@ int login ()
 
         gets(userName);
         userAux = searchUserFileByName(userName);
-
     }
     system("cls");
     printf("Ingrese su contrasenia:\n");
     gets(auxPass);
-    while(i < 3 && idUser == -1)
+    while (i < 3 && idUser == -1)
     {
         u = chkPswdCompatiblty(userAux, auxPass);
-        if(u == 0)
+        if (u == 0)
         {
             system("cls");
             printf("Contrasenia incorrecta \(%d intentos restantes\)\n", (2 - i));
@@ -104,7 +102,7 @@ int login ()
         }
     }
 
-    if(i == 3 & idUser == 0)
+    if (i == 3 & idUser == 0)
     {
         printf("Intentos de login agotados...\n");
         printf("Intente nuevamente mas tarde\n\n\n\n");
@@ -113,23 +111,23 @@ int login ()
     return idUser;
 }
 
-int validUser (char userName[])
+int validUser(char userName[])
 {
     stUser userAux;
     int idUser = 0;
-    //Id que se retornara al login para saber que usuario ingreso
-    FILE * userFile = fopen(USERSFILEPATH, "rb");
-    if(userFile)
+    // Id que se retornara al login para saber que usuario ingreso
+    FILE *userFile = fopen(USERSFILEPATH, "rb");
+    if (userFile)
     {
-        while(!feof(userFile))
+        while (!feof(userFile))
         {
             fread(&userAux, sizeof(stUser), 1, userFile);
-            if(!feof(userFile) && strcmpi(userName, userAux.fullName) == 0)
+            if (!feof(userFile) && strcmpi(userName, userAux.fullName) == 0)
             {
                 idUser = userAux.idUser;
             }
         }
-        if(fclose(userFile))
+        if (fclose(userFile))
         {
             printf("*ERROR*\n");
             printf("El archivo no se pudo cerrar correctamente\n");
@@ -142,16 +140,16 @@ int validUser (char userName[])
     }
     return idUser;
 }
-void userProfile (int idUser)
+void userProfile(int idUser)
 {
     stUser userAux;
-    FILE * userFile = fopen(USERSFILEPATH, "rb");
-    if(userFile)
+    FILE *userFile = fopen(USERSFILEPATH, "rb");
+    if (userFile)
     {
-        fseek(userFile, (idUser -1)  * (sizeof(stUser)), SEEK_SET);
+        fseek(userFile, (idUser - 1) * (sizeof(stUser)), SEEK_SET);
         fread(&userAux, sizeof(stUser), 1, userFile);
-        showAnUser(userAux);///////////////////////////////////////////////agregar mostrar 1
-        if(fclose(userFile))
+        showAnUser(userAux); ///////////////////////////////////////////////agregar mostrar 1
+        if (fclose(userFile))
         {
             printf("*ERROR*\n");
             printf("El archivo no se pudo cerrar correctamente\n");
@@ -168,34 +166,31 @@ void playing()
 {
     int i = 8;
 
-    while(i < 101)
+    while (i < 101)
     {
         puts("***Reproduccion en curso***\n");
-        gotoxy(i-1,24);
+        gotoxy(i - 1, 24);
         putchar(255);
-        gotoxy(i,24);
+        gotoxy(i, 24);
         printf("%% %d \n", i);
-        gotoxy(i,25);
+        gotoxy(i, 25);
         putchar(219);
         i++;
     }
 }
 
-
-void userMenu (int idUser)
+void userMenu(int idUser)
 {
     int option;
     int idSong = 0;
 
-
-
     int totalIdM = 0;
     char cControl = 's';
-    while(cControl == 's')
+    while (cControl == 's')
     {
         system("cls");
         optionUserMenu(&option);
-        switch(option)
+        switch (option)
         {
         case 1:
             system("cls");
@@ -207,7 +202,6 @@ void userMenu (int idUser)
             system("cls");
             idSong = songIdValidation();
             playSong(idUser, idSong);
-            ///reproducir peli
             break;
         case 3:
             system("cls");
@@ -246,7 +240,7 @@ void userMenu (int idUser)
     }
 }
 
-void optionUserMenu (int option)
+void optionUserMenu(int option)
 {
     system("cls");
     gotoxy(30, 20);
@@ -266,7 +260,7 @@ void optionUserMenu (int option)
     gotoxy(30, 27);
     scanf("%d", option);
 }
-void optionsAdminMenu (int option)
+void optionsAdminMenu(int option)
 {
     system("cls");
     gotoxy(30, 20);
@@ -280,17 +274,17 @@ void optionsAdminMenu (int option)
     gotoxy(30, 24);
     scanf("%d", option);
 }
-void adminMenu (int idUser)
+void adminMenu(int idUser)
 {
     int option;
     int idSong = 0;
     int totalMovies = 0;
     char cControl = 's';
-    while(cControl == 's')
+    while (cControl == 's')
     {
         system("cls");
         optionsAdminMenu(&option);
-        switch(option)
+        switch (option)
         {
         case 1:
             system("cls");
@@ -323,22 +317,22 @@ void adminMenu (int idUser)
         }
     }
 }
-void userCrud ()
+void userCrud()
 {
     int iOption = 0;
     int idUser = 0;
     int iAux = 0;
 
     char cControl = 's';
-    nodeUser * userList = startUserList();
-    nodeUser * auxUser;
+    nodeUser *userList = startUserList();
+    nodeUser *auxUser;
     userList = loadUsersFromFile(userList);
 
-    while(cControl == 's')
+    while (cControl == 's')
     {
         system("cls");
         userCrudMenu(&iOption);
-        switch(iOption)
+        switch (iOption)
         {
         case 1:
             system("cls");
@@ -371,7 +365,7 @@ void userCrud ()
             system("cls");
             idUser = getUserIdToUpdate();
             iAux = deleteUser(idUser);
-            if(iAux == 0)
+            if (iAux == 0)
             {
                 gotoxy(30, 25);
                 puts("User no pudo darse de baja\n");
@@ -405,12 +399,11 @@ void songCrud()
     char cControl = 's';
     int songTotal = totalSongs();
 
-
-    while(cControl == 's')
+    while (cControl == 's')
     {
         system("cls");
         songCrudMenu(&iOption);
-        switch(iOption)
+        switch (iOption)
         {
         case 1:
             system("cls");
@@ -454,7 +447,7 @@ void songCrud()
     }
 }
 
-void userCrudMenu (int iOption)
+void userCrudMenu(int iOption)
 {
     gotoxy(30, 20);
     printf("1* Listado de Usuarios\n");
@@ -471,7 +464,7 @@ void userCrudMenu (int iOption)
     gotoxy(30, 26);
     scanf("%d", iOption);
 }
-void songCrudMenu (int iOption)
+void songCrudMenu(int iOption)
 {
     gotoxy(30, 20);
     printf("1* Listado de canciones\n");
@@ -488,11 +481,11 @@ void songCrudMenu (int iOption)
     gotoxy(30, 26);
     scanf("%d", iOption);
 }
-int validAdmin (int idUser)
+int validAdmin(int idUser)
 {
-    FILE * userFile;
+    FILE *userFile;
     stUser userAux;
-    if ((userFile = fopen(USERSFILEPATH, "rb") ))
+    if ((userFile = fopen(USERSFILEPATH, "rb")))
     {
         fseek(userFile, (idUser - 1) * sizeof(stUser), 0);
         fread(&userAux, sizeof(stUser), 1, userFile);
@@ -506,19 +499,19 @@ int validAdmin (int idUser)
     return userAux.admin;
 }
 
-void hidePswd (char toShow[])
+void hidePswd(char toShow[])
 {
-///Le ingresa al string traido por local una password en **
-///Exacamente 10 caracteres
+    /// Le ingresa al string traido por local una password en **
+    /// Exacamente 10 caracteres
     int iterator = 0;
-///Contador para que en la pos 10 se cree "\0"
-    for(iterator = 0; iterator < 10; iterator++)
+    /// Contador para que en la pos 10 se cree "\0"
+    for (iterator = 0; iterator < 10; iterator++)
     {
         fflush(stdin),
-               toShow[iterator] = getch();
-        while(toShow[iterator] == 8 && iterator >= 0)
+            toShow[iterator] = getch();
+        while (toShow[iterator] == 8 && iterator >= 0)
         {
-            if(iterator > 0)
+            if (iterator > 0)
             {
                 iterator--;
             }

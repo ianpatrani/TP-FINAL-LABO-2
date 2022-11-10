@@ -2,39 +2,37 @@
 
 #include "cellLib.h"
 
-
-///CELL LIB///
-///CELL LIB///
-///CELL LIB///
-/*stCell * loadListFromFile(stCell * userList) ///levanta el archivo de stPlaylist y trae CADA canción al usuario de CADA registro stPlaylist.
+/// CELL LIB///
+/// CELL LIB///
+/// CELL LIB///
+/*stCell * loadListFromFile(stCell * userList) ///levanta el archivo de stPlaylist y trae CADA canciï¿½n al usuario de CADA registro stPlaylist.
 {                                           ///recordar que el struct stPlaylist tiene 1 idSong y 1 idUser para relacionarlas.
                                                 ///eso es lo que pide el enunciado.
-                                                    ///PERO PERO PERO por qué no cargar la lista de canciones desde los idSong que almacena c/ user?
+                                                    ///PERO PERO PERO por quï¿½ no cargar la lista de canciones desde los idSong que almacena c/ user?
     FILE * fileUser;
     nodeSongList * auxSongList;
 */
 
-stCell * loadListFromFile(stCell * userList) ///levanta el archivo de stPlaylist y trae CADA canción al usuario de CADA registro stPlaylist.
+stCell *loadListFromFile(stCell *userList) /// levanta el archivo de stPlaylist y trae CADA canciï¿½n al usuario de CADA registro stPlaylist.
 {
-    FILE * filePL;
+    FILE *filePL;
     filePL = fopen(PLAYLISTFILEPATH, "rb");
 
-    nodeSongList * auxSongList;
+    nodeSongList *auxSongList;
     stUser userAux;
     stSong songAux;
     stPlaylist PLAux;
 
-    nodeTreeSong * treeSong;
+    nodeTreeSong *treeSong;
     treeSong = startTree();
     treeSong = fileToTree(treeSong);
-    nodeTreeSong * auxSongTree;
+    nodeTreeSong *auxSongTree;
 
-
-    if(filePL)
+    if (filePL)
     {
-        while(!feof(filePL))
+        while (!feof(filePL))
         {
-            fread(&PLAux,1,sizeof(stPlaylist),filePL);
+            fread(&PLAux, 1, sizeof(stPlaylist), filePL);
             userAux = searchUserFileById(PLAux.idUser);
             if (userAux.off == 1)
             {
@@ -44,7 +42,6 @@ stCell * loadListFromFile(stCell * userList) ///levanta el archivo de stPlaylist
                 auxSongList = createSongNode(songAux);
                 userList->songList = addSongLast(userList->songList, auxSongList);
             }
-
         }
     }
     else
@@ -54,9 +51,9 @@ stCell * loadListFromFile(stCell * userList) ///levanta el archivo de stPlaylist
     return userList;
 }
 
-stCell * createCellUser()
+stCell *createCellUser()
 {
-    stCell * userCellAux;
+    stCell *userCellAux;
     stUser userAux;
     userAux = createOneUser();
     userCellAux->userValue = userAux;
@@ -66,20 +63,19 @@ stCell * createCellUser()
     return userCellAux;
 }
 
-stCell * searchUserCellById(stCell * userList, int idUser)
+stCell *searchUserCellById(stCell *userList, int idUser)
 {
-    stCell * userAux = NULL;
+    stCell *userAux = NULL;
     while (userList)
     {
-        if(userList->userValue.idUser == idUser)
+        if (userList->userValue.idUser == idUser)
             userAux = userList;
         userList = userList->next;
     }
     return userAux;
 }
 
-
-void showUserPlaylists (stCell * userList)
+void showUserPlaylists(stCell *userList)
 {
     printf("\nMostrando el ADL de usuarios \n");
     if (userList)
@@ -90,32 +86,30 @@ void showUserPlaylists (stCell * userList)
         printf("There is nothing to show\n");
 }
 
-
-stCell * clearSongList (stCell * cellList, int idUser)
+stCell *clearSongList(stCell *cellList, int idUser)
 {
-    stCell * userAux;
+    stCell *userAux;
     userAux = searchUserCellById(cellList, idUser);
     userAux->songList = deleteSongList(userAux->songList);
 
     return cellList;
 }
 
-
-stCell * startCellList()
+stCell *startCellList()
 {
     return NULL;
 }
 
-stCell * createCellNode (stUser toCreate, nodeSongList * songList)
+stCell *createCellNode(stUser toCreate, nodeSongList *songList)
 {
-    stCell * cellAux = (stCell*)malloc(sizeof(stCell));
+    stCell *cellAux = (stCell *)malloc(sizeof(stCell));
     cellAux->userValue = toCreate;
     cellAux->songList = songList;
     cellAux->next = NULL;
     return cellAux;
 }
 
-stCell * addFirstCell(stCell * cellList, stCell * toAdd)
+stCell *addFirstCell(stCell *cellList, stCell *toAdd)
 {
     if (!cellList)
     {
@@ -129,9 +123,9 @@ stCell * addFirstCell(stCell * cellList, stCell * toAdd)
     return cellList;
 }
 
-stCell * searchLastCell(stCell * userList)
+stCell *searchLastCell(stCell *userList)
 {
-    stCell * cellAux = userList;
+    stCell *cellAux = userList;
     while (cellAux->next != NULL)
     {
         cellAux = cellAux->next;
@@ -139,9 +133,9 @@ stCell * searchLastCell(stCell * userList)
     return cellAux;
 }
 
-stCell * addLastCell(stCell * cellList, stCell * toAdd)
+stCell *addLastCell(stCell *cellList, stCell *toAdd)
 {
-    stCell * lastSong;
+    stCell *lastSong;
     if (!cellList)
     {
         cellList = toAdd;
@@ -154,7 +148,7 @@ stCell * addLastCell(stCell * cellList, stCell * toAdd)
     return cellList;
 }
 
-stCell * addCellInOrderByName(stCell * cellList, stCell * toAdd)
+stCell *addCellInOrderByName(stCell *cellList, stCell *toAdd)
 {
     if (!cellList)
     {
@@ -168,8 +162,8 @@ stCell * addCellInOrderByName(stCell * cellList, stCell * toAdd)
         }
         else
         {
-            stCell * prev = cellList;
-            stCell * cellAux = cellList;
+            stCell *prev = cellList;
+            stCell *cellAux = cellList;
             while (cellAux && (strcmpi(toAdd->userValue.fullName, cellList->userValue.fullName) > 0))
             {
                 prev = cellAux;
@@ -181,8 +175,7 @@ stCell * addCellInOrderByName(stCell * cellList, stCell * toAdd)
     }
 }
 
-
-stCell * addCellInOrderById(stCell * cellList, stCell * toAdd)
+stCell *addCellInOrderById(stCell *cellList, stCell *toAdd)
 {
     if (!cellList)
     {
@@ -196,8 +189,8 @@ stCell * addCellInOrderById(stCell * cellList, stCell * toAdd)
         }
         else
         {
-            stCell * prev = cellList;
-            stCell * cellAux = cellList;
+            stCell *prev = cellList;
+            stCell *cellAux = cellList;
             while (cellAux && toAdd->userValue.idUser > cellAux->userValue.idUser)
             {
                 prev = cellAux;
@@ -209,14 +202,14 @@ stCell * addCellInOrderById(stCell * cellList, stCell * toAdd)
     }
 }
 
-void showCellNode(stCell * toShow)
+void showCellNode(stCell *toShow)
 {
     puts("-------------------------------------------------------------------\n");
-    printf("ID USUARIO: %d\n",toShow->userValue.idUser);
+    printf("ID USUARIO: %d\n", toShow->userValue.idUser);
     printf("NOMBRE COMPLETO: %s\n", toShow->userValue.fullName);
 
     showPassword(toShow->userValue);
-    printf("Anio Nacimiento: %i\n",toShow->userValue.birthYear);
+    printf("Anio Nacimiento: %i\n", toShow->userValue.birthYear);
     printf("Genero: ");
     if (toShow->userValue.gender == 'f')
     {
@@ -226,10 +219,10 @@ void showCellNode(stCell * toShow)
     {
         printf("Masculino\n");
     }
-    printf("country de origen: %s\n",toShow->userValue.country);
-    printf("Cantidad de canciones escuchadas: %d\n",toShow->userValue.songsPlayed);
+    printf("country de origen: %s\n", toShow->userValue.country);
+    printf("Cantidad de canciones escuchadas: %d\n", toShow->userValue.songsPlayed);
     printf("Canciones escuchadas: \n");
-    showSongList(toShow->songList); ///muestra la lista de canciones del usuario
+    showSongList(toShow->songList); /// muestra la lista de canciones del usuario
 
     if (toShow->userValue.off == 0)
     {
@@ -242,7 +235,7 @@ void showCellNode(stCell * toShow)
     puts("-------------------------------------------------------------------\n");
 }
 
-void showCellList(stCell * toShow) ///recursiva
+void showCellList(stCell *toShow) /// recursiva
 {
     if (toShow)
     {
@@ -252,16 +245,15 @@ void showCellList(stCell * toShow) ///recursiva
     }
 }
 
-
-stCell * addSongToUser(stCell * userList, int idUser, stSong toAdd)
+stCell *addSongToUser(stCell *userList, int idUser, stSong toAdd)
 {
-    nodeSongList * auxSong = createSongNode(toAdd);
-    stCell * auxUser;
+    nodeSongList *auxSong = createSongNode(toAdd);
+    stCell *auxUser;
     auxUser = searchUserCellById(userList, idUser);
-    if(auxUser)
+    if (auxUser)
     {
         auxUser->songList = addLast(auxUser->songList, auxSong);
-        savePlaylist(createPlaylist(idUser, toAdd.idSong)); ///En la accion de escuchar una cacncion, se crea un registro playList y se guarda
+        savePlaylist(createPlaylist(idUser, toAdd.idSong)); /// En la accion de escuchar una cacncion, se crea un registro playList y se guarda
     }
     else
     {
@@ -270,17 +262,15 @@ stCell * addSongToUser(stCell * userList, int idUser, stSong toAdd)
     return userList;
 }
 
-
-///PLAYLIST LIB ///
-///PLAYLIST LIB ///
-///PLAYLIST LIB ///
-///PLAYLIST LIB ///
-
+/// PLAYLIST LIB ///
+/// PLAYLIST LIB ///
+/// PLAYLIST LIB ///
+/// PLAYLIST LIB ///
 
 int totalPlaylists()
 {
     int total = 0;
-    FILE * playListFile;
+    FILE *playListFile;
     stPlaylist playListAux;
     playListFile = fopen(PLAYLISTFILEPATH, "r+b");
 
@@ -295,7 +285,7 @@ int totalPlaylists()
     return total;
 }
 
-stPlaylist createPlaylist (int idUser, int idSong)
+stPlaylist createPlaylist(int idUser, int idSong)
 {
     int asd = 0;
     stPlaylist playListAux;
@@ -305,46 +295,44 @@ stPlaylist createPlaylist (int idUser, int idSong)
     return playListAux;
 }
 
-void savePlaylist (stPlaylist toSave)
+void savePlaylist(stPlaylist toSave)
 {
 
-    FILE * playListFile;
+    FILE *playListFile;
     playListFile = fopen(PLAYLISTFILEPATH, "a+b");
     fwrite(&toSave, sizeof(stPlaylist), 1, playListFile);
     fclose(playListFile);
 }
 
-void playSong (int idUser, int idSong)
+void playSong(int idUser, int idSong)
 /// Reproduce la cancion, genera el stPlayList correspondiente y se guarda en historial de usuario
 {
     stUser userAux;
     stSong songAux;
-    FILE * userFile;
-    FILE * songFile;
+    FILE *userFile;
+    FILE *songFile;
 
-    char peli[30];
-
-    if((songFile = fopen(SONGSFILEPATH, "r+b")) != NULL) ///valida que haya archivo
+    if ((songFile = fopen(SONGSFILEPATH, "r+b")) != NULL) /// valida que haya archivo
     {
-        fseek(songFile,(idSong-1) * sizeof(stSong), SEEK_SET); ///se posiciona dondce esta el ID en el archivo
-        fread(&songAux, sizeof(stSong), 1, songFile);///lo guarda en el aux de cancion
+        fseek(songFile, (idSong - 1) * sizeof(stSong), SEEK_SET); /// se posiciona dondce esta el ID en el archivo
+        fread(&songAux, sizeof(stSong), 1, songFile);             /// lo guarda en el aux de cancion
         system("cls");
 
         printf("Usted esta escuchando %s - %s\n", songAux.title, songAux.artist);
 
         playing();
 
-//        printf("Presione enter cuando finalice la reproduccion\n");
+        //        printf("Presione enter cuando finalice la reproduccion\n");
         getch();
     }
 
-    if((userFile = fopen(USERSFILEPATH, "r+b")) != NULL)
+    if ((userFile = fopen(USERSFILEPATH, "r+b")) != NULL)
     {
-        fseek(userFile,(idUser-1) * sizeof(stUser), SEEK_SET);
+        fseek(userFile, (idUser - 1) * sizeof(stUser), SEEK_SET);
         fread(&userAux, sizeof(stUser), 1, userFile);
         userAux.songsPlayed[userAux.totalSongsPlayed] = idSong;
-        userAux.totalSongsPlayed ++;
-        fseek(userFile,(idUser-1) * sizeof(stUser), SEEK_SET);
+        userAux.totalSongsPlayed++;
+        fseek(userFile, (idUser - 1) * sizeof(stUser), SEEK_SET);
         fwrite(&userAux, sizeof(stUser), 1, userFile);
     }
 
