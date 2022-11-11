@@ -140,25 +140,21 @@ int validUser(char userName[])
     }
     return idUser;
 }
+
 void userProfile(int idUser)
 {
     stUser userAux;
     FILE *userFile = fopen(USERSFILEPATH, "rb");
-    if (userFile)
+
+    if (userFile != NULL)
     {
-        fseek(userFile, (idUser - 1) * (sizeof(stUser)), SEEK_SET);
-        fread(&userAux, sizeof(stUser), 1, userFile);
-        showAnUser(userAux); ///////////////////////////////////////////////agregar mostrar 1
-        if (fclose(userFile))
+        while (fread(&userAux, sizeof(stUser), 1, userFile))
         {
-            printf("*ERROR*\n");
-            printf("El archivo no se pudo cerrar correctamente\n");
+            if (userAux.idUser == idUser)
+            {
+                showAnUser(userAux);
+            }
         }
-    }
-    else
-    {
-        printf("*ERROR*\n");
-        printf("El archivo no se pudo abrir correctamente\n");
     }
 }
 

@@ -311,18 +311,31 @@ void playSong(int idUser, int idSong)
     stSong songAux;
     FILE *userFile;
     FILE *songFile;
+    int flag = 0;
 
     if ((songFile = fopen(SONGSFILEPATH, "r+b")) != NULL) /// valida que haya archivo
     {
+
+        while (fread(&songAux, sizeof(stSong), 1, songFile) > 0)
+        {
+            if (songAux.idSong == idSong)
+            {
+                printf("Usted esta escuchando %s - %s\n", songAux.title, songAux.artist);
+                flag = 1;
+                break;
+            }
+        }
         fseek(songFile, (idSong - 1) * sizeof(stSong), SEEK_SET); /// se posiciona dondce esta el ID en el archivo
         fread(&songAux, sizeof(stSong), 1, songFile);             /// lo guarda en el aux de cancion
-        system("cls");
+        // system("cls");
 
-        printf("Usted esta escuchando %s - %s\n", songAux.title, songAux.artist);
+        // printf("Usted esta escuchando %s - %s\n", songAux.title, songAux.artist);
+        if (flag == 1)
+        {
+            playing();
+        }
 
-        playing();
-
-        //        printf("Presione enter cuando finalice la reproduccion\n");
+        // printf("Presione enter cuando finalice la reproduccion\n");
         getch();
     }
 
