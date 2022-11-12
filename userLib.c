@@ -77,7 +77,6 @@ stUser createOneUser()
     int decryptedPass[2][5]; /// cambia la contrase�a q ingresa el userAux a una matriz de enteros
     int keyPass[2][2];       /// matriz encriptadora
     int encryptedPass[2][5]; /// matriz Encriptada
-    showAnUser(userAux);
 
     // CARGA DE 1 USUARIO POR TECLADO
     userAux.idUser = idUser;
@@ -418,7 +417,7 @@ void updateUser(int idUser)
             do
             {
                 printf("\n1.Nombre de usuario: %s", userAux.fullName);
-                printf("Password: ");
+                printf("\nPassword: ");
                 showPassword(userAux);
                 printf("\n3.Nacimiento: %d", userAux.birthYear);
                 printf("\n4.Genero: %c", userAux.gender);

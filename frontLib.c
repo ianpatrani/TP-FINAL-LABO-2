@@ -156,6 +156,10 @@ void userProfile(int idUser)
             }
         }
     }
+    else
+    {
+        printf("El archivo no se pudo abrir correctamente\n");
+    }
 }
 
 void playing()
@@ -207,7 +211,19 @@ void userMenu(int idUser)
             break;
         case 4:
             system("cls");
-            idSong = getSongId();
+            char name[30];
+            printf("Ingrese el nombre de la cancion que desea buscar:\n");
+            fflush(stdin);
+            gets(name);
+            idSong = searchSongByName(name);
+            if (idSong != 0)
+            {
+                playSong(idUser, idSong);
+            }
+            else
+            {
+                printf("\nLa cancion no existe\n");
+            }
             gotoxy(30, 25);
             puts("press enter..\n");
             getch();

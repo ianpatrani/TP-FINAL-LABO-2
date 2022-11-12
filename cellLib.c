@@ -329,13 +329,11 @@ void playSong(int idUser, int idSong)
         fread(&songAux, sizeof(stSong), 1, songFile);             /// lo guarda en el aux de cancion
         // system("cls");
 
-        // printf("Usted esta escuchando %s - %s\n", songAux.title, songAux.artist);
         if (flag == 1)
         {
             playing();
         }
 
-        // printf("Presione enter cuando finalice la reproduccion\n");
         getch();
     }
 

@@ -234,6 +234,28 @@ int songNameValidation(char nameToSearch[])
     return flag;
 }
 
+int searchSongByName(char nameToSearch[])
+{
+    FILE *songFile;
+    stSong songAux;
+    songFile = fopen(SONGSFILEPATH, "rb");
+    int idSong = 0;
+
+    if (songFile != NULL)
+    {
+        while (fread(&songAux, sizeof(stSong), 1, songFile) > 0)
+        {
+            if (strcmpi(songAux.title, nameToSearch) == 0)
+            {
+                idSong = songAux.idSong;
+                break;
+            }
+
+        }
+    }
+    return idSong;
+}
+
 int searchSongFileByName(char nameToSearch[])
 {
     FILE *songFile;
@@ -247,10 +269,13 @@ int searchSongFileByName(char nameToSearch[])
         {
             if (strcmpi(songAux.title, nameToSearch == 0))
                 auxId = songAux.idSong;
+            else
+                printf("No se encontro la cancion");
         }
     }
     return auxId;
 }
+
 int totalSongs()
 {
     int total = 0;
