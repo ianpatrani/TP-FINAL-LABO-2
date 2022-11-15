@@ -69,7 +69,7 @@ int login ()
 
     gets(userName);
     userAux = searchUserFileByName(userName);
-    showAnUser(userAux);
+
     while((strcmpi(userAux.fullName, userName)) != 0)
     {
         system("cls");
@@ -186,10 +186,12 @@ void userMenu (int idUser)
 {
     int option;
     int idSong = 0;
+    stCell * userList = startCellList();/// CREA LA LISTA DE USUARIOS
+    printf("TEST 1 STEP \n ");
+    userList = loadListFromFile(userList);/// CARGA LA LISTA DE US
+    showCellList(userList);
+    stCell * userAux;
 
-
-
-    int totalIdM = 0;
     char cControl = 's';
     while(cControl == 's')
     {
@@ -199,25 +201,28 @@ void userMenu (int idUser)
         {
         case 1:
             system("cls");
-            userProfile(idUser);
+            printf("TEST 2 STEP \n ");
+            userAux = searchUserCellById(userList, idUser);// busca el user por id y lo almacena en la variable aux
+            printf("TEST 3 STEP \n ");
+            showCellNode(userAux); ///printea el user
             puts("press enter..\n");
             getch();
             break;
         case 2:
             system("cls");
-            idSong = songIdValidation();
-            playSong(idUser, idSong);
+            idSong = songIdValidation(); //valida el tema
+            playSong(idUser, idSong); ///reproduce la peli y genera el strcut playList
             ///reproducir peli
             break;
         case 3:
             system("cls");
-            showSongFile();
+            showSongFile();/// muestra la lista de canciones disponibles desde el archivo
             puts("press enter..\n");
             getch();
             break;
         case 4:
             system("cls");
-            idSong = getSongId();
+            findSongByName();
             gotoxy(30, 25);
             puts("press enter..\n");
             getch();
@@ -229,13 +234,13 @@ void userMenu (int idUser)
             puts("press enter..\n");
             getch();
             break;
-        /*case 6:
+        case 6:
             system("cls");
-            recomend(cUser, cMovies, idUser);
+            houseRecommendations(userList, idUser);
             puts("press enter..\n");
             getch();
             break;
-            */
+
         case 7:
             system("cls");
             gotoxy(30, 20);

@@ -64,7 +64,7 @@ void showAnUser (stUser toShow)
     showPassword(toShow);
 
 
-    printf("Total de cacnciones escuchadas: \t%d \n\n", toShow.totalSongsPlayed);
+    printf("Total de cacnciones escuchadas: %d \n\n", toShow.totalSongsPlayed);
 }
 
 stUser createOneUser()
@@ -74,16 +74,15 @@ stUser createOneUser()
     int iterator = 0;
     int checkName = 0;
 
+
     char passAux[11];        /// auxiliar de contrasenia
     char passAux1[11];       /// auxiliar de verificacion de contraseña
     int decryptedPass[2][5]; /// cambia la contraseña q ingresa el userAux a una matriz de enteros
     int keyPass[2][2];       /// matriz encriptadora
     int encryptedPass[2][5]; /// matriz Encriptada
-    showAnUser(userAux);
-
-
     // CARGA DE 1 USUARIO POR TECLADO
     userAux.idUser = idUser;
+    userAux.admin = 0;
     printf("Ingrese un nombre de usuario \n");
     fflush(stdin);
     gets(userAux.fullName);
@@ -142,6 +141,7 @@ stUser createOneUser()
     gets(userAux.country);
     userAux.totalSongsPlayed = 0;
     userAux.off = 0;
+
     while (iterator < 30)
     {
         userAux.songsPlayed[iterator] = -1;
@@ -270,6 +270,8 @@ void showUsers(nodeUser *userList)
     userList = loadUsersFromFile(userList);
     showUserList(userList);
 }
+
+
 int getUserIdToUpdate ()
 {
     int idUser;
@@ -302,6 +304,7 @@ int getUserIdToUpdate ()
     while (cControl != 's');
     return idUser;
 }
+
 //-----------------------------------
 // D.2)FUNCION QUE BUSCA USER POR ID
 //-----------------------------------
@@ -632,47 +635,15 @@ nodeUser * deleteFirst (nodeUser * userList)
 }
 
 
-void showUserNode(nodeUser * toShow)
-{
 
-
-    puts("-------------------------------------------------------------------\n");
-    printf("ID USUARIO: %d\n",toShow->value.idUser);
-    printf("NOMBRE DE USUARIO: %s\n", toShow->value.fullName);
-
-    printf("PASSWORD: \t");
-    showPassword(toShow->value);
-
-    printf("Anio Nacimiento: %i\n",toShow->value.birthYear);
-    printf("Genero: ");
-    if (toShow->value.gender == 'f')
-    {
-        printf("Femenino\n");
-    }
-    else
-    {
-        printf("Masculino\n");
-    }
-    printf("Pais de origen: %s\n",toShow->value.country);
-    printf("Cantidad de canciones escuchadas: %d\n",toShow->value.totalSongsPlayed);
-
-    if (toShow->value.off == 0)
-    {
-        printf("Estado: ACTIVO\n");
-    }
-    else
-    {
-        printf("Estado: INACTIVO\n");
-    }
-    puts("-------------------------------------------------------------------\n");
-}
 
 void showUserList(nodeUser * toShow) ///recursiva
 {
     if (toShow)
     {
-        showUserNode(toShow);
+        showAnUser(toShow->value);
         showUserList(toShow->next);
+
     }
 }
 

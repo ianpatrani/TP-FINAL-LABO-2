@@ -35,7 +35,10 @@ stCell * searchUserCellById(stCell * userList, int idUser);
 stCell * addSongToUser(stCell * userList, int idUser, stSong toAdd);
 stCell * clearSongList (stCell * cellList, int idUser);
 void showUserPlaylists (stCell * userList);
-
+void houseRecommendations (stCell * userList, int idUser);
+void artistRecommendation (nodeSongList * userSongList, int totalPlays);
+int totalPlaysByUser (stCell * userNode);
+void morePopularRecommendation ();
 
 
 

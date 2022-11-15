@@ -15,6 +15,7 @@ typedef struct
     int year;
     char gender[20];
     char comment[100];
+    int timesPlayed; //veces que se reprodujo
     int off; // indica 1 o 0 si la cancion fue eliminada
 } stSong;
 
@@ -42,6 +43,9 @@ void showSongFile();
 int songIdValidation();
 int getSongId();
 int searchSongFileByName (char nameToSearch[]);
+void showSongFileByArtist (char artistToShow[]);
+int maxTimesPlayed ();
+void showSong (stSong toShow);
 
 ///LISTA DE CANCIONES
 
@@ -68,9 +72,10 @@ void showNodeTreeSong(nodeTreeSong * toShow);
 void inOrder(nodeTreeSong * toShow);
 void preOrder(nodeTreeSong * toShow);
 void postOrder(nodeTreeSong * toShow);
-nodeTreeSong * searchNodeByNodeID(nodeTreeSong *tree, int idToSearch);
+nodeTreeSong * searchNodeById(nodeTreeSong * treeSong, int idSong);
 nodeTreeSong * deleteTreeNode(nodeTreeSong *tree, int idToDelete);
 void loadArrayFromSongFile(stSong toSave[]);
 nodeTreeSong * insertFromArray(stSong arraySong[], nodeTreeSong * treeSong, int valids, int midArray);
 nodeTreeSong * fileToTree(nodeTreeSong * treeSong);
+void findSongByName ();
 

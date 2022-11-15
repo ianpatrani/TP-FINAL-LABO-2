@@ -6,53 +6,135 @@
 ///CELL LIB///
 ///CELL LIB///
 ///CELL LIB///
-/*stCell * loadListFromFile(stCell * userList) ///levanta el archivo de stPlaylist y trae CADA canción al usuario de CADA registro stPlaylist.
-{                                           ///recordar que el struct stPlaylist tiene 1 idSong y 1 idUser para relacionarlas.
-                                                ///eso es lo que pide el enunciado.
-                                                    ///PERO PERO PERO por qué no cargar la lista de canciones desde los idSong que almacena c/ user?
-    FILE * fileUser;
-    nodeSongList * auxSongList;
-*/
+
+void houseRecommendations (stCell * userList, int idUser)
+{
+    stCell * userAux = searchUserCellById(userList, idUser);
+    int totalPlays = totalPlaysByUser(userAux);
+    if (totalPlays > 0)
+    {
+        artistRecommendation(userAux->songList, totalPlays);
+    }
+    else
+    {
+        morePopularRecommendation();
+    }
+}
+
+
+void morePopularRecommendation ()
+{
+    int recordPlays = maxTimesPlayed();
+    FILE * songFile = fopen(SONGSFILEPATH, "rb");
+    stSong auxSong;
+    int itrtor = 3;
+
+    if (songFile)
+    {
+        printf("Estas son unas de las 3 canciones mas escuchadas de la plataforma =O \nDale una chance!\n");
+        while (fread(&auxSong, 1, sizeof(stSong), songFile) > 1 && itrtor > 0)
+        {
+            if ((auxSong.timesPlayed > (recordPlays-3)) && auxSong.timesPlayed <= recordPlays)
+            {
+                showSong(auxSong);
+                itrtor--;
+            }
+        }
+    }
+
+}
+
+void artistRecommendation (nodeSongList * userSongList, int totalPlays)
+{
+    int randListPos = rand () % 1 + totalPlays-1; ///retorna un punto aleatorio de la lista por id
+    nodeSongList * songAux = searchSongById(userSongList, randListPos);
+    printf("Quiza te interese escuchar nuevamente a %s, no? :)\n\n", songAux->value.artist);
+    showSongFileByArtist(songAux->value.artist);
+}
+
+
+int totalPlaysByUser (stCell * userNode)
+{
+    int totalPlays = 0;
+    if(userNode->songList)
+    {
+        while (userNode->songList)
+        {
+            totalPlays++;
+            userNode->songList = userNode->songList->next;
+        }
+    }
+    return totalPlays;
+}
+
 
 stCell * loadListFromFile(stCell * userList) ///levanta el archivo de stPlaylist y trae CADA canción al usuario de CADA registro stPlaylist.
 {
     FILE * filePL;
+    FILE * fileUser;
     filePL = fopen(PLAYLISTFILEPATH, "rb");
+    fileUser = fopen(USERSFILEPATH, "rb");
 
-    nodeSongList * auxSongList;
+    nodeSongList * auxSongList = startSongList();
     stUser userAux;
     stSong songAux;
     stPlaylist PLAux;
 
     nodeTreeSong * treeSong;
     treeSong = startTree();
+
     treeSong = fileToTree(treeSong);
+    inOrder(treeSong);
     nodeTreeSong * auxSongTree;
 
-
-    if(filePL)
+    if (fileUser) //si hay usuarios los carga.. aunque no hayan escuchado nada
     {
-        while(!feof(filePL))
+        while (fread(&userAux, 1, sizeof(stUser), fileUser) > 1)
         {
-            fread(&PLAux,1,sizeof(stPlaylist),filePL);
-            userAux = searchUserFileById(PLAux.idUser);
-            if (userAux.off == 1)
+            printf("STEP 2 \n");
+            if (userAux.off == 0) //siempre y cuando no esten dados de baja
             {
-                userList->userValue = userAux;
-                auxSongTree = searchNodeByNodeID(treeSong, PLAux.idSong);
-                songAux = auxSongTree->value;
-                auxSongList = createSongNode(songAux);
-                userList->songList = addSongLast(userList->songList, auxSongList);
-            }
+                printf("STEP 3 \n");
+                userList = addLastCell(userList, createCellNode(userAux, auxSongList)); //agrega si o si la celda aunque no tenga lista de canciones.
+                if(filePL) //aca utilizamos la estructura playlist para buscar si el usuario tiene canciones reproducidas y saber cuales son
+                {
+                    printf("STEP 4 \n");
+                    while(!feof(filePL))
+                    {
+                        printf("STEP 5 \n");
+                        fread(&PLAux,1,sizeof(stPlaylist),filePL);
+                        printf("STEP 6 \n");
+                        if (PLAux.idUser == userAux.idUser) //si el usuario es el mismo que la estructura playList ingresa
+                        {
+                            printf("STEP 7 \n");
+                            auxSongTree = searchNodeById(treeSong, PLAux.idSong); ///busca en el arbol x id de cancion
+                            printf("STEP 8 \n");
 
+                            if(auxSongTree)
+                            {
+                                auxSongList = createSongNode(auxSongTree->value);
+                                userList->songList = addSongLast(userList->songList, auxSongList);
+                            }
+                             ///crea un nodo para la lista de canciones del user
+                            printf("STEP 9 \n");
+                             ///y la agrega ultima
+                        }
+                    }
+                }
+            }
         }
     }
+
+
     else
     {
         printf("error en abrir el archivo!\n");
     }
     return userList;
 }
+
+
+
 
 stCell * createCellUser()
 {
@@ -69,11 +151,17 @@ stCell * createCellUser()
 stCell * searchUserCellById(stCell * userList, int idUser)
 {
     stCell * userAux = NULL;
-    while (userList)
+    if (userList)
     {
-        if(userList->userValue.idUser == idUser)
-            userAux = userList;
-        userList = userList->next;
+        while (userList && !userAux)
+        {
+            if(userList->userValue.idUser == idUser)
+
+            {
+                userAux = userList;
+            }
+            userList = userList->next;
+        }
     }
     return userAux;
 }
@@ -81,7 +169,7 @@ stCell * searchUserCellById(stCell * userList, int idUser)
 
 void showUserPlaylists (stCell * userList)
 {
-    printf("\nMostrando el ADL de usuarios \n");
+    printf("\nMostrando lista de usuarios \n");
     if (userList)
     {
         showCellList(userList);
@@ -211,6 +299,7 @@ stCell * addCellInOrderById(stCell * cellList, stCell * toAdd)
 
 void showCellNode(stCell * toShow)
 {
+    printf("TEST 4 STEP \N ");
     puts("-------------------------------------------------------------------\n");
     printf("ID USUARIO: %d\n",toShow->userValue.idUser);
     printf("NOMBRE COMPLETO: %s\n", toShow->userValue.fullName);
@@ -349,6 +438,6 @@ void playSong (int idUser, int idSong)
     }
 
     stPlaylist PLAux;
-    PLAux = createPlaylist(idUser, idSong);
-    savePlaylist(PLAux);
+    PLAux = createPlaylist(idUser, idSong); //crea un struct playList
+    savePlaylist(PLAux);     ///guarda el struct en el archivo de playList
 }
