@@ -188,6 +188,7 @@ void userMenu (int idUser)
     int idSong = 0;
     stCell * userList = startCellList();/// CREA LA LISTA DE USUARIOS
     userList = loadListFromFile(userList);/// CARGA LA LISTA DE US
+
     stCell * userAux;
 
     char cControl = 's';
@@ -201,8 +202,6 @@ void userMenu (int idUser)
             system("cls");
             userAux = searchUserCellById(userList, idUser);// busca el user por id y lo almacena en la variable aux
             showCellNode(userAux); ///printea el user
-
-
             puts("press enter..\n");
             getch();
             break;
@@ -289,6 +288,10 @@ void adminMenu (int idUser)
     int idSong = 0;
     int totalMovies = 0;
     char cControl = 's';
+    stCell * userList = startCellList();
+    userList = loadListFromFile(userList);
+
+
     while(cControl == 's')
     {
         system("cls");
@@ -297,7 +300,7 @@ void adminMenu (int idUser)
         {
         case 1:
             system("cls");
-            userProfile(idUser);
+            showCellNode(searchUserCellById(userList, idUser));
             gotoxy(30, 25);
             puts("press enter..\n");
             gotoxy(30, 26);
@@ -305,7 +308,7 @@ void adminMenu (int idUser)
             break;
         case 2:
             system("cls");
-            userCrud();
+            userCrud(userList);
             puts("press enter..\n");
             getch();
             break;
@@ -326,16 +329,13 @@ void adminMenu (int idUser)
         }
     }
 }
-void userCrud ()
+void userCrud (stCell * userList)
 {
     int iOption = 0;
     int idUser = 0;
     int iAux = 0;
 
     char cControl = 's';
-    nodeUser * userList = startUserList();
-    nodeUser * auxUser;
-    userList = loadUsersFromFile(userList);
 
     while(cControl == 's')
     {
@@ -345,7 +345,7 @@ void userCrud ()
         {
         case 1:
             system("cls");
-            showUsers(userList);
+            showCellList(userList);
             puts("press enter..\n");
             getch();
             break;
@@ -353,10 +353,10 @@ void userCrud ()
             system("cls");
             idUser = getUserIdToUpdate();
             system("cls");
-            userProfile(idUser);
+            showCellNode(searchUserCellById(userList, idUser));
             updateUser(idUser);
             system("cls");
-            userProfile(idUser);
+            showCellNode(searchUserCellById(userList, idUser));
             gotoxy(30, 25);
             puts("press enter..\n");
             gotoxy(30, 26);

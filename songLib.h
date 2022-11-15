@@ -10,7 +10,7 @@ typedef struct
     int idSong;
     char title[30];
     char artist[20];
-    int duration;
+    float duration;
     char album[20];
     int year;
     char gender[20];

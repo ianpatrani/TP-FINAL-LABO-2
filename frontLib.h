@@ -30,7 +30,7 @@ void optionMenuAdmin (int option);
 void adminMenu(int idUser);
 ///interfaz menu admin
 
-void userCrud();
+void userCrud(stCell * userList);
 ///C(create)R(read)U(update)D(delete) de users
 
 void songCrud ();

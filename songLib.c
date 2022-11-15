@@ -84,7 +84,7 @@ void loadSongToFile()
     FILE * fileSong;
     fileSong = fopen(SONGSFILEPATH, "ab");
 
-    if (fileSong != NULL)
+    if (fileSong)
     {
         auxSong.idSong = songIdCreator();
 
@@ -98,7 +98,7 @@ void loadSongToFile()
 
         printf("Ingrese duracion: ");
         fflush(stdin);
-        scanf("%d", &auxSong.duration);
+        scanf("%f", &auxSong.duration);
 
         printf("Ingrese album: ");
         fflush(stdin);
@@ -162,8 +162,9 @@ void updateSong(int idToUpdate)
     stSong auxSong;
     FILE * fileSong;
     fileSong = fopen(SONGSFILEPATH, "r+b");
-    int id;
-    int option;
+    int id = 0;
+    int option = 0;
+    float durationAux  = 0;
 
     showSongFile();
 
@@ -200,7 +201,7 @@ void updateSong(int idToUpdate)
                 case 3:
                     printf("\nIngrese nueva duracion: ");
                     fflush(stdin);
-                    gets(auxSong.duration);
+                    scanf("%f", &durationAux);
                     break;
                 case 4:
                     printf("\nIngrese nuevo album: ");
@@ -364,7 +365,7 @@ void showSong (stSong toShow)
     printf("\n IdCancion:..........%d", toShow.idSong);
     printf("\n Titulo:............ %s", toShow.title);
     printf("\n Artista:........... %s", toShow.artist);
-    printf("\n Duracion:.......... %d", toShow.duration);
+    printf("\n Duracion:.......... %.2f", toShow.duration);
     printf("\n Album:..............%s", toShow.album);
     printf("\n Anio:.............. %d", toShow.year);
     printf("\n Genero:............ %s", toShow.gender);
@@ -616,19 +617,16 @@ nodeTreeSong * insertNodeTree(nodeTreeSong *tree, stSong song)
 {
     if (tree == NULL)
     {
-        printf("STEP 8!! \n");
         tree = createNodeTree(song);
     }
     else
     {
-        printf("STEP 9!! \n");
         if (song.idSong > tree->value.idSong)
         {
             tree->right = insertNodeTree(tree->right, song);
         }
         else
         {
-            printf("STEP 10!! \n");
             tree->left = insertNodeTree(tree->left, song);
         }
     }
@@ -706,10 +704,8 @@ nodeTreeSong * insertFromArray(stSong songArray[], nodeTreeSong *songTree, int v
     srand(time(NULL));
     while (i < valid)
     {
-        printf("STEP 6! \n");
         if (songTree == NULL)
         {
-            printf("STEP 7 \n");
             songTree = insertNodeTree(songTree, songArray[midArray]);
         }
         else
@@ -744,22 +740,17 @@ nodeTreeSong * fileToTree(nodeTreeSong * songTree)
     int dim = totalSongs();
     int i = 0;
     stSong songArray[dim];
-    printf("STEP 2 \n");
     if (songFile)
     {
         while (!feof(songFile) && i<dim)
         {
-            printf("STEP 3+ \n");
             fread(&songArray[i] , sizeof(stSong), 1, songFile);
             i++;
         }
     }
 
-    printf("STEP 4 \n");
     int mid = midArray(dim);
-    printf("STEP 5 \n");
     songTree = insertFromArray(songArray, songTree, dim, mid);
-    printf("STEP 12!!!! \n");
     return songTree;
 }
 
