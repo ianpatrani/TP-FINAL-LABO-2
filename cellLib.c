@@ -377,7 +377,6 @@ int totalPlaylists()
 
 stPlaylist createPlaylist (int idUser, int idSong)
 {
-    int asd = 0;
     stPlaylist playListAux;
     playListAux.idPlayList = totalPlaylists() + 1;
     playListAux.idUser = idUser;
@@ -402,29 +401,26 @@ void playSong (int idUser, int idSong)
     FILE * userFile;
     FILE * songFile;
 
-    char peli[30];
-
-    if((songFile = fopen(SONGSFILEPATH, "r+b")) != NULL) ///valida que haya archivo
+    if((songFile = fopen(SONGSFILEPATH, "r+b"))) ///valida que haya archivo
     {
         fseek(songFile,(idSong-1) * sizeof(stSong), SEEK_SET); ///se posiciona dondce esta el ID en el archivo
-        fread(&songAux, sizeof(stSong), 1, songFile);///lo guarda en el aux de cancion
+        fread(&songAux, sizeof(stSong), 1, songFile);///lo escribe en el auxSong
         system("cls");
 
-        printf("Usted esta escuchando %s - %s\n", songAux.title, songAux.artist);
+        printf("Usted esta escuchando %s - %s\n", songAux.title, songAux.artist); ///front de reproduccion del tema
 
-        playing();
+        playing();///front de reproduccion del tema
 
 //        printf("Presione enter cuando finalice la reproduccion\n");
         getch();
     }
 
-    if((userFile = fopen(USERSFILEPATH, "r+b")) != NULL)
+    if((userFile = fopen(USERSFILEPATH, "r+b")))
     {
         fseek(userFile,(idUser-1) * sizeof(stUser), SEEK_SET);
         fread(&userAux, sizeof(stUser), 1, userFile);
-        userAux.songsPlayed[userAux.totalSongsPlayed] = idSong;
-        userAux.totalSongsPlayed ++;
-        fseek(userFile,(idUser-1) * sizeof(stUser), SEEK_SET);
+        userAux.songsPlayed[userAux.totalSongsPlayed] = idSong;///busca el usuario en el archivo y le agrega el id de la canción en la sig pos
+        userAux.totalSongsPlayed = userAux.totalSongsPlayed++; ///suma 1 el total de canciones reproducidas
         fwrite(&userAux, sizeof(stUser), 1, userFile);
     }
 

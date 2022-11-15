@@ -188,9 +188,6 @@ void userMenu (int idUser)
     int idSong = 0;
     stCell * userList = startCellList();/// CREA LA LISTA DE USUARIOS
     userList = loadListFromFile(userList);/// CARGA LA LISTA DE US
-
-    stCell * userAux;
-
     char cControl = 's';
     while(cControl == 's')
     {
@@ -200,8 +197,7 @@ void userMenu (int idUser)
         {
         case 1:
             system("cls");
-            userAux = searchUserCellById(userList, idUser);// busca el user por id y lo almacena en la variable aux
-            showCellNode(userAux); ///printea el user
+            showCellNode(searchUserCellById(userList, idUser)); ///printea el user
             puts("press enter..\n");
             getch();
             break;

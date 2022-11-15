@@ -63,19 +63,19 @@ stSong searchSongFileById(int idSong)
 
 int songIdCreator()
 {
+    int newId = 0;
     FILE * fileSong;
     fileSong = fopen(SONGSFILEPATH, "rb");
-    int i = 0;
     if (fileSong)
     {
         fseek(fileSong, sizeof(stSong), SEEK_END);
-        i = ftell(fileSong) / sizeof(stSong);
+        newId = (ftell(fileSong) / sizeof(stSong)) + 1;
     }
     else
     {
         printf("ERROR de datos - El archivo no pudo ser abierto");
     }
-    return i++;
+    return newId;
 }
 
 void loadSongToFile()
@@ -494,16 +494,17 @@ nodeSongList * addInOrderBySongName(nodeSongList *songList, nodeSongList * toAdd
 
 void showNode(nodeSongList * song)
 {
-    printf("idSong:.. %d \n", song->value.idSong);
-    printf("title:..... %s \n", song->value.title);
-    printf("artist:.... %s \n", song->value.artist);
-    printf("duration:... %d \n", song->value.duration);
-    printf("album:...... %s \n", song->value.album);
-    printf("year:....... %d \n", song->value.year);
-    printf("genres:..... %s \n", song->value.gender);
-    printf("comment:. %s \n", song->value.comment);
-    printf("deleted:.. %c \n", song->value.off);
+    puts("\n-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-");
+    printf("ID: %d \n", song->value.idSong);
+    printf("Titulo: %s \n", song->value.title);
+    printf("Artista: %s \n", song->value.artist);
+    printf("Album: %s \n", song->value.album);
+    printf("Lanzamiento: %d \n", song->value.year);
+    printf("Duracion:... %.2f \n", song->value.duration);
+    printf("Genero:..... %s \n", song->value.gender);
+
 }
+
 
 void showSongList(nodeSongList * toShow)
 {
