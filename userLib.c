@@ -431,12 +431,12 @@ void updateUser(int idUser)
         {
             do
             {
-                printf("\n1.Nombre de usuario: %s", userAux.fullName);
+                printf("1.Nombre de usuario: %s\n", userAux.fullName);
                 printf("Password: ");
                 showPassword(userAux);
-                printf("\n3.Nacimiento: %d", userAux.birthYear);
-                printf("\n4.Genero: %c", userAux.gender);
-                printf("\n5.Pais: %s", userAux.country);
+                printf("\n3.Nacimiento: %d\n", userAux.birthYear);
+                printf("4.Genero: %c\n", userAux.gender);
+                printf("5.Pais: %s\n", userAux.country);
 
                 printf("\n\nEscriba el numero del campo que desea modificar o 6 para salir :");
                 scanf("%d", &fieldOption);

@@ -747,19 +747,14 @@ nodeTreeSong * fileToTree(nodeTreeSong * songTree)
     printf("STEP 2 \n");
     if (songFile)
     {
-        while (!feof(songFile))
+        while (!feof(songFile) && i<dim)
         {
             printf("STEP 3+ \n");
-            fread(&songAux, sizeof(stSong), 1, songFile);
-            songArray[i] = songAux;
+            fread(&songArray[i] , sizeof(stSong), 1, songFile);
             i++;
         }
     }
-    while(i < dim)
-    {
-        showSong(songArray[i]);
-        i++;
-    }
+
     printf("STEP 4 \n");
     int mid = midArray(dim);
     printf("STEP 5 \n");

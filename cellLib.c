@@ -91,24 +91,19 @@ stCell * loadListFromFile(stCell * userList) ///levanta el archivo de stPlaylist
     {
         while (fread(&userAux, 1, sizeof(stUser), fileUser) > 1)
         {
-            printf("STEP 2 \n");
+            showAnUser(userAux);
             if (userAux.off == 0) //siempre y cuando no esten dados de baja
             {
-                printf("STEP 3 \n");
                 userList = addLastCell(userList, createCellNode(userAux, auxSongList)); //agrega si o si la celda aunque no tenga lista de canciones.
+                showCellList(userList);
                 if(filePL) //aca utilizamos la estructura playlist para buscar si el usuario tiene canciones reproducidas y saber cuales son
                 {
-                    printf("STEP 4 \n");
                     while(!feof(filePL))
                     {
-                        printf("STEP 5 \n");
                         fread(&PLAux,1,sizeof(stPlaylist),filePL);
-                        printf("STEP 6 \n");
                         if (PLAux.idUser == userAux.idUser) //si el usuario es el mismo que la estructura playList ingresa
                         {
-                            printf("STEP 7 \n");
                             auxSongTree = searchNodeById(treeSong, PLAux.idSong); ///busca en el arbol x id de cancion
-                            printf("STEP 8 \n");
 
                             if(auxSongTree)
                             {
@@ -116,7 +111,6 @@ stCell * loadListFromFile(stCell * userList) ///levanta el archivo de stPlaylist
                                 userList->songList = addSongLast(userList->songList, auxSongList);
                             }
                              ///crea un nodo para la lista de canciones del user
-                            printf("STEP 9 \n");
                              ///y la agrega ultima
                         }
                     }
@@ -124,8 +118,6 @@ stCell * loadListFromFile(stCell * userList) ///levanta el archivo de stPlaylist
             }
         }
     }
-
-
     else
     {
         printf("error en abrir el archivo!\n");
@@ -229,14 +221,14 @@ stCell * searchLastCell(stCell * userList)
 
 stCell * addLastCell(stCell * cellList, stCell * toAdd)
 {
-    stCell * lastSong;
+    stCell * lastUser;
     if (!cellList)
     {
         cellList = toAdd;
     }
     else
     {
-        lastSong = searchLastSong(cellList);
+        lastUser = searchLastCell(cellList);
         cellList->next = toAdd;
     }
     return cellList;
@@ -299,7 +291,6 @@ stCell * addCellInOrderById(stCell * cellList, stCell * toAdd)
 
 void showCellNode(stCell * toShow)
 {
-    printf("TEST 4 STEP \N ");
     puts("-------------------------------------------------------------------\n");
     printf("ID USUARIO: %d\n",toShow->userValue.idUser);
     printf("NOMBRE COMPLETO: %s\n", toShow->userValue.fullName);

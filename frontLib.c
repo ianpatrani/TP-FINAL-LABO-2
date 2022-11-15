@@ -187,9 +187,7 @@ void userMenu (int idUser)
     int option;
     int idSong = 0;
     stCell * userList = startCellList();/// CREA LA LISTA DE USUARIOS
-    printf("TEST 1 STEP \n ");
     userList = loadListFromFile(userList);/// CARGA LA LISTA DE US
-    showCellList(userList);
     stCell * userAux;
 
     char cControl = 's';
@@ -201,10 +199,10 @@ void userMenu (int idUser)
         {
         case 1:
             system("cls");
-            printf("TEST 2 STEP \n ");
             userAux = searchUserCellById(userList, idUser);// busca el user por id y lo almacena en la variable aux
-            printf("TEST 3 STEP \n ");
             showCellNode(userAux); ///printea el user
+
+
             puts("press enter..\n");
             getch();
             break;
@@ -259,7 +257,7 @@ void optionUserMenu (int option)
     gotoxy(30, 21);
     printf("2* Reproducir Cancion (ID)\n");
     gotoxy(30, 22);
-    printf("3* Listado de canciones disponibles por genero o por nombre\n");
+    printf("3* Listado de canciones disponibles \n");
     gotoxy(30, 23);
     printf("4* Buscar cancion por nombre\n");
     gotoxy(30, 24);
