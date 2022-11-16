@@ -103,6 +103,8 @@ stCell * loadListFromFile(stCell * userList) ///levanta el archivo de stPlaylist
                         if (PLAux.idUser == userAux.idUser) //si el usuario es el mismo que la estructura playList ingresa
                         {
                             auxSongTree = searchNodeById(treeSong, PLAux.idSong); ///busca en el arbol x id de cancion
+                            showSong(auxSongTree->value);
+                            system("pause");
                             if(auxSongTree)
                             {
                                 auxSongList = createSongNode(auxSongTree->value);
@@ -401,7 +403,7 @@ void playSong (int idUser, int idSong)
     FILE * userFile;
     FILE * songFile;
 
-    if((songFile = fopen(SONGSFILEPATH, "a+b"))) ///valida que haya archivo
+    if((songFile = fopen(SONGSFILEPATH, "r+b"))) ///valida que haya archivo
     {
         fseek(songFile,(idSong-1) * sizeof(stSong), SEEK_SET); ///se posiciona dondce esta el ID en el archivo
         fread(&songAux, sizeof(stSong), 1, songFile);///lo escribe en el auxSong
@@ -416,23 +418,20 @@ void playSong (int idUser, int idSong)
         getch();
     }
 
-    if(userFile = fopen(USERSFILEPATH, "a+b"))
+    if(userFile = fopen(USERSFILEPATH, "r+b"))
     {
         userAux = searchUserFileById(idUser);
         showAnUser(userAux);
 
-
         userAux.songsPlayed[userAux.totalSongsPlayed] = idSong;///busca el usuario en el archivo y le agrega el id de la canción en la sig pos
-
         userAux.totalSongsPlayed = userAux.totalSongsPlayed+1; ///suma 1 el total de canciones reproducidas
-
-
-        fseek(userFile, (idUser) * sizeof(stUser), SEEK_CUR);
+        fseek(userFile, ((idUser-1) * sizeof(stUser)), SEEK_SET);
         fwrite(&userAux, sizeof(stUser), 1, userFile);
         fseek(userFile,sizeof(stUser), SEEK_END);
 
         system("pause");
     }
+
     fclose(userFile);
     fclose(songFile);
     stPlaylist PLAux;
