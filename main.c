@@ -14,8 +14,6 @@ int main()
         else
             userMenu(idUser);
     }
-
-
     printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
     return 0;
 

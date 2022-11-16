@@ -204,8 +204,7 @@ void userMenu (int idUser)
         case 2:
             system("cls");
             idSong = songIdValidation(); //valida el tema
-            playSong(idUser, idSong); ///reproduce la peli y genera el strcut playList
-            ///reproducir peli
+            playSong(idUser, idSong);
             break;
         case 3:
             system("cls");
