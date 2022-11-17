@@ -21,6 +21,12 @@ typedef struct
 
 typedef struct
 {
+    stSong songValue;
+    int flag;
+}flagedSong;
+
+typedef struct
+{
     stSong value;
     struct nodeSongList * next;
 }nodeSongList;
@@ -74,8 +80,10 @@ void preOrder(nodeTreeSong * toShow);
 void postOrder(nodeTreeSong * toShow);
 nodeTreeSong * searchNodeById(nodeTreeSong * treeSong, int idSong);
 nodeTreeSong * deleteTreeNode(nodeTreeSong *tree, int idToDelete);
-void loadArrayFromSongFile(stSong toSave[]);
-nodeTreeSong * insertFromArray(stSong arraySong[], nodeTreeSong * treeSong, int valids, int midArray);
-nodeTreeSong * fileToTree(nodeTreeSong * treeSong);
+nodeTreeSong * fileToSongTree(nodeTreeSong * songTree);
+void fileToSongArray (stSong arraySong[], int totalValues);
+nodeTreeSong * selectRoot (nodeTreeSong * treeSong);
+nodeTreeSong * nonRepetitiveInsertion (nodeTreeSong * treeSong, stSong arraySong[], int totalValues);
+
 void findSongByName ();
 

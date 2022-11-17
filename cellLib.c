@@ -84,7 +84,7 @@ stCell * loadListFromFile(stCell * userList) ///levanta el archivo de stPlaylist
     nodeTreeSong * treeSong;
     treeSong = startTree();
 
-    treeSong = fileToTree(treeSong);
+    treeSong = fileToSongTree(treeSong);
     nodeTreeSong * auxSongTree;
 
     if (fileUser) //si hay usuarios los carga.. aunque no hayan escuchado nada
@@ -101,10 +101,7 @@ stCell * loadListFromFile(stCell * userList) ///levanta el archivo de stPlaylist
                     {
                         fread(&PLAux,1,sizeof(stPlaylist),filePL);
                         if (PLAux.idUser == userAux.idUser) //si el usuario es el mismo que la estructura playList ingresa
-                        {
                             auxSongTree = searchNodeById(treeSong, PLAux.idSong); ///busca en el arbol x id de cancion
-                            showSong(auxSongTree->value);
-                            system("pause");
                             if(auxSongTree)
                             {
                                 auxSongList = createSongNode(auxSongTree->value);

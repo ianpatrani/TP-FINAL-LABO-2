@@ -699,11 +699,11 @@ nodeTreeSong * deleteTreeNode(nodeTreeSong *tree, int idSong)
     return tree;
 }
 
-nodeTreeSong * insertFromArray(stSong songArray[], nodeTreeSong *songTree, int valid, int midArray)
+nodeTreeSong * insertFromArray(stSong songArray[], nodeTreeSong *songTree, int valids, int midArray)
 {
     int i = 0;
     srand(time(NULL));
-    while (i < valid)
+    while (i < valids)
     {
         if (songTree == NULL)
         {
@@ -711,7 +711,7 @@ nodeTreeSong * insertFromArray(stSong songArray[], nodeTreeSong *songTree, int v
         }
         else
         {
-            songTree = insertNodeTree(songTree, songArray[rand() % valid]);
+            songTree = insertNodeTree(songTree, songArray[rand() ]);
         }
         i++;
     }
@@ -720,40 +720,115 @@ nodeTreeSong * insertFromArray(stSong songArray[], nodeTreeSong *songTree, int v
 
 int midArray(int valids)
 {
-    int var;
+    int mid;
     if (valids % 2 == 0)
     {
-        var = valids / 2;
+        mid = valids / 2;
     }
     else
     {
         valids++;
-        var = valids / 2;
+        mid = valids / 2;
     }
-    return var;
+    return mid;
 }
 
-nodeTreeSong * fileToTree(nodeTreeSong * songTree)
+nodeTreeSong * fileToSongTree(nodeTreeSong * songTree)
+{
+    int totalValues = totalSongs(); //se cuenta la cantidad de canciones que hay en el archivo
+    int i = 0;
+    stSong arraySong[totalValues];
+
+    fileToSongArray(arraySong, totalValues);
+    songTree = selectRoot(songTree); ///selecciona la raiz del arbol desde el medio del array
+    songTree = nonRepetitiveInsertion(songTree, arraySong, totalValues);///inserta sin repetir y de manera aleatoria en el arbol
+    return songTree;
+}
+
+void fileToSongArray (stSong arraySong[], int totalValues)
 {
     FILE * songFile;
     songFile = fopen(SONGSFILEPATH, "rb");
-    stSong songAux;
-    int dim = totalSongs();
     int i = 0;
-    stSong songArray[dim];
     if (songFile)
     {
-        while (!feof(songFile) && i<dim)
+        while (fread(&arraySong[i], sizeof(stSong), 1, songFile) > 0)
         {
-            fread(&songArray[i] , sizeof(stSong), 1, songFile);
             i++;
         }
     }
+    fclose(songFile);
 
-    int mid = midArray(dim);
-    songTree = insertFromArray(songArray, songTree, dim, mid);
-    return songTree;
 }
+
+nodeTreeSong * selectRoot (nodeTreeSong * treeSong)
+{
+    FILE * songFile = fopen(SONGSFILEPATH, "rb");
+    int totalValues = 0;
+    totalValues = totalSongs();
+    int treeRoot = totalValues / 2;
+    stSong auxSong;
+
+    if (songFile)
+    {
+        fseek(songFile, treeRoot * sizeof(stSong), SEEK_SET);
+        fread(&auxSong, 1, sizeof(stSong), songFile);
+        treeSong = insertNodeTree(treeSong, auxSong);
+        fclose(songFile);
+    }
+    return treeSong;
+
+}
+
+nodeTreeSong * nonRepetitiveInsertion (nodeTreeSong * treeSong, stSong arraySong[], int totalValues)
+{
+    flagedSong copiedArray[totalValues];
+    nodeTreeSong * auxTreeSong;
+    stSong songAux;
+    auxTreeSong = startTree();
+    auxTreeSong = selectRoot(auxTreeSong);
+
+    int i = 0;
+
+    int lenght = totalValues;
+    int randomPos;
+    srand(time(NULL));
+    while (i < totalValues)
+    {
+        if (arraySong[i].idSong != auxTreeSong->value.idSong)
+        {
+            copiedArray[i].flag = 0;
+            copiedArray[i].songValue = arraySong[i];
+            i++;
+
+        }
+        else
+        {
+            copiedArray[i].flag = 1;
+            copiedArray[i].songValue = arraySong[i];
+            lenght--;
+            i++;
+        }
+    }
+    i = 0;
+
+    while (lenght > 0)
+    {
+        randomPos = rand() % totalValues;
+
+        if (copiedArray[randomPos].flag == 0)
+        {
+            songAux = copiedArray[randomPos].songValue;
+            copiedArray[randomPos].flag = 1;
+            treeSong = insertNodeTree(treeSong,songAux);
+            i++;
+            lenght--;
+
+        }
+    }
+    return treeSong;
+}
+
 
 int maxTimesPlayed()
 {
@@ -775,6 +850,3 @@ int maxTimesPlayed()
     }
     return maxValue;
 }
-
-
-
