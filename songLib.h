@@ -84,6 +84,5 @@ nodeTreeSong * fileToSongTree(nodeTreeSong * songTree);
 void fileToSongArray (stSong arraySong[], int totalValues);
 nodeTreeSong * selectRoot (nodeTreeSong * treeSong);
 nodeTreeSong * nonRepetitiveInsertion (nodeTreeSong * treeSong, stSong arraySong[], int totalValues);
-
 void findSongByName ();
 

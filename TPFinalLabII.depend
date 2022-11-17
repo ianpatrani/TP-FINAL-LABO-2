@@ -17,7 +17,7 @@
 	"userLib.h"
 	"gotoxy.h"
 
-1668651677 c:\users\juanc\onedrive - utn frmdp\escritorio\tpfinallabii\songlib.h
+1668653870 c:\users\juanc\onedrive - utn frmdp\escritorio\tpfinallabii\songlib.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -31,16 +31,16 @@
 	<conio.h>
 	<time.h>
 
-1668653075 source:c:\users\juanc\onedrive - utn frmdp\escritorio\tpfinallabii\celllib.c
+1668712846 source:c:\users\juanc\onedrive - utn frmdp\escritorio\tpfinallabii\celllib.c
 	"cellLib.h"
 
-1668652868 source:c:\users\juanc\onedrive - utn frmdp\escritorio\tpfinallabii\songlib.c
+1668707812 source:c:\users\juanc\onedrive - utn frmdp\escritorio\tpfinallabii\songlib.c
 	"songLib.h"
 
-1668557709 source:c:\users\juanc\onedrive - utn frmdp\escritorio\tpfinallabii\userlib.c
+1668715768 source:c:\users\juanc\onedrive - utn frmdp\escritorio\tpfinallabii\userlib.c
 	"userLib.h"
 
-1668555014 source:c:\users\juanc\onedrive - utn frmdp\escritorio\tpfinallabii\frontlib.c
+1668708536 source:c:\users\juanc\onedrive - utn frmdp\escritorio\tpfinallabii\frontlib.c
 	"frontLib.h"
 
 1668534950 c:\users\juanc\onedrive - utn frmdp\escritorio\tpfinallabii\frontlib.h

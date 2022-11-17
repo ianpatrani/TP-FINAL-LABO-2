@@ -565,32 +565,15 @@ nodeSongList * deleteSongList (nodeSongList * toDelete)
 nodeSongList * searchSongById(nodeSongList * songList, int idSong)
 
 {
-    nodeSongList * next;
-    nodeSongList * prev;
+    nodeSongList * seg;
+    seg = songList;
 
-    if((songList) && (songList->value.idSong == idSong))
+    while ((seg) && (seg->value.idSong != idSong))
     {
-        nodeSongList * auxSong = songList;
-        songList = songList->next;
-        free(auxSong);
+        seg = seg->next;
     }
-    else
-    {
-        next = songList;
 
-        while(next && (next->value.idSong != idSong))
-        {
-            prev = next;
-            next = next->next;
-        }
-
-        if(next)
-        {
-            prev->next = next->next;
-            free(next);
-        }
-    }
-    return songList;
+    return seg;
 }
 
 ///////////////FUNCIONES ARBOL DE CANCIONES//////////////////

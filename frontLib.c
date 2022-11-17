@@ -215,14 +215,12 @@ void userMenu (int idUser)
         case 4:
             system("cls");
             findSongByName();
-            gotoxy(30, 25);
             puts("press enter..\n");
             getch();
             break;
         case 5:
             system("cls");
             updateUser(idUser);
-            gotoxy(30, 25);
             puts("press enter..\n");
             getch();
             break;
@@ -235,7 +233,6 @@ void userMenu (int idUser)
 
         case 7:
             system("cls");
-            gotoxy(30, 20);
             puts("\n\n\nHasta pronto!!!\n");
             cControl = 'n';
             break;
@@ -246,35 +243,32 @@ void userMenu (int idUser)
 void optionUserMenu (int option)
 {
     system("cls");
-    gotoxy(30, 20);
+
     printf("1* Perfil\n");
-    gotoxy(30, 21);
+
     printf("2* Reproducir Cancion (ID)\n");
-    gotoxy(30, 22);
+
     printf("3* Listado de canciones disponibles \n");
-    gotoxy(30, 23);
+
     printf("4* Buscar cancion por nombre\n");
-    gotoxy(30, 24);
+
     printf("5* Modificar Usuario\n");
-    gotoxy(30, 25);
     printf("6* Recomendaciones hechas para vos ;) \n");
-    gotoxy(30, 26);
     printf("7* Cerrar sesion\n");
-    gotoxy(30, 27);
     scanf("%d", option);
 }
 void optionsAdminMenu (int option)
 {
     system("cls");
-    gotoxy(30, 20);
+
     printf("1* Perfil\n");
-    gotoxy(30, 21);
+
     printf("2* Usuarios\n");
-    gotoxy(30, 22);
+
     printf("3* Canciones\n");
-    gotoxy(30, 23);
+
     printf("4* Cerrar sesion\n");
-    gotoxy(30, 24);
+
     scanf("%d", option);
 }
 void adminMenu (int idUser)
@@ -296,9 +290,7 @@ void adminMenu (int idUser)
         case 1:
             system("cls");
             showCellNode(searchUserCellById(userList, idUser));
-            gotoxy(30, 25);
             puts("press enter..\n");
-            gotoxy(30, 26);
             getch();
             break;
         case 2:
@@ -310,15 +302,12 @@ void adminMenu (int idUser)
         case 3:
             system("cls");
             songCrud();
-            gotoxy(30, 25);
             puts("press enter..\n");
-            gotoxy(30, 26);
             getch();
             break;
         case 4:
             system("cls");
-            gotoxy(30, 20);
-            printf("Gracias, vuelva prontos =)\n");
+            printf("Esperamos que hayas disfrutado =)\n");
             cControl = 'n';
             break;
         }
@@ -352,17 +341,17 @@ void userCrud (stCell * userList)
             updateUser(idUser);
             system("cls");
             showCellNode(searchUserCellById(userList, idUser));
-            gotoxy(30, 25);
+
             puts("press enter..\n");
-            gotoxy(30, 26);
+
             getch();
             break;
         case 3:
             system("cls");
             addUserToFile();
-            gotoxy(30, 25);
+
             puts("press enter..\n");
-            gotoxy(30, 26);
+
             getch();
             break;
         case 4:
@@ -371,21 +360,21 @@ void userCrud (stCell * userList)
             iAux = deleteUser(idUser);
             if(iAux == 0)
             {
-                gotoxy(30, 25);
+
                 puts("User no pudo darse de baja\n");
             }
-            gotoxy(30, 25);
+
             puts("press enter..\n");
-            gotoxy(30, 26);
+
             getch();
             break;
         case 5:
             system("cls");
             idUser = getUserIdToUpdate();
             upUser(idUser);
-            gotoxy(30, 25);
+
             puts("press enter..\n");
-            gotoxy(30, 26);
+
             getch();
             break;
         case 6:
@@ -454,36 +443,36 @@ void songCrud()
 
 void userCrudMenu (int iOption)
 {
-    gotoxy(30, 20);
+
     printf("1* Listado de Usuarios\n");
-    gotoxy(30, 21);
+
     printf("2* Modificar usuario\n");
-    gotoxy(30, 22);
+
     printf("3* Alta usuario\n");
-    gotoxy(30, 23);
+
     printf("4* Baja usuario\n");
-    gotoxy(30, 24);
+
     printf("5* Reestablecer usuario\n");
-    gotoxy(30, 25);
+
     printf("6* Menu principal\n");
-    gotoxy(30, 26);
+
     scanf("%d", iOption);
 }
 void songCrudMenu (int iOption)
 {
-    gotoxy(30, 20);
+
     printf("1* Listado de canciones\n");
-    gotoxy(30, 21);
+
     printf("2* Modificar cancion (ID)\n");
-    gotoxy(30, 22);
+
     printf("3* Alta de cancion (ID)\n");
-    gotoxy(30, 23);
+
     printf("4* Baja de cancion (ID)\n");
-    gotoxy(30, 24);
+
     printf("5* Reestablecer cancion (ID)\n");
-    gotoxy(30, 25);
+
     printf("6* Menu principal\n");
-    gotoxy(30, 26);
+
     scanf("%d", iOption);
 }
 int validAdmin (int idUser)

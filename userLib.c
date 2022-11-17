@@ -165,12 +165,12 @@ int nameValidation(char toCheck[])
 }
 
 //-----------------------------------------------------
-// FUNCION BAJA DE USERS (INACTIVIDAD) REGISTRADOS EN EL fileUser /
+// FUNCION BAJA DE USERS REGISTRADOS EN EL ARCHIVO /
 //-----------------------------------------------------
 
-int deleteUser(int idUser) /// Si el userAux fue elimiinado con exito devuelve 1, en caso de error devuelve 0;
+int deleteUser(int idUser)
 {
-    FILE *userFIle = fopen(USERSFILEPATH, "r+b");
+    FILE * userFIle = fopen(USERSFILEPATH, "r+b");
     int pos = 0, flag = 0;
     stUser userAux;
     if (userFIle)
@@ -186,7 +186,6 @@ int deleteUser(int idUser) /// Si el userAux fue elimiinado con exito devuelve 1
 }
 
 void upUser(int idUser)
-///Busca por 'ID' el usuario y le marca un '0'(habilitado)
 {
     FILE * fileUser;
     stUser userAux;
@@ -203,7 +202,6 @@ void upUser(int idUser)
         else
         {
             system("cls");
-            gotoxy(30, 20);
             printf("El usuario ya se encuentra dado de alta\n");
         }
     }
