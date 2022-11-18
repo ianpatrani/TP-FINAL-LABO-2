@@ -1,9 +1,8 @@
 #include "songLib.h"
 
-
-void showSongFileByArtist (char artistToShow[])
+void showSongFileByArtist(char artistToShow[])
 {
-    FILE * songFile;
+    FILE *songFile;
     stSong songAux;
     songFile = fopen(SONGSFILEPATH, "rb");
 
@@ -19,32 +18,31 @@ void showSongFileByArtist (char artistToShow[])
     }
 }
 
-void findSongByName ()
+void findSongByName()
 {
     char nameToSearch[30];
-    FILE * songFile;
+    FILE *songFile;
     stSong songAux;
     songFile = fopen(SONGSFILEPATH, "rb");
     printf("Ingrese el titulo: \n");
     fflush(stdin);
     gets(nameToSearch);
-
     if (songFile)
     {
         while (fread(&songAux, sizeof(stSong), 1, songFile) > 0)
         {
-            if (strcmpi(songAux.title, nameToSearch == 0))
+            if (strcmpi(songAux.title, nameToSearch) == 0)
             {
-                printf("Encontramos tu cancion :)  \n\n");
                 showSong(songAux);
             }
         }
     }
+    fclose(songFile);
 }
 
 stSong searchSongFileById(int idSong)
 {
-    FILE * fileSong = fopen(SONGSFILEPATH, "rb");
+    FILE *fileSong = fopen(SONGSFILEPATH, "rb");
     stSong songAux;
     if (fileSong)
     {
@@ -64,7 +62,7 @@ stSong searchSongFileById(int idSong)
 int songIdCreator()
 {
     int newId = 0;
-    FILE * fileSong;
+    FILE *fileSong;
     fileSong = fopen(SONGSFILEPATH, "rb");
     if (fileSong)
     {
@@ -81,7 +79,7 @@ int songIdCreator()
 void loadSongToFile()
 {
     stSong auxSong;
-    FILE * fileSong;
+    FILE *fileSong;
     fileSong = fopen(SONGSFILEPATH, "ab");
 
     if (fileSong)
@@ -130,7 +128,7 @@ void loadSongToFile()
 
 void deleteSongFromFile(int idToDelte)
 {
-    FILE * fileSong = fopen(SONGSFILEPATH, "a+b");
+    FILE *fileSong = fopen(SONGSFILEPATH, "a+b");
     stSong auxSong;
     int aux = 0;
     int idBaja;
@@ -156,15 +154,14 @@ void deleteSongFromFile(int idToDelte)
     fclose(fileSong);
 }
 
-
 void updateSong(int idToUpdate)
 {
     stSong auxSong;
-    FILE * fileSong;
+    FILE *fileSong;
     fileSong = fopen(SONGSFILEPATH, "r+b");
     int id = 0;
     int option = 0;
-    float durationAux  = 0;
+    float durationAux = 0;
 
     showSongFile();
 
@@ -239,17 +236,16 @@ void updateSong(int idToUpdate)
     fclose(fileSong);
 }
 
-
 void upSong(int idSong)
-///Busca por 'ID' la cancion y le marca un '0'(habilitado)
+/// Busca por 'ID' la cancion y le marca un '0'(habilitado)
 {
-    FILE * songFile;
+    FILE *songFile;
     stSong songAux;
-    if((songFile = fopen(SONGSFILEPATH, "r+b")))
+    if ((songFile = fopen(SONGSFILEPATH, "r+b")))
     {
         fseek(songFile, (idSong - 1) * (sizeof(stSong)), SEEK_SET);
         fread(&songAux, sizeof(stSong), 1, songFile);
-        if(songAux.off == 1)
+        if (songAux.off == 1)
         {
             songAux.off = 0;
             fseek(songFile, (idSong - 1) * (sizeof(stSong)), SEEK_SET);
@@ -265,7 +261,7 @@ void upSong(int idSong)
 
 int songNameValidation(char nameToSearch[])
 {
-    FILE * songFile;
+    FILE *songFile;
     stSong songAux;
     songFile = fopen(SONGSFILEPATH, "rb");
     int flag = 1;
@@ -280,9 +276,9 @@ int songNameValidation(char nameToSearch[])
     return flag;
 }
 
-int searchSongFileByName (char nameToSearch[])
+int searchSongFileByName(char nameToSearch[])
 {
-    FILE * songFile;
+    FILE *songFile;
     stSong songAux;
     songFile = fopen(SONGSFILEPATH, "rb");
     int auxId = -1;
@@ -300,7 +296,7 @@ int searchSongFileByName (char nameToSearch[])
 int totalSongs()
 {
     int total = 0;
-    FILE * songFile;
+    FILE *songFile;
     stSong songAux;
     songFile = fopen(SONGSFILEPATH, "r+b");
 
@@ -318,7 +314,7 @@ int totalSongs()
 int songIdValidation()
 {
     int idSong = 0;
-    FILE * songFile;
+    FILE *songFile;
     stSong songAux;
     songFile = fopen(SONGSFILEPATH, "rb");
     int auxId = -1;
@@ -346,7 +342,7 @@ int songIdValidation()
 
 void showSongFile()
 {
-    FILE * songFile;
+    FILE *songFile;
     stSong auxSong;
     songFile = fopen(SONGSFILEPATH, "rb");
     if (songFile)
@@ -359,7 +355,7 @@ void showSongFile()
     fclose(songFile);
 }
 
-void showSong (stSong toShow)
+void showSong(stSong toShow)
 {
     puts("\n-------------------------------------");
     printf("\n IdCancion:..........%d", toShow.idSong);
@@ -373,6 +369,7 @@ void showSong (stSong toShow)
     printf("\n Eliminado 1-Si/0-No:%d", toShow.off);
     puts("\n-------------------------------------");
 }
+
 int getSongId()
 {
     char cControl = 's';
@@ -398,33 +395,30 @@ int getSongId()
             printf("El ID ingresado no existe\n");
             cControl = 'n';
         }
-    }
-    while (cControl != 's');
+    } while (cControl != 's');
     return idSong;
 }
 
-///FUNCIONES LISTA DE CANCIONES
-///FUNCIONES LISTA DE CANCIONES
-///FUNCIONES LISTA DE CANCIONES
-///FUNCIONES LISTA DE CANCIONES
-///FUNCIONES LISTA DE CANCIONES
+/// FUNCIONES LISTA DE CANCIONES
+/// FUNCIONES LISTA DE CANCIONES
+/// FUNCIONES LISTA DE CANCIONES
+/// FUNCIONES LISTA DE CANCIONES
+/// FUNCIONES LISTA DE CANCIONES
 
-
-
-nodeSongList * startSongList()
+nodeSongList *startSongList()
 {
     return NULL;
 }
 
-nodeSongList * createSongNode (stSong toCreate)
+nodeSongList *createSongNode(stSong toCreate)
 {
-    nodeSongList * songAux = (nodeSongList*)malloc(sizeof(nodeSongList));
+    nodeSongList *songAux = (nodeSongList *)malloc(sizeof(nodeSongList));
     songAux->value = toCreate;
     songAux->next = NULL;
     return songAux;
 }
 
-nodeSongList * addSongFirst(nodeSongList * songsongList, nodeSongList * toAdd)
+nodeSongList *addSongFirst(nodeSongList *songsongList, nodeSongList *toAdd)
 {
     if (!songsongList)
     {
@@ -438,11 +432,9 @@ nodeSongList * addSongFirst(nodeSongList * songsongList, nodeSongList * toAdd)
     return songsongList;
 }
 
-
-
-nodeSongList * searchLastSong(nodeSongList * songList)
+nodeSongList *searchLastSong(nodeSongList *songList)
 {
-    nodeSongList * songAux = songList;
+    nodeSongList *songAux = songList;
     while (songAux->next != NULL)
     {
         songAux = songAux->next;
@@ -450,9 +442,9 @@ nodeSongList * searchLastSong(nodeSongList * songList)
     return songAux;
 }
 
-nodeSongList * addSongLast(nodeSongList * songList, nodeSongList * toAdd)
+nodeSongList *addSongLast(nodeSongList *songList, nodeSongList *toAdd)
 {
-    nodeSongList * lastSong;
+    nodeSongList *lastSong;
     if (!songList)
     {
         songList = toAdd;
@@ -465,7 +457,7 @@ nodeSongList * addSongLast(nodeSongList * songList, nodeSongList * toAdd)
     return songList;
 }
 
-nodeSongList * addInOrderBySongName(nodeSongList *songList, nodeSongList * toAdd)
+nodeSongList *addInOrderBySongName(nodeSongList *songList, nodeSongList *toAdd)
 {
     if (!songList)
     {
@@ -479,8 +471,8 @@ nodeSongList * addInOrderBySongName(nodeSongList *songList, nodeSongList * toAdd
         }
         else
         {
-            nodeSongList * prev = songList;
-            nodeSongList * songAux = songList;
+            nodeSongList *prev = songList;
+            nodeSongList *songAux = songList;
             while (songAux && (strcmpi(toAdd->value.title, songList->value.title) > 0))
             {
                 prev = songAux;
@@ -492,7 +484,7 @@ nodeSongList * addInOrderBySongName(nodeSongList *songList, nodeSongList * toAdd
     }
 }
 
-void showNode(nodeSongList * song)
+void showNode(nodeSongList *song)
 {
     puts("\n-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-");
     printf("ID: %d \n", song->value.idSong);
@@ -502,11 +494,9 @@ void showNode(nodeSongList * song)
     printf("Lanzamiento: %d \n", song->value.year);
     printf("Duracion:... %.2f \n", song->value.duration);
     printf("Genero:..... %s \n", song->value.gender);
-
 }
 
-
-void showSongList(nodeSongList * toShow)
+void showSongList(nodeSongList *toShow)
 {
     if (toShow)
     {
@@ -515,57 +505,54 @@ void showSongList(nodeSongList * toShow)
     }
 }
 
-nodeSongList * deleteNodeById(nodeSongList * songList, int idSong)
+nodeSongList *deleteNodeById(nodeSongList *songList, int idSong)
 
 {
-    nodeSongList * next;
-    nodeSongList * prev;
+    nodeSongList *next;
+    nodeSongList *prev;
 
-
-
-    if((songList) && (songList->value.idSong == idSong))
+    if ((songList) && (songList->value.idSong == idSong))
     {
-        nodeSongList * auxSong = songList;
+        nodeSongList *auxSong = songList;
         songList = songList->next;
         free(auxSong);
     }
     else
     {
         next = songList;
-        while((next) && (next->value.idSong != idSong))
+        while ((next) && (next->value.idSong != idSong))
         {
             prev = next;
             next = next->next;
         }
 
-        if(next)
+        if (next)
         {
             prev->next = next->next;
             free(next);
         }
     }
     return songList;
-
 }
 
-nodeSongList * deleteSongList (nodeSongList * toDelete)
+nodeSongList *deleteSongList(nodeSongList *toDelete)
 {
-    nodeSongList * next;
-    nodeSongList * auxSong;
+    nodeSongList *next;
+    nodeSongList *auxSong;
     auxSong = toDelete;
-    while(auxSong != NULL)
+    while (auxSong != NULL)
     {
         next = auxSong->next;
         free(auxSong);
-        auxSong =  next;
+        auxSong = next;
     }
     return auxSong;
 }
 
-nodeSongList * searchSongById(nodeSongList * songList, int idSong)
+nodeSongList *searchSongById(nodeSongList *songList, int idSong)
 
 {
-    nodeSongList * seg;
+    nodeSongList *seg;
     seg = songList;
 
     while ((seg) && (seg->value.idSong != idSong))
@@ -581,14 +568,12 @@ nodeSongList * searchSongById(nodeSongList * songList, int idSong)
 
 ///////////////FUNCIONES ARBOL DE CANCIONES//////////////////
 
-
-
 nodeTreeSong *startTree()
 {
     return NULL;
 }
 
-nodeTreeSong * createNodeTree(stSong song)
+nodeTreeSong *createNodeTree(stSong song)
 {
     nodeTreeSong *aux = (nodeTreeSong *)malloc(sizeof(nodeTreeSong));
     aux->value = song;
@@ -597,7 +582,7 @@ nodeTreeSong * createNodeTree(stSong song)
     return aux;
 }
 
-nodeTreeSong * insertNodeTree(nodeTreeSong *tree, stSong song)
+nodeTreeSong *insertNodeTree(nodeTreeSong *tree, stSong song)
 {
     if (tree == NULL)
     {
@@ -616,7 +601,6 @@ nodeTreeSong * insertNodeTree(nodeTreeSong *tree, stSong song)
     }
     return tree;
 }
-
 
 void inOrder(nodeTreeSong *tree)
 {
@@ -640,7 +624,7 @@ void preOrder(nodeTreeSong *tree)
 
 void postOrder(nodeTreeSong *tree)
 {
-    if (tree )
+    if (tree)
     {
         postOrder(tree->left);
         postOrder(tree->right);
@@ -648,26 +632,26 @@ void postOrder(nodeTreeSong *tree)
     }
 }
 
-nodeTreeSong * searchNodeById(nodeTreeSong * treeSong, int idSong)
+nodeTreeSong *searchNodeById(nodeTreeSong *treeSong, int idSong)
 {
 
-    nodeTreeSong * auxSong = NULL;
+    nodeTreeSong *auxSong = NULL;
     if (treeSong)
     {
-        if (idSong == treeSong->value.idSong)//--->Si lo encuentra devuelve el arbol como respuesta
+        if (idSong == treeSong->value.idSong) //--->Si lo encuentra devuelve el arbol como respuesta
             auxSong = treeSong;
         else
         {
-            if (idSong > treeSong->value.idSong)//---->Si el dato es mayor que el dato en la raiz se busca por derecha y si es menor se busca por izquierda
-                auxSong = searchNodeById(treeSong->right, idSong);//se hace llamada recursiva hasta encontrar el dato
+            if (idSong > treeSong->value.idSong)                   //---->Si el dato es mayor que el dato en la raiz se busca por derecha y si es menor se busca por izquierda
+                auxSong = searchNodeById(treeSong->right, idSong); // se hace llamada recursiva hasta encontrar el dato
             else
-                auxSong = searchNodeById(treeSong->left, idSong);//se hace llamada recursiva hasta encontrar el dato
+                auxSong = searchNodeById(treeSong->left, idSong); // se hace llamada recursiva hasta encontrar el dato
         }
     }
-    return auxSong;//-->En caso que no encuentre el dato devuelve NULL como respuesta
+    return auxSong; //-->En caso que no encuentre el dato devuelve NULL como respuesta
 }
 
-nodeTreeSong * deleteTreeNode(nodeTreeSong *tree, int idSong)
+nodeTreeSong *deleteTreeNode(nodeTreeSong *tree, int idSong)
 {
     if (tree != NULL)
     {
@@ -682,7 +666,7 @@ nodeTreeSong * deleteTreeNode(nodeTreeSong *tree, int idSong)
     return tree;
 }
 
-nodeTreeSong * insertFromArray(stSong songArray[], nodeTreeSong *songTree, int valids, int midArray)
+nodeTreeSong *insertFromArray(stSong songArray[], nodeTreeSong *songTree, int valids, int midArray)
 {
     int i = 0;
     srand(time(NULL));
@@ -694,7 +678,7 @@ nodeTreeSong * insertFromArray(stSong songArray[], nodeTreeSong *songTree, int v
         }
         else
         {
-            songTree = insertNodeTree(songTree, songArray[rand() ]);
+            songTree = insertNodeTree(songTree, songArray[rand()]);
         }
         i++;
     }
@@ -716,21 +700,21 @@ int midArray(int valids)
     return mid;
 }
 
-nodeTreeSong * fileToSongTree(nodeTreeSong * songTree)
+nodeTreeSong *fileToSongTree(nodeTreeSong *songTree)
 {
-    int totalValues = totalSongs(); //se cuenta la cantidad de canciones que hay en el archivo
+    int totalValues = totalSongs(); // se cuenta la cantidad de canciones que hay en el archivo
     int i = 0;
     stSong arraySong[totalValues];
 
     fileToSongArray(arraySong, totalValues);
-    songTree = selectRoot(songTree); ///selecciona la raiz del arbol desde el medio del array
-    songTree = nonRepetitiveInsertion(songTree, arraySong, totalValues);///inserta sin repetir y de manera aleatoria en el arbol
+    songTree = selectRoot(songTree);                                     /// selecciona la raiz del arbol desde el medio del array
+    songTree = nonRepetitiveInsertion(songTree, arraySong, totalValues); /// inserta sin repetir y de manera aleatoria en el arbol
     return songTree;
 }
 
-void fileToSongArray (stSong arraySong[], int totalValues)
+void fileToSongArray(stSong arraySong[], int totalValues)
 {
-    FILE * songFile;
+    FILE *songFile;
     songFile = fopen(SONGSFILEPATH, "rb");
     int i = 0;
     if (songFile)
@@ -741,12 +725,11 @@ void fileToSongArray (stSong arraySong[], int totalValues)
         }
     }
     fclose(songFile);
-
 }
 
-nodeTreeSong * selectRoot (nodeTreeSong * treeSong)
+nodeTreeSong *selectRoot(nodeTreeSong *treeSong)
 {
-    FILE * songFile = fopen(SONGSFILEPATH, "rb");
+    FILE *songFile = fopen(SONGSFILEPATH, "rb");
     int totalValues = 0;
     totalValues = totalSongs();
     int treeRoot = totalValues / 2;
@@ -760,13 +743,12 @@ nodeTreeSong * selectRoot (nodeTreeSong * treeSong)
         fclose(songFile);
     }
     return treeSong;
-
 }
 
-nodeTreeSong * nonRepetitiveInsertion (nodeTreeSong * treeSong, stSong arraySong[], int totalValues)
+nodeTreeSong *nonRepetitiveInsertion(nodeTreeSong *treeSong, stSong arraySong[], int totalValues)
 {
     flagedSong copiedArray[totalValues];
-    nodeTreeSong * auxTreeSong;
+    nodeTreeSong *auxTreeSong;
     stSong songAux;
     auxTreeSong = startTree();
     auxTreeSong = selectRoot(auxTreeSong);
@@ -783,7 +765,6 @@ nodeTreeSong * nonRepetitiveInsertion (nodeTreeSong * treeSong, stSong arraySong
             copiedArray[i].flag = 0;
             copiedArray[i].songValue = arraySong[i];
             i++;
-
         }
         else
         {
@@ -803,20 +784,18 @@ nodeTreeSong * nonRepetitiveInsertion (nodeTreeSong * treeSong, stSong arraySong
         {
             songAux = copiedArray[randomPos].songValue;
             copiedArray[randomPos].flag = 1;
-            treeSong = insertNodeTree(treeSong,songAux);
+            treeSong = insertNodeTree(treeSong, songAux);
             i++;
             lenght--;
-
         }
     }
     return treeSong;
 }
 
-
 int maxTimesPlayed()
 {
     int maxValue = 0;
-    FILE * songFile;
+    FILE *songFile;
     stSong songAux;
     songFile = fopen(SONGSFILEPATH, "r+b");
 
