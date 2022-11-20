@@ -381,15 +381,11 @@ int getSongId()
     do
     {
         system("cls");
-        gotoxy(30, 20);
         printf("Ingrese el ID de la pelicula: \n");
-        gotoxy(30, 21);
         scanf("%d", &idSong);
         system("cls");
-        gotoxy(30, 20);
         printf("El ID ingresado es: %d, es correcto?", idSong);
         fflush(stdin);
-        gotoxy(30, 21);
         scanf("%c", &cControl);
         if (idSong < 0 || idSong > songTotal)
         {
