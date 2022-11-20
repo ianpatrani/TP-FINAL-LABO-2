@@ -99,7 +99,7 @@ stCell *loadListFromFile(stCell *userList) /// levanta el archivo de stPlaylist 
             if (userAux.off == 0) // siempre y cuando no esten dados de baja
             {
                 userList = addLastCell(userList, createCellNode(userAux, auxSongList)); // agrega si o si la celda aunque no tenga lista de canciones.
-                if (filePL)                                                             // aca utilizamos la estructura playlist para buscar si el usuario tiene canciones reproducidas y saber cuales son
+                if (fopen(PLAYLISTFILEPATH, "rb") > 0)                                  // aca utilizamos la estructura playlist para buscar si el usuario tiene canciones reproducidas y saber cuales son
                 {
                     while (fread(&PLAux, 1, sizeof(stPlaylist), filePL) > 0)
                     {
@@ -108,13 +108,10 @@ stCell *loadListFromFile(stCell *userList) /// levanta el archivo de stPlaylist 
                             auxSongTree = searchNodeById(treeSong, PLAux.idSong); /// busca en el arbol x id de cancion
                             if (auxSongTree)
                             {
-
                                 auxSongList = createSongNode(auxSongTree->value);
                                 cellAux = searchUserCellById(userList, userAux.idUser);
                                 cellAux->songList = addSongLast(cellAux->songList, auxSongList);
                             }
-                            /// crea un nodo para la lista de canciones del user
-                            /// y la agrega ultima
                         }
                     }
                 }
@@ -125,6 +122,8 @@ stCell *loadListFromFile(stCell *userList) /// levanta el archivo de stPlaylist 
     {
         printf("error en abrir el archivo!\n");
     }
+    fclose(fileUser);
+    fclose(filePL);
 
     return userList;
 }
