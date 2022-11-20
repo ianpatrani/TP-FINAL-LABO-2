@@ -310,6 +310,7 @@ void adminMenu(int idUser)
         }
     }
 }
+
 void userCrud(stCell *userList)
 {
     int iOption = 0;

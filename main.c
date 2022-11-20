@@ -2,7 +2,7 @@
 
 int main()
 {
-
+    system("cls");
     int admin = 0;
     int idUser = start();
     if (idUser >= 0)

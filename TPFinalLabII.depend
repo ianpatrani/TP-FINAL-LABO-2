@@ -53,3 +53,52 @@
 	<stdlib.h>
 	<windows.h>
 
+1668972927 source:c:\code\tp-final-labo-2\celllib.c
+	"cellLib.h"
+
+1668792769 c:\code\tp-final-labo-2\celllib.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<conio.h>
+	<time.h>
+	"songLib.h"
+	"userLib.h"
+	"gotoxy.h"
+
+1668792769 c:\code\tp-final-labo-2\songlib.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<conio.h>
+	<time.h>
+
+1668792769 c:\code\tp-final-labo-2\userlib.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<conio.h>
+	<time.h>
+
+1668792769 c:\code\tp-final-labo-2\gotoxy.h
+
+1668971918 source:c:\code\tp-final-labo-2\frontlib.c
+	"frontLib.h"
+
+1668792769 c:\code\tp-final-labo-2\frontlib.h
+	"cellLib.h"
+
+1668792769 source:c:\code\tp-final-labo-2\gotoxy.c
+	<stdio.h>
+	<stdlib.h>
+	<windows.h>
+
+1668971597 source:c:\code\tp-final-labo-2\main.c
+	"cellLib.h"
+
+1668969665 source:c:\code\tp-final-labo-2\songlib.c
+	"songLib.h"
+
+1668792769 source:c:\code\tp-final-labo-2\userlib.c
+	"userLib.h"
+

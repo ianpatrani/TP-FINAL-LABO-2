@@ -94,14 +94,14 @@ stCell *loadListFromFile(stCell *userList) /// levanta el archivo de stPlaylist 
 
     if (fileUser) // si hay usuarios los carga.. aunque no hayan escuchado nada
     {
-        while (fread(&userAux, 1, sizeof(stUser), fileUser) > 1)
+        while (fread(&userAux, 1, sizeof(stUser), fileUser) > 0)
         {
             if (userAux.off == 0) // siempre y cuando no esten dados de baja
             {
                 userList = addLastCell(userList, createCellNode(userAux, auxSongList)); // agrega si o si la celda aunque no tenga lista de canciones.
                 if (filePL)                                                             // aca utilizamos la estructura playlist para buscar si el usuario tiene canciones reproducidas y saber cuales son
                 {
-                    while (fread(&PLAux, 1, sizeof(stPlaylist), filePL) > 1)
+                    while (fread(&PLAux, 1, sizeof(stPlaylist), filePL) > 0)
                     {
                         if (PLAux.idUser == userAux.idUser) // si el usuario es el mismo que la estructura playList ingresa
                         {
@@ -125,6 +125,7 @@ stCell *loadListFromFile(stCell *userList) /// levanta el archivo de stPlaylist 
     {
         printf("error en abrir el archivo!\n");
     }
+
     return userList;
 }
 
@@ -390,8 +391,9 @@ void playSong(int idUser, int idSong)
     stSong songAux;
     FILE *userFile;
     FILE *songFile;
+    printf("=====ID:===== %d", idSong);
 
-    if ((songFile = fopen(SONGSFILEPATH, "r+b"))) /// valida que haya archivo
+    if ((songFile = fopen(SONGSFILEPATH, "r+b")) && (idSong != -1)) /// valida que haya archivo
     {
         fseek(songFile, (idSong - 2) * sizeof(stSong), SEEK_SET); /// se posiciona dondce esta el ID en el archivo
         fread(&songAux, sizeof(stSong), 1, songFile);             /// lo escribe en el auxSong
@@ -402,22 +404,25 @@ void playSong(int idUser, int idSong)
 
         playing(); /// front de reproduccion del tema
 
-        //        printf("Presione enter cuando finalice la reproduccion\n");
         getch();
-    }
-    if (userFile = fopen(USERSFILEPATH, "r+b"))
-    {
-        userAux = searchUserFileById(idUser);
-        userAux.songsPlayed[userAux.totalSongsPlayed] = idSong;  /// busca el usuario en el archivo y le agrega el id de la canci�n en la sig pos
-        userAux.totalSongsPlayed = userAux.totalSongsPlayed + 1; /// suma 1 el total de canciones reproducidas
-        fseek(userFile, ((idUser - 1) * sizeof(stUser)), SEEK_SET);
-        fwrite(&userAux, sizeof(stUser), 1, userFile);
-        fseek(userFile, sizeof(stUser), SEEK_END);
-    }
+        if (userFile = fopen(USERSFILEPATH, "r+b"))
+        {
+            userAux = searchUserFileById(idUser);
+            userAux.songsPlayed[userAux.totalSongsPlayed] = idSong;  /// busca el usuario en el archivo y le agrega el id de la canci�n en la sig pos
+            userAux.totalSongsPlayed = userAux.totalSongsPlayed + 1; /// suma 1 el total de canciones reproducidas
+            fseek(userFile, ((idUser - 1) * sizeof(stUser)), SEEK_SET);
+            fwrite(&userAux, sizeof(stUser), 1, userFile);
+            fseek(userFile, sizeof(stUser), SEEK_END);
+        }
 
-    fclose(userFile);
-    fclose(songFile);
-    stPlaylist PLAux;
-    PLAux = createPlaylist(idUser, idSong); // crea un struct playList
-    savePlaylist(PLAux);                    /// guarda el struct en el archivo de playList
+        fclose(userFile);
+        fclose(songFile);
+        stPlaylist PLAux;
+        PLAux = createPlaylist(idUser, idSong); // crea un struct playList
+        savePlaylist(PLAux);                    /// guarda el struct en el archivo de playList
+    }
+    else
+    {
+        printf("No existe la cancion\n");
+    }
 }
