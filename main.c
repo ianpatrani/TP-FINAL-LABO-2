@@ -2,7 +2,6 @@
 
 int main()
 {
-
     int admin = 0;
     int idUser = start();
     if(idUser >= 0)
@@ -17,6 +16,5 @@ int main()
     }
     printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
     return 0;
-
 }
 

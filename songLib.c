@@ -9,7 +9,7 @@ void showSongFileByArtist (char artistToShow[])
 
     if (songFile)
     {
-        while (fread(&songAux, sizeof(stSong), 1, songFile) > 0)
+        while (fread(&songAux, 1, sizeof(stSong), songFile) > 0)
         {
             if (strcmpi(songAux.artist, artistToShow) == 0)
             {
@@ -68,13 +68,17 @@ int songIdCreator()
     fileSong = fopen(SONGSFILEPATH, "rb");
     if (fileSong)
     {
+        printf("entro estando vacio \n");
         fseek(fileSong, sizeof(stSong), SEEK_END);
-        newId = (ftell(fileSong) / sizeof(stSong)) + 1;
+        newId = (ftell(fileSong) / sizeof(stSong)) + 1 ;
     }
     else
     {
         printf("ERROR de datos - El archivo no pudo ser abierto");
+        printf("no entro estando vacio \n");
+        getch();
     }
+    printf("no entro estando vacio2 \n");
     return newId;
 }
 
@@ -82,11 +86,12 @@ void loadSongToFile()
 {
     stSong auxSong;
     FILE * fileSong;
-    fileSong = fopen(SONGSFILEPATH, "ab");
+    fileSong = fopen(SONGSFILEPATH, "a+b");
 
     if (fileSong)
     {
         auxSong.idSong = songIdCreator();
+        printf("%d\n", auxSong.idSong);
 
         printf("Ingrese titulo: ");
         fflush(stdin);
@@ -390,7 +395,6 @@ int getSongId()
         if (idSong < 0 || idSong > songTotal)
         {
             system("cls");
-            gotoxy(30, 20);
             printf("El ID ingresado no existe\n");
             cControl = 'n';
         }
@@ -399,8 +403,6 @@ int getSongId()
     return idSong;
 }
 
-///FUNCIONES LISTA DE CANCIONES
-///FUNCIONES LISTA DE CANCIONES
 ///FUNCIONES LISTA DE CANCIONES
 ///FUNCIONES LISTA DE CANCIONES
 ///FUNCIONES LISTA DE CANCIONES

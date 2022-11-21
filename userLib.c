@@ -435,8 +435,9 @@ void updateUser(int idUser)
                 printf("\n3.Nacimiento: %d\n", userAux.birthYear);
                 printf("4.Genero: %c\n", userAux.gender);
                 printf("5.Pais: %s\n", userAux.country);
+                printf("6. Switch admin \n");
 
-                printf("\n\nEscriba el numero del campo que desea modificar o 6 para salir :");
+                printf("\n\nEscriba el numero del campo que desea modificar o 7 para salir :");
                 scanf("%d", &fieldOption);
 
                 switch (fieldOption)
@@ -480,12 +481,25 @@ void updateUser(int idUser)
                     fflush(stdin);
                     gets(userAux.country);
                     break;
+                case 6:
+                    printf("Esta switcheando el admin del user \n");
+                    int admn = validAdmin(userAux.idUser);
+                    printf("%d", admn);
+                    getch();
+                    if (admn == 0)
+                    {
+                        userAux.admin = 1;
+                    }
+                    else
+                    {
+                        printf("aqui bebe \n");
+                        userAux.admin = 0;
+                    }
                 }
-
             }
-            while (fieldOption != 6);
+            while (fieldOption != 7);
 
-            fseek(fileUser, posInFile * sizeof(stUser), 0);
+            fseek(fileUser, (posInFile) * sizeof(stUser), 0);
             fwrite(&userAux, sizeof(stUser), 1, fileUser);
             fclose(fileUser);
         }

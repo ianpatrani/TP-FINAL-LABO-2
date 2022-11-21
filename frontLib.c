@@ -253,10 +253,14 @@ void optionUserMenu (int option)
     printf("4* Buscar cancion por nombre\n");
 
     printf("5* Modificar Usuario\n");
+
     printf("6* Recomendaciones hechas para vos ;) \n");
+
     printf("7* Cerrar sesion\n");
+
     scanf("%d", option);
 }
+
 void optionsAdminMenu (int option)
 {
     system("cls");

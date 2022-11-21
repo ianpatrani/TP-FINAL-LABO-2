@@ -12,7 +12,8 @@ void houseRecommendations (stCell * userList, int idUser)
     stCell * userAux = searchUserCellById(userList, idUser);
 
 
-    int totalPlays = totalPlaysByUser(userAux);
+
+    int totalPlays = userAux->userValue.totalSongsPlayed;
 
     if (totalPlays > 0)
     {
@@ -49,37 +50,22 @@ void morePopularRecommendation ()
 
 void artistRecommendation (nodeSongList * userSongList, int totalPlays)
 {
-    int randListPos = rand () % 1 + (randListPos-1); ///retorna un punto aleatorio de la lista por id
+    int randListPos = rand () % 1 + (totalPlays-1); ///retorna un punto aleatorio de la lista por id
     int i = 1;
-    nodeSongList * songAux = startSongList();
+    nodeSongList * songAux;
     songAux = userSongList;
     while (songAux && i < randListPos)
     {
         songAux = songAux->next;
         i++;
     }
-
-    printf("Quiza te interese escuchar nuevamente a %s, no? :)\n\n", songAux->value.artist);
+    printf("Quiza te interese escuchar nuevamente a %s? :)\n\n", songAux->value.artist);
     showSongFileByArtist(songAux->value.artist);
 }
 
 
-int totalPlaysByUser (stCell * userNode)
-{
-    int totalPlays = 0;
-    if(userNode->songList)
-    {
-        while (userNode->songList)
-        {
-            totalPlays++;
-            userNode->songList = userNode->songList->next;
-        }
-    }
-    return totalPlays;
-}
 
-
-stCell * loadListFromFile(stCell * userList) ///levanta el archivo de stPlaylist y trae CADA canción al usuario de CADA registro stPlaylist.
+stCell * loadListFromFile(stCell * userList) ///levanta el archivo de stPlaylist y trae CADA canciÃ³n al usuario de CADA registro stPlaylist.
 {
     FILE * filePL;
     FILE * fileUser;
@@ -94,27 +80,25 @@ stCell * loadListFromFile(stCell * userList) ///levanta el archivo de stPlaylist
 
     nodeTreeSong * treeSong;
     treeSong = startTree();
-
     treeSong = fileToSongTree(treeSong);
     nodeTreeSong * auxSongTree;
 
     if (fileUser) //si hay usuarios los carga.. aunque no hayan escuchado nada
     {
-        while (fread(&userAux, 1, sizeof(stUser), fileUser) > 1)
+        while (fread(&userAux, 1, sizeof(stUser), fileUser) > 0)
         {
             if (userAux.off == 0) //siempre y cuando no esten dados de baja
             {
                 userList = addLastCell(userList, createCellNode(userAux, auxSongList)); //agrega si o si la celda aunque no tenga lista de canciones.
-                if(filePL) //aca utilizamos la estructura playlist para buscar si el usuario tiene canciones reproducidas y saber cuales son
+                if(fopen(PLAYLISTFILEPATH, "rb") > 0) //aca utilizamos la estructura playlist para buscar si el usuario tiene canciones reproducidas y saber cuales son
                 {
-                    while(fread(&PLAux, 1, sizeof(stPlaylist), filePL) > 1)
+                    while(fread(&PLAux, 1, sizeof(stPlaylist), filePL) > 0)
                     {
                         if (PLAux.idUser == userAux.idUser) //si el usuario es el mismo que la estructura playList ingresa
                         {
                             auxSongTree = searchNodeById(treeSong, PLAux.idSong); ///busca en el arbol x id de cancion
                             if(auxSongTree)
                             {
-
                                 auxSongList = createSongNode(auxSongTree->value);
                                 cellAux = searchUserCellById(userList, userAux.idUser);
                                 cellAux->songList = addSongLast(cellAux->songList, auxSongList);
@@ -124,12 +108,14 @@ stCell * loadListFromFile(stCell * userList) ///levanta el archivo de stPlaylist
                         }
                     }
                 }
+                fclose(filePL);
             }
         }
+        fclose(fileUser);
     }
     else
     {
-        printf("error en abrir el archivo!\n");
+        printf("Error al abrir el archivo\n");
     }
     return userList;
 }
@@ -314,7 +300,7 @@ void showCellNode(stCell * toShow)
         printf("Masculino\n");
     }
     else
-        printf("No binario\n");
+    printf("No binario\n");
     printf("country de origen: %s\n",toShow->userValue.country);
     printf("Cantidad de canciones escuchadas: %d\n",toShow->userValue.totalSongsPlayed);
     printf("Canciones escuchadas: \n");
@@ -401,41 +387,44 @@ void savePlaylist (stPlaylist toSave)
     fclose(playListFile);
 }
 
-void playSong (int idUser, int idSong)
+void playSong(int idUser, int idSong)
 /// Reproduce la cancion, genera el stPlayList correspondiente y se guarda en historial de usuario
 {
     stUser userAux;
     stSong songAux;
-    FILE * userFile;
-    FILE * songFile;
+    FILE *userFile;
+    FILE *songFile;
 
-    if((songFile = fopen(SONGSFILEPATH, "r+b"))) ///valida que haya archivo
+    if ((songFile = fopen(SONGSFILEPATH, "r+b")) && (idSong != -1)) /// valida que haya archivo
     {
-        fseek(songFile,(idSong-2) * sizeof(stSong), SEEK_SET); ///se posiciona dondce esta el ID en el archivo
-        fread(&songAux, sizeof(stSong), 1, songFile);///lo escribe en el auxSong
+        fseek(songFile, (idSong - 2) * sizeof(stSong), SEEK_SET); /// se posiciona dondce esta el ID en el archivo
+        fread(&songAux, sizeof(stSong), 1, songFile);             /// lo escribe en el auxSong
 
         system("cls");
 
-        printf("Usted esta escuchando %s - %s\n", songAux.title, songAux.artist); ///front de reproduccion del tema
+        printf("Usted esta escuchando %s - %s\n", songAux.title, songAux.artist); /// front de reproduccion del tema
 
-        playing();///front de reproduccion del tema
+        playing(); /// front de reproduccion del tema
 
-//        printf("Presione enter cuando finalice la reproduccion\n");
         getch();
-    }
-    if(userFile = fopen(USERSFILEPATH, "r+b"))
-    {
-        userAux = searchUserFileById(idUser);
-        userAux.songsPlayed[userAux.totalSongsPlayed] = idSong;///busca el usuario en el archivo y le agrega el id de la canción en la sig pos
-        userAux.totalSongsPlayed = userAux.totalSongsPlayed+1; ///suma 1 el total de canciones reproducidas
-        fseek(userFile, ((idUser-1) * sizeof(stUser)), SEEK_SET);
-        fwrite(&userAux, sizeof(stUser), 1, userFile);
-        fseek(userFile,sizeof(stUser), SEEK_END);
-    }
+        if (userFile = fopen(USERSFILEPATH, "r+b"))
+        {
+            userAux = searchUserFileById(idUser);
+            userAux.songsPlayed[userAux.totalSongsPlayed] = idSong;  /// busca el usuario en el archivo y le agrega el id de la canciï¿½n en la sig pos
+            userAux.totalSongsPlayed = userAux.totalSongsPlayed + 1; /// suma 1 el total de canciones reproducidas
+            fseek(userFile, ((idUser - 1) * sizeof(stUser)), SEEK_SET);
+            fwrite(&userAux, sizeof(stUser), 1, userFile);
+            fseek(userFile, sizeof(stUser), SEEK_END);
+        }
 
-    fclose(userFile);
-    fclose(songFile);
-    stPlaylist PLAux;
-    PLAux = createPlaylist(idUser, idSong); //crea un struct playList
-    savePlaylist(PLAux);     ///guarda el struct en el archivo de playList
+        fclose(userFile);
+        fclose(songFile);
+        stPlaylist PLAux;
+        PLAux = createPlaylist(idUser, idSong); // crea un struct playList
+        savePlaylist(PLAux);                    /// guarda el struct en el archivo de playList
+    }
+    else
+    {
+        printf("No existe la cancion\n");
+    }
 }
