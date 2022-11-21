@@ -26,7 +26,7 @@ int start()
         case 3:
             //Salir
             system("cls");
-            printf("Hasta prontos!!!");
+            printf("Hasta pronto!!");
             cControl = 'n';
             break;
         }
@@ -94,7 +94,8 @@ int login ()
             printf("Contrasenia incorrecta \(%d intentos restantes\)\n", (2 - i));
             printf("Ingrese contrasenia nuevamente\n");
             fflush(stdin);
-            gets(auxPass);
+            hidePswd(auxPass);
+            getch();
             i++;
         }
         else
@@ -104,7 +105,6 @@ int login ()
             idUser = validUser(userName);
         }
     }
-
     if(i == 3 & idUser == 0)
     {
         printf("Intentos de login agotados...\n");
