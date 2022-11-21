@@ -79,7 +79,7 @@ stUser createOneUser()
     int encryptedPass[2][5]; /// matriz Encriptada
     // CARGA DE 1 USUARIO POR TECLADO
     userAux.idUser = idUser;
-    userAux.admin = 1;
+    userAux.admin = 0;
     printf("\nIngrese un nombre de usuario \n");
     fflush(stdin);
     gets(userAux.fullName);
