@@ -278,25 +278,25 @@ int getUserIdToUpdate ()
     do
     {
         system("cls");
-        gotoxy(30, 20);
         printf("Ingrese el ID del usuario que desea modificar \n");
-        gotoxy(30, 21);
         scanf("%d", &idUser);
         system("cls");
-        gotoxy(30, 20);
         printf("El ID ingresado es: %d? S/N \n", idUser);
         fflush(stdin);
-        gotoxy(30, 21);
         scanf("%c", &cControl);
         if (idUser < 0 || idUser > totalUsers)
         {
             system("cls");
-            gotoxy(30, 20);
             printf("El ID ingresado no existe\n");
             cControl = 'n';
-            gotoxy(30, 21);
             printf("press enter...");
             getch();
+        }
+        FILE * fileUser = fopen(USERSFILEPATH, "rb");
+        stUser * userAux;
+        while (fread(&userAux, 1, sizeof(stUser), fileUser) >0 && userAux.idUser != idUser)
+        {
+
         }
     }
     while (cControl != 's');

@@ -341,11 +341,13 @@ void userCrud (stCell * userList)
             system("cls");
             idUser = getUserIdToUpdate();
             system("cls");
-            showCellNode(searchUserCellById(userList, idUser));
-            updateUser(idUser);
-            system("cls");
-            showCellNode(searchUserCellById(userList, idUser));
-
+            if(idUser != -1)
+            {
+                showCellNode(searchUserCellById(userList, idUser));
+                updateUser(idUser);
+                system("cls");
+                showCellNode(searchUserCellById(userList, idUser));
+            }
             puts("press enter..\n");
 
             getch();
