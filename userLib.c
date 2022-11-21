@@ -38,8 +38,7 @@ void addUserToFile()
     }
 }
 
-
-void showAnUser (stUser toShow)
+void showAnUser(stUser toShow)
 {
     stWord auxPass;
     printf("__________________________________\n");
@@ -52,17 +51,16 @@ void showAnUser (stUser toShow)
     printf("__________________________________\n");
     printf("Anio de nacimiento:\t%d\n", toShow.birthYear);
     printf("Pais: \t\t\t%s\n", toShow.country);
-    if(toShow.gender == 'm' || 'M')
+    if (toShow.gender == 'm' || 'M')
     {
         printf("Genero: \t\tMASCULINO\n");
     }
-    else
+    else if (toShow.gender == 'f' || 'F')
     {
         printf("Genero: \t\tFEMENINO\n");
     }
     printf("Password: \t\t");
     showPassword(toShow);
-
 
     printf("Total de cacnciones escuchadas: %d \n\n", toShow.totalSongsPlayed);
 }
@@ -70,20 +68,19 @@ void showAnUser (stUser toShow)
 stUser createOneUser()
 {
     stUser userAux;
-    int idUser = totalUsers();/// funcion que trae cantidad de usuarios cargados en el fileUser y autoinrementa 1
+    int idUser = totalUsers(); /// funcion que trae cantidad de usuarios cargados en el fileUser y autoinrementa 1
     int iterator = 0;
     int checkName = 0;
 
-
     char passAux[11];        /// auxiliar de contrasenia
-    char passAux1[11];       /// auxiliar de verificacion de contraseña
-    int decryptedPass[2][5]; /// cambia la contraseña q ingresa el userAux a una matriz de enteros
+    char passAux1[11];       /// auxiliar de verificacion de contraseï¿½a
+    int decryptedPass[2][5]; /// cambia la contraseï¿½a q ingresa el userAux a una matriz de enteros
     int keyPass[2][2];       /// matriz encriptadora
     int encryptedPass[2][5]; /// matriz Encriptada
     // CARGA DE 1 USUARIO POR TECLADO
     userAux.idUser = idUser;
-    userAux.admin = 0;
-    printf("Ingrese un nombre de usuario \n");
+    userAux.admin = 1;
+    printf("\nIngrese un nombre de usuario \n");
     fflush(stdin);
     gets(userAux.fullName);
     // VALIDO SI EL NOMBRE DE USER YA EXISTE
@@ -99,17 +96,15 @@ stUser createOneUser()
     do
     {
         system("cls");
-        printf("Ingrese su password (10 caracteres obligatoriamente):\n");
+        printf("\nIngrese su password (10 caracteres obligatoriamente):\n");
         fflush(stdin);
         hidePswd(passAux);
         getch();
-        printf("Una vez mas por favor :) \n");
+        printf("\nUna vez mas por favor :) \n");
         fflush(stdin);
         hidePswd(passAux1);
         getch();
-    }
-    while (strcmpi(passAux, passAux1) != 0);
-
+    } while (strcmpi(passAux, passAux1) != 0);
 
     while (strlen(passAux) != (10 * sizeof(char)))
     {
@@ -119,16 +114,13 @@ stUser createOneUser()
         getch();
     }
 
-    createMatrixPass(2, 5, passAux, decryptedPass);          /// pasa pswd a matriz de enteros
-    createKeyPass(2, keyPass);/// crea matriz testigo
-    copyMatrix(2, 2, userAux.keyPass, keyPass);             /// copia la matriz encriptadora del userAux en su campo del userAux
-    encryptMatrix(2, 5, keyPass, decryptedPass, encryptedPass); /// encripta la contraseña
-    copyMatrix(2, 5, userAux.matrixPass, encryptedPass);         /// fileUserva la contrasenia encriptada en el campo pass de userAux
+    createMatrixPass(2, 5, passAux, decryptedPass);             /// pasa pswd a matriz de enteros
+    createKeyPass(2, keyPass);                                  /// crea matriz testigo
+    copyMatrix(2, 2, userAux.keyPass, keyPass);                 /// copia la matriz encriptadora del userAux en su campo del userAux
+    encryptMatrix(2, 5, keyPass, decryptedPass, encryptedPass); /// encripta la contraseï¿½a
+    copyMatrix(2, 5, userAux.matrixPass, encryptedPass);        /// fileUserva la contrasenia encriptada en el campo pass de userAux
 
-
-
-
-    printf("Ingrese anio de nacimiento\n");
+    printf("\nIngrese anio de nacimiento\n");
     scanf("%d", &userAux.birthYear);
 
     printf("Ingrese Genero\n");
@@ -154,8 +146,6 @@ stUser createOneUser()
     return userAux;
 }
 
-
-
 //-----------------------------------------------------
 // A.1)FUNCION ADICIONAL QUE VALIDA SI EL USER EXISTE
 //-----------------------------------------------------
@@ -173,7 +163,7 @@ int nameValidation(char toCheck[])
 
 int deleteUser(int idUser)
 {
-    FILE * userFIle = fopen(USERSFILEPATH, "r+b");
+    FILE *userFIle = fopen(USERSFILEPATH, "r+b");
     int pos = 0, flag = 0;
     stUser userAux;
     if (userFIle)
@@ -190,13 +180,13 @@ int deleteUser(int idUser)
 
 void upUser(int idUser)
 {
-    FILE * fileUser;
+    FILE *fileUser;
     stUser userAux;
-    if((fileUser = fopen(USERSFILEPATH, "r+b")))
+    if ((fileUser = fopen(USERSFILEPATH, "r+b")))
     {
         fseek(fileUser, (idUser - 1) * (sizeof(stUser)), SEEK_SET);
         fread(&userAux, sizeof(stUser), 1, fileUser);
-        if(userAux.off == 1)
+        if (userAux.off == 1)
         {
             userAux.off = 0;
             fseek(fileUser, (idUser - 1) * (sizeof(stUser)), SEEK_SET);
@@ -212,17 +202,17 @@ void upUser(int idUser)
 
 int searchUserById(int idUser)
 {
-    FILE * userFile = fopen(USERSFILEPATH, "rb");
+    FILE *userFile = fopen(USERSFILEPATH, "rb");
     int pos = -1, iterator = 0, flag = 0;
     stUser userAux;
-    if(userFile)
+    if (userFile)
     {
-        while(!feof(userFile) && flag == 0)
+        while (!feof(userFile) && flag == 0)
         {
-            fread(&userAux,sizeof(stUser),1,userFile);
-            if(!feof(userFile))
+            fread(&userAux, sizeof(stUser), 1, userFile);
+            if (!feof(userFile))
             {
-                if(idUser == userAux.idUser)
+                if (idUser == userAux.idUser)
                 {
                     pos = iterator;
                     flag = 1;
@@ -238,11 +228,10 @@ int searchUserById(int idUser)
     return pos;
 }
 
-
-nodeUser * loadUsersFromFile(nodeUser * userList)
+nodeUser *loadUsersFromFile(nodeUser *userList)
 {
     FILE *fileUser;
-    nodeUser * auxNode;
+    nodeUser *auxNode;
     stUser userAux;
     fileUser = fopen(USERSFILEPATH, "r+b");
 
@@ -272,8 +261,7 @@ void showUsers(nodeUser *userList)
     showUserList(userList);
 }
 
-
-int getUserIdToUpdate ()
+int getUserIdToUpdate()
 {
     int idUser;
     char cControl = 's';
@@ -283,9 +271,6 @@ int getUserIdToUpdate ()
     printf("Ingrese el ID del usuario que desea modificar \n");
     scanf("%d", &idUser);
     searchUserById(idUser);
-
-
-
 
     return idUser;
 }
@@ -314,9 +299,9 @@ stUser searchUserFileById(int idUser)
     fclose(fileUser);
 }
 
-stUser searchUserFileByName (char userName[])
+stUser searchUserFileByName(char userName[])
 {
-    FILE * fileUser = fopen(USERSFILEPATH, "rb");
+    FILE *fileUser = fopen(USERSFILEPATH, "rb");
 
     int iterator = 0;
     stUser userAux;
@@ -333,7 +318,7 @@ stUser searchUserFileByName (char userName[])
 
 int searchUserByName(char fullName[])
 {
-    FILE * fileUser = fopen(USERSFILEPATH, "rb");
+    FILE *fileUser = fopen(USERSFILEPATH, "rb");
     int flag = -1;
     stUser userAux;
     if (fileUser)
@@ -358,7 +343,7 @@ int searchUserByName(char fullName[])
 int totalUsers()
 {
     int total = 0;
-    FILE * fileUser;
+    FILE *fileUser;
     stUser userAux;
     fileUser = fopen(USERSFILEPATH, "r+b");
 
@@ -375,9 +360,9 @@ int totalUsers()
 //-***************************************************************************************
 // FUNCION DE ACTUALIZACION DE USUARIOS
 //------------------------------------------
-int saveUserList(nodeUser * userList)
+int saveUserList(nodeUser *userList)
 {
-    int flag = 0; ///devuelve lo que devuelve fwrite, sirve para validar escritura
+    int flag = 0; /// devuelve lo que devuelve fwrite, sirve para validar escritura
     FILE *fileUser;
     fileUser = fopen(USERSFILEPATH, "wb");
     if (fileUser)
@@ -398,7 +383,7 @@ int saveUserList(nodeUser * userList)
 
 void updateUser(int idUser)
 {
-    FILE * fileUser = fopen(USERSFILEPATH, "r+b");
+    FILE *fileUser = fopen(USERSFILEPATH, "r+b");
     stUser userAux;
     int keyPass[2][2];
     int decryptedMatrix[2][5];
@@ -483,8 +468,7 @@ void updateUser(int idUser)
                         userAux.admin = 0;
                     }
                 }
-            }
-            while (fieldOption != 7);
+            } while (fieldOption != 7);
 
             fseek(fileUser, (posInFile) * sizeof(stUser), 0);
             fwrite(&userAux, sizeof(stUser), 1, fileUser);
@@ -497,21 +481,20 @@ void updateUser(int idUser)
     }
 }
 
-
-nodeUser * startUserList()
+nodeUser *startUserList()
 {
     return NULL;
 }
 
-nodeUser * createUserNode (stUser user)
+nodeUser *createUserNode(stUser user)
 {
-    nodeUser * aux = (nodeUser*) malloc(sizeof(nodeUser));
+    nodeUser *aux = (nodeUser *)malloc(sizeof(nodeUser));
     aux->value = user;
     aux->next = NULL;
     return aux;
 }
 
-nodeUser * addFirst(nodeUser * userList, nodeUser * toAdd)
+nodeUser *addFirst(nodeUser *userList, nodeUser *toAdd)
 {
 
     if (!userList)
@@ -526,16 +509,13 @@ nodeUser * addFirst(nodeUser * userList, nodeUser * toAdd)
     return userList;
 }
 
-
-
-
-nodeUser * searchLastUser(nodeUser * userList) ///retorna el ultimo usuario, de manera recursiva
+nodeUser *searchLastUser(nodeUser *userList) /// retorna el ultimo usuario, de manera recursiva
 {
-    nodeUser * aux = NULL;
+    nodeUser *aux = NULL;
 
-    if(userList)
+    if (userList)
     {
-        if(userList->next == NULL)
+        if (userList->next == NULL)
         {
             aux = userList;
         }
@@ -547,24 +527,23 @@ nodeUser * searchLastUser(nodeUser * userList) ///retorna el ultimo usuario, de 
     return aux;
 }
 
-nodeUser * addLast(nodeUser * userList, nodeUser * toAdd)
+nodeUser *addLast(nodeUser *userList, nodeUser *toAdd)
 {
-    if(!userList)
+    if (!userList)
     {
         userList = toAdd;
     }
     else
     {
-        nodeUser * last = searchLastUser(userList);
+        nodeUser *last = searchLastUser(userList);
         last->next = toAdd;
     }
     return userList;
 }
 
-
-nodeUser * insertUser(nodeUser * userList, nodeUser * toInsert)
+nodeUser *insertUser(nodeUser *userList, nodeUser *toInsert)
 {
-    if(!userList)
+    if (!userList)
     {
         userList = toInsert;
     }
@@ -575,10 +554,10 @@ nodeUser * insertUser(nodeUser * userList, nodeUser * toInsert)
     else
     {
 
-        nodeUser * prev = userList;
-        nodeUser * next = userList;
+        nodeUser *prev = userList;
+        nodeUser *next = userList;
 
-        while(next && (next->value.idUser < toInsert->value.idUser))
+        while (next && (next->value.idUser < toInsert->value.idUser))
         {
             prev = next;
             next = next->next;
@@ -589,42 +568,40 @@ nodeUser * insertUser(nodeUser * userList, nodeUser * toInsert)
     return userList;
 }
 
-nodeUser * deleteNode(nodeUser * userList, int idUser)
+nodeUser *deleteNode(nodeUser *userList, int idUser)
 {
-    nodeUser * prev = NULL;
-    nodeUser * next = NULL;
+    nodeUser *prev = NULL;
+    nodeUser *next = NULL;
 
-    if(userList)
+    if (userList)
     {
-        if(userList->value.idUser == idUser)
+        if (userList->value.idUser == idUser)
         {
-            nodeUser * toDelete = userList;
+            nodeUser *toDelete = userList;
             userList = userList->next;
             free(toDelete);
         }
         else
         {
             next = userList->next;
-            while(next && next->value.idUser != idUser)
+            while (next && next->value.idUser != idUser)
             {
                 prev = next;
                 next = next->next;
             }
-            if(next)
+            if (next)
             {
-                prev->next = next->next; //salteo el nodo que quiero eliminar.
-                free(next); //elimino el nodo.
+                prev->next = next->next; // salteo el nodo que quiero eliminar.
+                free(next);              // elimino el nodo.
             }
         }
     }
     return userList;
-
 }
 
-
-nodeUser * deleteFirst (nodeUser * userList)
+nodeUser *deleteFirst(nodeUser *userList)
 {
-    nodeUser * aux = userList;
+    nodeUser *aux = userList;
     if (userList)
     {
         userList = userList->next;
@@ -633,20 +610,14 @@ nodeUser * deleteFirst (nodeUser * userList)
     return userList;
 }
 
-
-
-
-void showUserList(nodeUser * toShow) ///recursiva
+void showUserList(nodeUser *toShow) /// recursiva
 {
     if (toShow)
     {
         showAnUser(toShow->value);
         showUserList(toShow->next);
-
     }
 }
-
-
 
 /// MATRICES
 
@@ -681,7 +652,6 @@ void multiplyMatrix(int two, int five, int firstMultiple[two][two], int secondMu
     }
 }
 
-
 void createMatrixPass(int two, int five, char pass[], int matrixPass[two][five])
 {
     int iterator = 0;
@@ -692,30 +662,26 @@ void createMatrixPass(int two, int five, char pass[], int matrixPass[two][five])
     {
         for (k = 0; k < 5; k++)
         {
-            matrixPass[j][k]=(int)pass[iterator];
+            matrixPass[j][k] = (int)pass[iterator];
             iterator++;
         }
     }
 }
-void pasar_pswd_matriz (int dos, int cinco, char contrasenia[],  int matriz_contrasenia[dos][cinco])
+void pasar_pswd_matriz(int dos, int cinco, char contrasenia[], int matriz_contrasenia[dos][cinco])
 {
-    int j=0;
+    int j = 0;
     int i;
     int u;
 
-
-    for (i=0; i<2; i++)
+    for (i = 0; i < 2; i++)
     {
-        for (u=0; u<5; u++)
+        for (u = 0; u < 5; u++)
         {
-            matriz_contrasenia[i][u]=(int)contrasenia[j];
-
+            matriz_contrasenia[i][u] = (int)contrasenia[j];
 
             j++;
-
         }
     }
-
 }
 int computeDeterminant(int row, int column, int matrix[row][column])
 {
@@ -723,7 +689,6 @@ int computeDeterminant(int row, int column, int matrix[row][column])
     determinant = ((matrix[0][0] * matrix[1][1]) - (matrix[1][0] * matrix[0][1]));
     return determinant;
 }
-
 
 void encryptMatrix(int two, int five, int keyPass[two][two], int decryptedMatrix[two][five], int encryptedMatrix[two][five])
 {
@@ -734,7 +699,7 @@ void decryptMatrix(int two, int five, int keyPass[two][two], int matrixPass[two]
 {
     invertMatrix(2, keyPass);
 
-    multiplyMatrix(2, 5, keyPass,matrixPass, decryptedMatrix);
+    multiplyMatrix(2, 5, keyPass, matrixPass, decryptedMatrix);
 }
 
 void createKeyPass(int two, int keyPass[two][two])
@@ -748,8 +713,7 @@ void createKeyPass(int two, int keyPass[two][two])
         keyPass[0][1] = aux - 1;
         keyPass[1][0] = aux + 1;
         keyPass[1][1] = aux;
-    }
-    while (computeDeterminant(2, 2, keyPass) == 0);
+    } while (computeDeterminant(2, 2, keyPass) == 0);
 }
 
 void invertMatrix(int two, int keyPass[two][two])
@@ -759,14 +723,11 @@ void invertMatrix(int two, int keyPass[two][two])
     int p00 = keyPass[0][0];
     int p01 = keyPass[0][1];
 
-    keyPass[0][0] = (keyPass[1][1])/determinant;
-    keyPass[0][1] = -1*(p01)/determinant;
-    keyPass[1][0] = -1*(keyPass[1][0])/determinant;
-    keyPass[1][1] = (p00)/determinant;
+    keyPass[0][0] = (keyPass[1][1]) / determinant;
+    keyPass[0][1] = -1 * (p01) / determinant;
+    keyPass[1][0] = -1 * (keyPass[1][0]) / determinant;
+    keyPass[1][1] = (p00) / determinant;
 }
-
-
-
 
 int chkPswdCompatiblty(stUser toCompare, char toCheckPass[])
 {
@@ -809,4 +770,3 @@ void copyMatrix(int rows, int columns, int copy[rows][columns], int original[row
         }
     }
 }
-
