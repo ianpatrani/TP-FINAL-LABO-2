@@ -65,7 +65,7 @@ stCell *loadListFromFile(stCell *userList) /// levanta el archivo de stPlaylist 
     fileUser = fopen(USERSFILEPATH, "rb");
 
     stCell *cellAux;
-    nodeSongList *auxSongList = startSongList();
+
     stUser userAux;
     stSong songAux;
     stPlaylist PLAux;
@@ -79,6 +79,7 @@ stCell *loadListFromFile(stCell *userList) /// levanta el archivo de stPlaylist 
     {
         while (fread(&userAux, 1, sizeof(stUser), fileUser) > 0)
         {
+            nodeSongList * auxSongList = startSongList();
             if (userAux.off == 0) // siempre y cuando no esten dados de baja
             {
                 userList = addLastCell(userList, createCellNode(userAux, auxSongList)); // agrega si o si la celda aunque no tenga lista de canciones.
@@ -375,7 +376,7 @@ void playSong(int idUser, int idSong)
 
     if ((songFile = fopen(SONGSFILEPATH, "r+b")) && (idSong != -1)) /// valida que haya archivo
     {
-        fseek(songFile, (idSong - 2) * sizeof(stSong), SEEK_SET); /// se posiciona dondce esta el ID en el archivo
+        fseek(songFile, (idSong-1) * sizeof(stSong), SEEK_SET); /// se posiciona dondce esta el ID en el archivo
         fread(&songAux, sizeof(stSong), 1, songFile);             /// lo escribe en el auxSong
 
         system("cls");

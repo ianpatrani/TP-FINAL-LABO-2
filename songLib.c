@@ -67,11 +67,15 @@ int songIdCreator()
 {
     int newId = 0;
     FILE *fileSong;
+    stSong auxSong;
     fileSong = fopen(SONGSFILEPATH, "rb");
     if (fileSong)
     {
-        fseek(fileSong, sizeof(stSong), SEEK_END);
-        newId = (ftell(fileSong) / sizeof(stSong)) + 1;
+        while (!feof(fileSong))
+        {
+            fread(&auxSong, 1, sizeof(stSong), fileSong);
+
+        }
     }
     else
     {
@@ -89,8 +93,7 @@ void loadSongToFile()
 
     if (fileSong)
     {
-        auxSong.idSong = songIdCreator();
-        printf("%d\n", auxSong.idSong);
+        auxSong.idSong = totalSongs()+1;
 
         printf("Ingrese titulo: ");
         fflush(stdin);
