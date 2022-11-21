@@ -376,7 +376,11 @@ void playSong(int idUser, int idSong)
 
     if ((songFile = fopen(SONGSFILEPATH, "r+b")) && (idSong != -1)) /// valida que haya archivo
     {
+<<<<<<< HEAD
         fseek(songFile, (idSong-1) * sizeof(stSong), SEEK_SET); /// se posiciona dondce esta el ID en el archivo
+=======
+        fseek(songFile, (idSong - 1) * sizeof(stSong), SEEK_SET); /// se posiciona dondce esta el ID en el archivo
+>>>>>>> 591ff838a8f2c7e5910d0a9f3304bc9c55c07e8e
         fread(&songAux, sizeof(stSong), 1, songFile);             /// lo escribe en el auxSong
 
         system("cls");
