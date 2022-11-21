@@ -83,7 +83,8 @@ int login ()
     }
     system("cls");
     printf("Ingrese su contrasenia:\n");
-    gets(auxPass);
+    hidePswd(auxPass);
+    getch();
     while(i < 3 && idUser == -1)
     {
         u = chkPswdCompatiblty(userAux, auxPass);

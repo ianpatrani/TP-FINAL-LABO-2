@@ -101,10 +101,12 @@ stUser createOneUser()
         system("cls");
         printf("Ingrese su password (10 caracteres obligatoriamente):\n");
         fflush(stdin);
-        gets(passAux);
+        hidePswd(passAux);
+        getch();
         printf("Una vez mas por favor :) \n");
         fflush(stdin);
-        gets(passAux1);
+        hidePswd(passAux1);
+        getch();
     }
     while (strcmpi(passAux, passAux1) != 0);
 
@@ -415,20 +417,20 @@ void updateUser(int idUser)
             do
             {
                 printf("1.Nombre de usuario: %s\n", userAux.fullName);
-                printf("Password: ");
+                printf("2.Password: ");
                 showPassword(userAux);
-                printf("\n3.Nacimiento: %d\n", userAux.birthYear);
+                printf("3.Nacimiento: %d\n", userAux.birthYear);
                 printf("4.Genero: %c\n", userAux.gender);
                 printf("5.Pais: %s\n", userAux.country);
-                printf("6. Switch admin \n");
+                printf("6.Switch admin: %d\n", userAux.admin);
 
-                printf("\n\nEscriba el numero del campo que desea modificar o 7 para salir :");
+                printf("\nEscriba el numero del campo que desea modificar o 7 para salir:\n");
                 scanf("%d", &fieldOption);
 
                 switch (fieldOption)
                 {
                 case 1:
-                    printf("Ingrese nuevo nombre: ");
+                    printf("Ingrese nuevo nombre: \n");
                     fflush(stdin);
                     gets(newName);
                     if (nameValidation(newName) == 0)
@@ -442,27 +444,28 @@ void updateUser(int idUser)
                     break;
 
                 case 2:
-                    printf("\nIngrese Pass: ");
+                    printf("\nIngrese Pass: \n");
                     fflush(stdin);
-                    gets(passAux);
+                    hidePswd(passAux);
+                    getch();
                     createMatrixPass(2, 5, passAux, decryptedMatrix);
                     encryptMatrix(2, 5, userAux.keyPass, decryptedMatrix, encryptedMatrix);
                     copyMatrix(2, 5, userAux.matrixPass, encryptedMatrix);
                     break;
 
                 case 3:
-                    printf("\nIngrese anio de nacimiento:");
+                    printf("\nIngrese anio de nacimiento: \n");
                     scanf("%d", &userAux.birthYear);
                     break;
 
                 case 4:
-                    printf("\nIngrese genero:");
+                    printf("\nIngrese genero: \n");
                     fflush(stdin);
                     scanf("%c", &userAux.gender);
                     break;
 
                 case 5:
-                    printf("\nIngrese pais:");
+                    printf("\nIngrese pais: \n");
                     fflush(stdin);
                     gets(userAux.country);
                     break;
@@ -477,7 +480,6 @@ void updateUser(int idUser)
                     }
                     else
                     {
-                        printf("aqui bebe \n");
                         userAux.admin = 0;
                     }
                 }

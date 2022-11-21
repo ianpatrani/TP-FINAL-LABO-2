@@ -170,76 +170,70 @@ void updateSong(int idToUpdate)
     int id = 0;
     int option = 0;
     float durationAux  = 0;
+    auxSong = searchSongFileById(idToUpdate);
 
-    showSongFile();
-
-    if (fileSong != NULL)
+    if (auxSong.idSong == idToUpdate)
     {
-        while (fread(&auxSong, sizeof(stSong), 1, fileSong) > 0)
+        printf("Esta por modificar la siguiente cancion: \n");
+        showSong(auxSong);
+        printf("\n");
+        puts("Opcion 1 - titulo");
+        puts("Opcion 2 - artista");
+        puts("Opcion 3 - duracion");
+        puts("Opcion 4 - album");
+        puts("Opcion 5 - anio");
+        puts("Opcion 6 - genero");
+        puts("Opcion 7 - comentario");
+        puts("Opcion 8 - eliminado\n");
+
+        printf("Ingrese eleccion:\n");
+        scanf("%d", &option);
+        switch (option)
         {
-
-            if (auxSong.idSong == idToUpdate)
-            {
-                puts("Opcion 1 - titulo");
-                puts("Opcion 2 - artista");
-                puts("Opcion 3 - duracion");
-                puts("Opcion 4 - album");
-                puts("Opcion 5 - anio");
-                puts("Opcion 6 - genero");
-                puts("Opcion 7 - comentario");
-                puts("Opcion 8 - eliminado");
-
-                printf("Ingrese eleccion:\n");
-                scanf("%d", &option);
-                switch (option)
-                {
-                case 1:
-                    printf("\nIngrese nuevo titulo:");
-                    fflush(stdin);
-                    gets(auxSong.title);
-                    break;
-                case 2:
-                    printf("\nIngrese nuevo artista:");
-                    fflush(stdin);
-                    gets(auxSong.artist);
-                    break;
-                case 3:
-                    printf("\nIngrese nueva duracion: ");
-                    fflush(stdin);
-                    scanf("%f", &durationAux);
-                    break;
-                case 4:
-                    printf("\nIngrese nuevo album: ");
-                    fflush(stdin);
-                    gets(auxSong.album);
-                    break;
-                case 5:
-                    printf("\nIngrese nuevo anio: ");
-                    fflush(stdin);
-                    scanf("%d", &auxSong.year);
-                    break;
-                case 6:
-                    printf("\nIngrese nuevo genero: ");
-                    fflush(stdin);
-                    gets(auxSong.gender);
-                    break;
-                case 7:
-                    printf("\nIngrese nuevo comentario: ");
-                    fflush(stdin);
-                    gets(auxSong.comment);
-                    break;
-                case 8:
-                    printf("\nIngrese eliminado: ");
-                    fflush(stdin);
-                    scanf("%d", &auxSong.off);
-                    break;
-                }
-
-                fseek(fileSong, (-1) * sizeof(stSong), SEEK_CUR);
-                fwrite(&auxSong, sizeof(stSong), 1, fileSong);
-                fseek(fileSong, sizeof(stSong), SEEK_END);
-            }
+        case 1:
+            printf("\nIngrese nuevo titulo:");
+            fflush(stdin);
+            gets(auxSong.title);
+            break;
+        case 2:
+            printf("\nIngrese nuevo artista:");
+            fflush(stdin);
+            gets(auxSong.artist);
+            break;
+        case 3:
+            printf("\nIngrese nueva duracion: ");
+            fflush(stdin);
+            scanf("%f", &durationAux);
+            break;
+        case 4:
+            printf("\nIngrese nuevo album: ");
+            fflush(stdin);
+            gets(auxSong.album);
+            break;
+        case 5:
+            printf("\nIngrese nuevo anio: ");
+            fflush(stdin);
+            scanf("%d", &auxSong.year);
+            break;
+        case 6:
+            printf("\nIngrese nuevo genero: ");
+            fflush(stdin);
+            gets(auxSong.gender);
+            break;
+        case 7:
+            printf("\nIngrese nuevo comentario: ");
+            fflush(stdin);
+            gets(auxSong.comment);
+            break;
+        case 8:
+            printf("\nIngrese eliminado: ");
+            fflush(stdin);
+            scanf("%d", &auxSong.off);
+            break;
         }
+        fseek(fileSong, (-1) * sizeof(stSong), SEEK_CUR);
+        fwrite(&auxSong, sizeof(stSong), 1, fileSong);
+        fseek(fileSong, sizeof(stSong), SEEK_END);
     }
     fclose(fileSong);
 }
