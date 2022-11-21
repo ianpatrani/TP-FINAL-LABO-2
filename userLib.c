@@ -105,7 +105,8 @@ stUser createOneUser()
         printf("Una vez mas por favor :) \n");
         fflush(stdin);
         gets(passAux1);
-    }while (strcmpi(passAux, passAux1) != 0);
+    }
+    while (strcmpi(passAux, passAux1) != 0);
 
 
     while (strlen(passAux) != (10 * sizeof(char)))
@@ -210,7 +211,7 @@ void upUser(int idUser)
 int searchUserById(int idUser)
 {
     FILE * userFile = fopen(USERSFILEPATH, "rb");
-    int pos = 0, iterator = 0, flag = 0;
+    int pos = -1, iterator = 0, flag = 0;
     stUser userAux;
     if(userFile)
     {
@@ -275,31 +276,15 @@ int getUserIdToUpdate ()
     int idUser;
     char cControl = 's';
     int total = totalUsers();
-    do
-    {
-        system("cls");
-        printf("Ingrese el ID del usuario que desea modificar \n");
-        scanf("%d", &idUser);
-        system("cls");
-        printf("El ID ingresado es: %d? S/N \n", idUser);
-        fflush(stdin);
-        scanf("%c", &cControl);
-        if (idUser < 0 || idUser > totalUsers)
-        {
-            system("cls");
-            printf("El ID ingresado no existe\n");
-            cControl = 'n';
-            printf("press enter...");
-            getch();
-        }
-        FILE * fileUser = fopen(USERSFILEPATH, "rb");
-        stUser * userAux;
-        while (fread(&userAux, 1, sizeof(stUser), fileUser) >0 && userAux.idUser != idUser)
-        {
 
-        }
-    }
-    while (cControl != 's');
+    system("cls");
+    printf("Ingrese el ID del usuario que desea modificar \n");
+    scanf("%d", &idUser);
+    searchUserById(idUser);
+
+
+
+
     return idUser;
 }
 

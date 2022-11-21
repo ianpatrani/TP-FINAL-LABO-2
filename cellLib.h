@@ -5,7 +5,6 @@
 #include <time.h>
 #include "songLib.h"
 #include "userLib.h"
-#include "gotoxy.h"
 
 
 typedef struct
