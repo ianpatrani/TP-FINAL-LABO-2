@@ -6,6 +6,18 @@
 /// CELL LIB///
 /// CELL LIB///
 
+void showPlayListFile ()
+{
+     FILE * PLFile = fopen(PLAYLISTFILEPATH, "rb");
+    stPlaylist PLAux;
+    while (fread(&PLAux, 1, sizeof(stPlaylist),PLFile)>0)
+    {
+        printf("ID PlayList: %d\n", PLAux.idPlayList);
+        printf("ID User: %d\n", PLAux.idUser);
+        printf("ID Song: %d\n", PLAux.idSong);
+    }
+}
+
 void houseRecommendations(stCell *userList, int idUser)
 {
     stCell *userAux = searchUserCellById(userList, idUser);
@@ -72,13 +84,17 @@ stCell *loadListFromFile(stCell *userList) /// levanta el archivo de stPlaylist 
 
     nodeTreeSong *treeSong;
     treeSong = startTree();
-    treeSong = fileToSongTree(treeSong);
+    treeSong = fileToSongTree(treeSong); ///almacena el archivo de canciones en este arbol para luego hacer busquedas rapidas
     nodeTreeSong *auxSongTree;
+    int totalUsersFile = totalUsers();
+    int itrtor = 0;
 
     if (fileUser) // si hay usuarios los carga.. aunque no hayan escuchado nada
     {
-        while (fread(&userAux, 1, sizeof(stUser), fileUser) > 0)
+        while (itrtor < totalUsersFile)
         {
+            fseek(fileUser, (itrtor-1) * sizeof(stUser), 0);
+            fread(&userAux, 1, sizeof(stUser), fileUser);
             nodeSongList * auxSongList = startSongList();
             if (userAux.off == 0) // siempre y cuando no esten dados de baja
             {
@@ -101,8 +117,10 @@ stCell *loadListFromFile(stCell *userList) /// levanta el archivo de stPlaylist 
                         }
                     }
                 }
+
                 fclose(filePL);
             }
+            itrtor++;
         }
         fclose(fileUser);
     }
@@ -361,7 +379,7 @@ stPlaylist createPlaylist(int idUser, int idSong)
 void savePlaylist(stPlaylist toSave)
 {
 
-    FILE *playListFile = fopen(PLAYLISTFILEPATH, "ab");
+    FILE * playListFile = fopen(PLAYLISTFILEPATH, "ab");
     fwrite(&toSave, sizeof(stPlaylist), 1, playListFile);
     fclose(playListFile);
 }
@@ -376,11 +394,9 @@ void playSong(int idUser, int idSong)
 
     if ((songFile = fopen(SONGSFILEPATH, "r+b")) && (idSong != -1)) /// valida que haya archivo
     {
-<<<<<<< HEAD
-        fseek(songFile, (idSong-1) * sizeof(stSong), SEEK_SET); /// se posiciona dondce esta el ID en el archivo
-=======
+
         fseek(songFile, (idSong - 1) * sizeof(stSong), SEEK_SET); /// se posiciona dondce esta el ID en el archivo
->>>>>>> 591ff838a8f2c7e5910d0a9f3304bc9c55c07e8e
+
         fread(&songAux, sizeof(stSong), 1, songFile);             /// lo escribe en el auxSong
 
         system("cls");

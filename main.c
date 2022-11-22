@@ -14,6 +14,7 @@ int main()
         else
             userMenu(idUser);
     }
+//    showUserFile();
     printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
     return 0;
 }

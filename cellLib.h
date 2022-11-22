@@ -26,7 +26,7 @@ typedef struct
     struct stCell * next;
 }stCell;
 
-
+void showPlayListFile ();
 stCell * loadListFromFile(stCell * userList);
 stCell * createCellNode();
 stCell * addUserToList(stCell * userList, nodeSongList * songList, stUser toAdd);

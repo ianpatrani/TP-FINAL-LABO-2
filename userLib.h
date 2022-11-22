@@ -40,6 +40,8 @@ typedef struct
     struct nodeUser * next;
 }nodeUser;
 
+
+void showUserFile ();
 void showAnUser (stUser toShow);
 stUser createOneUser();
 void addUserToFile();

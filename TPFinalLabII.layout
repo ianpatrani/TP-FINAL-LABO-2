@@ -4,43 +4,8 @@
 	<ActiveTarget name="Release" />
 	<File name="frontLib.c" open="1" top="0" tabpos="3" split="2" active="1" splitpos="1016" zoom_1="4" zoom_2="4">
 		<Cursor>
-			<Cursor1 position="7959" topLine="325" />
+			<Cursor1 position="9886" topLine="413" />
 			<Cursor2 position="7891" topLine="295" />
-		</Cursor>
-	</File>
-	<File name="userLib.c" open="1" top="1" tabpos="6" split="0" active="1" splitpos="0" zoom_1="3" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="8074" topLine="270" />
-		</Cursor>
-	</File>
-	<File name="main.c" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="242" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="songLib.c" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1420" topLine="111" />
-		</Cursor>
-	</File>
-	<File name="frontLib.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="6" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="892" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="cellLib.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="970" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="userLib.h" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="3" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="0" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="songLib.h" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="3" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="240" topLine="39" />
 		</Cursor>
 	</File>
 	<File name="gotoxy.c" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -48,14 +13,49 @@
 			<Cursor1 position="267" topLine="0" />
 		</Cursor>
 	</File>
+	<File name="frontLib.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="6" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="892" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="userLib.h" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="3" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="userLib.c" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="4" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2384" topLine="75" />
+		</Cursor>
+	</File>
+	<File name="main.c" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="242" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="songLib.h" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="3" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="240" topLine="39" />
+		</Cursor>
+	</File>
 	<File name="gotoxy.h" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="25" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="cellLib.c" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+	<File name="cellLib.c" open="1" top="1" tabpos="2" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="10281" topLine="343" />
+			<Cursor1 position="10362" topLine="349" />
+		</Cursor>
+	</File>
+	<File name="songLib.c" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1042" topLine="34" />
+		</Cursor>
+	</File>
+	<File name="cellLib.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="970" topLine="0" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

@@ -1,5 +1,15 @@
 #include "userLib.h"
 
+void showUserFile ()
+{
+    FILE * userFile = fopen(USERSFILEPATH, "rb");
+    stUser userAux;
+    while (fread(&userAux, 1, sizeof(stUser),userFile) > 0)
+    {
+        showAnUser(userAux);
+    }
+}
+
 void showPassword(stUser toShow)
 {
     int iterator = 0;
