@@ -205,6 +205,7 @@ void updateSong(int idToUpdate)
             printf("\nIngrese nueva duracion: ");
             fflush(stdin);
             scanf("%f", &durationAux);
+            auxSong.duration = durationAux;
             break;
         case 4:
             printf("\nIngrese nuevo album: ");
@@ -481,7 +482,7 @@ nodeSongList *addInOrderBySongName(nodeSongList *songList, nodeSongList *toAdd)
 
 void showNode(nodeSongList *song)
 {
-    puts("\n-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-");
+    puts("\n-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-\n");
     printf("ID: %d \n", song->value.idSong);
     printf("Titulo: %s \n", song->value.title);
     printf("Artista: %s \n", song->value.artist);

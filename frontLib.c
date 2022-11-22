@@ -350,7 +350,6 @@ void userCrud (stCell * userList)
                 showCellNode(searchUserCellById(userList, idUser));
             }
             puts("press enter..\n");
-
             getch();
             break;
         case 3:
@@ -398,7 +397,6 @@ void songCrud()
     int idSong = 0;
     char cControl = 's';
     int songTotal = totalSongs();
-
 
     while(cControl == 's')
     {
